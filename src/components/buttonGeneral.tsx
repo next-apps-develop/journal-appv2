@@ -2,10 +2,12 @@ import React from 'react'
 
 const ButtonGeneral = ({
   text,
-  handleClick
+  handleClick,
+  type
 }: {
   text: string
   handleClick?: any
+  type?: string
 }) => {
   return (
     <div>
@@ -14,7 +16,8 @@ const ButtonGeneral = ({
     rounded-lg bg-primary text-white uppercase text-base font-medium block m-auto
     mt-4
     '
-        onClick={() => handleClick()}
+        onClick={() => (handleClick ? handleClick() : null)}
+        type={type as any}
       >
         {text}
       </button>

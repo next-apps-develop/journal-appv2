@@ -2,3 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+input,
+input[type='password'] {
+  display: block;
+  width: 100%;
+  outline: none;
+  background-color: theme('colors.gray.100');
+  /* background-color: var(--primary); */
+  padding: 0.5rem;
+  color: #000;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+input::placeholder {
+  color: #8087b3;
+  opacity: 1; /* Firefox */
+}

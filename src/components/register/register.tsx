@@ -6,8 +6,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer, toast } from 'react-toastify'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import ButtonGeneral from '../buttonGeneral'
 
-const RegisterPage = () => {
+const RegisterComponent = () => {
   const [error, seterror] = useState(null)
   const router = useRouter()
   const {
@@ -55,18 +56,26 @@ const RegisterPage = () => {
     }
   })
 
+  useEffect(() => {
+    reset()
+  }, [reset])
+  
   return (
-    <div className='flex w-full justify-center'>
+    <div className='flex w-full justify-center flex-col p-4'>
       {error && <ToastContainer />}
-      <form action='' onSubmit={onSubmit} className='w-1/3' autoComplete='off'>
-        <h1 className='text-4xl text-center'>Sign up</h1>
+      {/* <p className='block'>enter your credentials</p> */}
+      <form
+        action=''
+        onSubmit={onSubmit}
+        className='w-full block'
+        autoComplete='off'
+      >
         <label htmlFor='fullName'>Name</label>
         <input
           type='text'
           placeholder='Jhon Doe'
           autoComplete='off'
           // name='fullName'
-          className='bg-zinc-800 px-4 py-2 block mb-2 w-full text-white'
           {...register('fullName', {
             required: {
               value: true,
@@ -90,7 +99,6 @@ const RegisterPage = () => {
         <input
           type='email'
           placeholder='someemail@gmail.com'
-          className='bg-zinc-800 px-4 py-2 block mb-2 w-full text-white'
           autoComplete='nope'
           {...register('email', {
             required: {
@@ -111,7 +119,6 @@ const RegisterPage = () => {
         <input
           type='password'
           placeholder='*****'
-          className='bg-zinc-800 px-4 py-2 block mb-2 w-full text-white'
           {...register('password', {
             required: {
               value: true,
@@ -154,13 +161,14 @@ const RegisterPage = () => {
           </span>
         )}
 
-        <button className='bg-indigo-500 px-4 py-2 w-full mt-3'>
+        {/* <button className='bg-indigo-500 px-4 py-2 w-full mt-3'>
           Register
-        </button>
+        </button> */}
+        <ButtonGeneral text={'Register'} />
         {/* <pre>{JSON.stringify(watch(), null, 2)}</pre> */}
       </form>
     </div>
   )
 }
 
-export default RegisterPage
+export default RegisterComponent

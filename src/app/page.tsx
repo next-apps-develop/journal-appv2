@@ -1,9 +1,10 @@
+import LoginComponent from '@/components/login/login'
 import React from 'react'
-
 
 const HomePage = () => {
   return (
-    <div>HomePageAPp</div>
+    // <div>HomePageAPp</div>
+    <LoginComponent />
   )
 }
 

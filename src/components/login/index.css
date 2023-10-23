@@ -1,19 +1,3 @@
-input , input[type=password]{
-  display: block;
-  width: 100%;
-  outline: none;
-  background-color: theme('colors.gray.200');
-  /* background-color: var(--primary); */
-  padding: 0.5rem;
-  color: #000;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-}
-
-input::placeholder {
-  color: #8087B3;
-  opacity: 1; /* Firefox */
-}
 
 .max-container-component {
   background-color: #c9d6ff;
@@ -27,8 +11,8 @@ input::placeholder {
 
 /* styles my design */
 .container-comp {
-  width: 880px;
-  height: 480px;
+  width: 900px;
+  height: 570px;
   background-color: #fff;
   border-radius: 30px;
   overflow: hidden;
@@ -56,6 +40,11 @@ input::placeholder {
   width: 50%;
   transform: translateX(-100%);
   transition: all 0.6s ease-in-out;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .container-comp.active .content1 {
@@ -107,6 +96,10 @@ input::placeholder {
 
 .tg-left {
   transform: translateX(-100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .container-comp.active .tg-left {
   transform: translateX(100%);

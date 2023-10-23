@@ -11,8 +11,8 @@ const handler = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       httpOptions: {
-        timeout: 40000,
-      },
+        timeout: 40000
+      }
     }),
     CredentialsProvider({
       name: 'credentials',
@@ -62,7 +62,7 @@ const handler = NextAuth({
     }
   },
   pages: {
-    signIn: '/login'
+    signIn: '/'
   }
 })
 
