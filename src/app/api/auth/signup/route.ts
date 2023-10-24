@@ -2,6 +2,7 @@ import User from '@/models/UserNextAuthF'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { connectDB } from '@/libs/mongodb'
+
 export async function POST(request: Request) {
   const { fullName, email, password } = await request.json()
 

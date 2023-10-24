@@ -1,0 +1,29 @@
+@URL = http://localhost:3000 
+# @URL =  https://rest-server-basic.onrender.com
+
+
+### insert task
+
+POST {{URL}}/api/task
+content-type: application/json
+
+{
+    "title": "task 1",
+    "description": "descr task",
+    "userId": "652db9ba7a78b3a09cbfc5a6"
+}
+
+### get task by id
+
+GET {{URL}}/api/task/653703e36355fb52be588d95
+
+
+### insert task
+
+POST {{URL}}/api/task/byUser/ddd
+content-type: application/json
+
+{
+   
+    "userId": "652db9ba7a78b3a09cbfc5a5"
+}
