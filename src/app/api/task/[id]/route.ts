@@ -3,6 +3,12 @@ import TaskNextAuthF from '@/models/TaskNextAuthF'
 import mongoose from 'mongoose'
 import { NextResponse } from 'next/server'
 
+/**
+ * * Find tasks by id
+ * @param request
+ * @param param1
+ * @returns
+ */
 export async function GET(request: Request, { params }: any) {
   await connectDB()
   console.log({ params })
@@ -10,7 +16,6 @@ export async function GET(request: Request, { params }: any) {
     new mongoose.Types.ObjectId(params.id)
   )
 
-  console.log({ tasks })
   if (!tasks) {
     return NextResponse.json(
       {
@@ -28,4 +33,3 @@ export async function GET(request: Request, { params }: any) {
     { status: 200 }
   )
 }
-

@@ -2,14 +2,19 @@ import { connectDB } from '@/libs/mongodb'
 import TaskNextAuthF from '@/models/TaskNextAuthF'
 import mongoose from 'mongoose'
 import { NextResponse } from 'next/server'
-
-export async function POST(request: Request, { params }: any) {
+/**
+ * Find task by user id
+ * @param request
+ * @param param1
+ * @returns array tasks
+ */
+export async function GET(request: Request, { params }: any) {
   await connectDB()
-  const { userId } = await request.json()
+  // const { userId } = await request.json()
 
-  console.log({ userId })
+  console.log({ params })
   const tasks: any = await TaskNextAuthF.find({
-    userId: new mongoose.Types.ObjectId(userId)
+    userId: new mongoose.Types.ObjectId(params.idUser)
   })
 
   console.log({ tasks })

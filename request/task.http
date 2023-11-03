@@ -2,28 +2,30 @@
 # @URL =  https://rest-server-basic.onrender.com
 
 
-### insert task
+### CREATE TASK
 
 POST {{URL}}/api/task
 content-type: application/json
 
 {
-    "title": "task 1",
+    "title": "",
     "description": "descr task",
-    "userId": "652db9ba7a78b3a09cbfc5a6"
+    "userId": "65451e2933f162ecc56968a5"
 }
 
-### get task by id
+### GET TASK BY ID
 
 GET {{URL}}/api/task/653703e36355fb52be588d95
 
 
-### insert task
 
-POST {{URL}}/api/task/byUser/ddd
-content-type: application/json
 
-{
+### GET TASK BY USER
+
+GET {{URL}}/api/task/byUser/65451e2933f162ecc56968a5
+# content-type: application/json
+
+# {
    
-    "userId": "652db9ba7a78b3a09cbfc5a5"
-}
+#     "userId": "652db9ba7a78b3a09cbfc5a5"
+# }

@@ -6,7 +6,7 @@ POST {{URL}}/api/auth/signup
 content-type: application/json
 
 {
-    "fullName": "henry696",
-    "email": "test696@gmail.com",
+    "fullName": "henryg1",
+    "email": "testg16@gmail.com",
     "password": "123456"
 }

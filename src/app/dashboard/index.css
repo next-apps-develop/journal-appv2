@@ -23,7 +23,3 @@
   width: 100vw !important;
   max-width: 100%;
 }
-
-.content-dashboard.active {
-  transform: translateX(0%);
-}

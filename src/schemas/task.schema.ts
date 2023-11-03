@@ -7,4 +7,4 @@ export const taskSchema= object({
 
 })
 
-export type Person= InferType<typeof taskSchema>
+export type Task= InferType<typeof taskSchema>
