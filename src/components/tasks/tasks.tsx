@@ -15,7 +15,12 @@ const Tasks = () => {
   useEffect(() => {
     const getTasksUser = async () => {
       // @ts-ignore
-      const res = await journalAPI.get(`/task/byUser`)
+      const res = await journalAPI.get(`/task/byUser`, {
+        headers: {
+          // @ts-ignore
+          Authorization: session?.user.token || ''
+        }
+      })
 
       if (res.data && res.data.tasks) {
         settasks(res.data.tasks)
@@ -41,7 +46,7 @@ const Tasks = () => {
       {tasks.length > 0 && (
         <>
           {tasks.map((task) => (
-            <div className='task-item-container ' key={task._id}>
+            <div className='task-item-container my-4' key={task._id}>
               <div className='task-item flex justify-between items-center'>
                 {/* <p>{task.title}</p> */}
                 <p>{task.title.slice(0, 30)}</p>
