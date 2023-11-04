@@ -1,12 +1,12 @@
 @URL = http://localhost:3000 
 # @URL =  https://rest-server-basic.onrender.com
 
-### authenticate user
+### CREATE user
 POST {{URL}}/api/auth/signup
 content-type: application/json
 
 {
     "fullName": "henryg1",
-    "email": "testg16@gmail.com",
+    "email": "testg17@gmail.com",
     "password": "123456"
 }

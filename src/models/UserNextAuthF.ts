@@ -23,6 +23,10 @@ const UserSchemaNextAuthF = new Schema(
       required: [true, 'Fullname is required'],
       minLength: [3, 'Full name must be at least 3 characters'],
       maxLength: [30, 'Full name must be at most 30 characters']
+    },
+    status:{
+      type: Boolean,
+      default: true
     }
   },
   {

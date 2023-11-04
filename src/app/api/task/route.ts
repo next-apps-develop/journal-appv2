@@ -4,11 +4,25 @@ import mongoose from 'mongoose'
 import { NextResponse } from 'next/server'
 import { connectDB } from '@/libs/mongodb'
 import { taskSchema } from '@/schemas/task.schema'
+import { validateDataTask } from '@/middlewares/taskmiddleares'
+import { handler } from '@/middlewares/handler'
+import { addAbortListener } from 'events'
 
-export async function POST(request: Request) {
+/**
+ * Crete task
+ * @param req
+ * @returns
+ *
+ */
+
+// request, { ...params }, next, payload
+export async function createTask(
+  req: any,
+  {},
+  next: any,
+) {
   await connectDB()
-
-  const { title, description, userId } = await request.json()
+  const { title, description, userId } = req._body
 
   await taskSchema.validate({ title, description, userId })
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -49,3 +63,4 @@ export async function POST(request: Request) {
   )
 }
 
+export const POST = handler(validateDataTask, createTask)

@@ -1,4 +1,6 @@
 import { connectDB } from '@/libs/mongodb'
+import { handler } from '@/middlewares/handler'
+import { validateJWT } from '@/middlewares/validateJWT'
 import TaskNextAuthF from '@/models/TaskNextAuthF'
 import mongoose from 'mongoose'
 import { NextResponse } from 'next/server'
@@ -9,9 +11,8 @@ import { NextResponse } from 'next/server'
  * @param param1
  * @returns
  */
-export async function GET(request: Request, { params }: any) {
+export async function findTaskById(request: any, { params }: any) {
   await connectDB()
-  console.log({ params })
   const tasks: any = await TaskNextAuthF.findById(
     new mongoose.Types.ObjectId(params.id)
   )
@@ -33,3 +34,5 @@ export async function GET(request: Request, { params }: any) {
     { status: 200 }
   )
 }
+
+export const GET = handler(validateJWT, findTaskById)

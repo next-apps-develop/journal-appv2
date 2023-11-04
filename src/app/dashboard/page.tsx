@@ -36,6 +36,11 @@ const DashboardPage = () => {
     }
   }, [screenSize])
 
+  useEffect(() => {
+    // @ts-ignore
+    localStorage.setItem('token', session?.user?.token)
+  }, [session])
+
   // console.log(screenSize)
 
   console.log({ SESION_: session })
