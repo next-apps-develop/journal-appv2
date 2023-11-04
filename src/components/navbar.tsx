@@ -1,68 +1,32 @@
 'use client'
+import { AppContext } from '@/context/app.context'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useContext } from 'react'
+import { FiMenu } from 'react-icons/fi'
 
 const Navbar = () => {
   const { data: session } = useSession()
+  const { setshowMenu } = useContext(AppContext) as any
 
+  console.log({ session })
   return (
-    <nav className='bg-slate-900 flex justify-between px-24 text-white items-center py-3'>
-      <Link href={'/'}>
-        <h1>Next google</h1>
-      </Link>
-      {session?.user ? (
-        <div className='flex gap-x-2 items-center'>
-          <Link href={'/dashboard'}>Dashboard</Link>
-          <p>{session.user.name}</p>
-          <p>{session.user.email}</p>
-          {/* <Image
-            src={session?.user?.image || ''}
-            alt='image'
-            width={50}
-            height={50}
-          ></Image> */}
-          {/* <img src={session.user.image} alt='' /> */}
-
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={session?.user?.image || ''}
-            alt=''
-            width={50}
-            className='rounded-full'
-          />
-
-          <button
-            className='bg-sky-400 px-3 py-2 rounded'
-            onClick={async () => {
-              await signOut({ callbackUrl: '/' })
-            }}
-          >
-            Log out
-          </button>
-        </div>
-      ) : (
-        <>
-          <button
-            className='bg-sky-400 px-3 py-2 rounded'
-            onClick={() => signIn()}
-          >
-            Sign in
-          </button>
-
-          {/* <button
-            className='bg-sky-400 px-3 py-2 rounded'
-            onClick={() => signIn()}
-          >
-            Register
-          </button> */}
-          <Link href={'/register'}   className='bg-red-500 px-3 py-2 rounded'>
-            <h1>Sign up</h1>
-          </Link>
-        </>
+    <>
+      {session && (
+        <nav className='bg-primary  justify-between px-8 items-center py-6 text-white'>
+          <div className='menu-main-content w-1/4 flex justify-between'>
+            <Link href={'/'}>
+              <h1>Journal APP</h1>
+            </Link>
+            <div onClick={() => setshowMenu((prev: boolean) => !prev)}>
+              <FiMenu className='text-white cursor-pointer text-xl' />
+            </div>
+          </div>
+          {/* <RiMenuLine/> */}
+        </nav>
       )}
-    </nav>
+    </>
   )
 }
 

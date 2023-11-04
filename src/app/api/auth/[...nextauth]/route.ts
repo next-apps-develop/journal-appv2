@@ -4,6 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import { connectDB } from '@/libs/mongodb'
 import UserNextAuthF from '../../../../models/UserNextAuthF'
 import bcrypt from 'bcryptjs'
+import { generateJWT } from '@/app/utils/generateJWT'
 
 const handler = NextAuth({
   providers: [
@@ -40,14 +41,18 @@ const handler = NextAuth({
           console.log('!! No user')
           throw new Error('email dont exist')
         }
-        const passwordMatch = await bcrypt.compare(
+        const passwordMatch = bcrypt.compareSync(
           credentials!.password,
           userFound.password
         )
         if (!passwordMatch) {
           throw new Error('Invalid credentials')
         }
-        return userFound
+
+        const token = await generateJWT(userFound._id)
+
+        const userFoundAndToken = { ...userFound._doc, token }
+        return userFoundAndToken
       }
     })
   ],

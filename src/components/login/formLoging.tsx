@@ -49,6 +49,7 @@ const FormLogin = ({}) => {
   useEffect(() => {
     reset()
   }, [reset])
+  
   const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data
     const resSignIn = await signIn('credentials', {

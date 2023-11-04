@@ -1,0 +1,7 @@
+.task-item-container {
+  background-color: theme('colors.primary');
+  border-radius: 5px;
+  padding: 0.5rem;
+  color: white;
+  cursor: pointer;
+}
