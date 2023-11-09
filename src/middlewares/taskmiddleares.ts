@@ -21,7 +21,7 @@ export const validateDataTask = async (
       )
     }
     console.log('acaaaa')
-    req._body= body
+    req._body = body
     // next()
     next()
   } catch (err) {
@@ -31,7 +31,7 @@ export const validateDataTask = async (
       {
         err
       },
-      { status: 500 }
+      { status: 400 }
     )
   }
 }

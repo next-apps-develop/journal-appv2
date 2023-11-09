@@ -38,6 +38,7 @@ const LoginComponent = () => {
                 className='google-btn flex items-center cursor-pointer mb-8'
                 onClick={async () => await signIn('google')}
               >
+                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src='https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg'
                   alt=''

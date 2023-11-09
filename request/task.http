@@ -8,7 +8,7 @@ POST {{URL}}/api/task
 content-type: application/json
 
 {
-    "title": "title task",
+    "title": "title task new",
     "description": "descr task",
     "userId": "65451e2933f162ecc56968a5"
 }
@@ -23,9 +23,6 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRi
 GET {{URL}}/api/task/byUser
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE2OTkwNDk5MDksImV4cCI6MTY5OTA2NDMwOX0.AtHjfxzFr4L8q9V4279GYVCEulXEG5YQ8l1-88x2RBk
 
-# content-type: application/json
-
-# {
-   
-#     "userId": "652db9ba7a78b3a09cbfc5a5"
-# }
+### DELETE TASK
+DELETE {{URL}}/api/task/654c15f402f591a8aa8432a2
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE2OTk0ODk2OTYsImV4cCI6MTY5OTUwNDA5Nn0.IF6eydse-JuYBk2h52TJI-_nfMbKJE4BBN9zGPuQHoI

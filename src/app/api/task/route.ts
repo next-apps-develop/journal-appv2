@@ -49,7 +49,8 @@ export async function createTask(
   const task = new TaskNextAuthF({
     title,
     description,
-    userId: new mongoose.Types.ObjectId(userId)
+    userId: new mongoose.Types.ObjectId(userId),
+    categoryId: null
   })
 
   const taskSaved = await task.save()
@@ -63,4 +64,7 @@ export async function createTask(
   )
 }
 
+
+
 export const POST = handler(validateDataTask, createTask)
+

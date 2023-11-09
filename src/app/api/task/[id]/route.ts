@@ -35,4 +35,40 @@ export async function findTaskById(request: any, { params }: any) {
   )
 }
 
+export async function deleteTask(req: any, { params }: any, next: any) {
+  await connectDB()
+  // const { title, description, userId } = req._body
+  const { id } = params
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return NextResponse.json(
+      {
+        msg: 'id invalid'
+      },
+      { status: 400 }
+    )
+  }
+  const taskFound = await TaskNextAuthF.findById({
+    _id: new mongoose.Types.ObjectId(id)
+  })
+
+  if (!taskFound) {
+    return NextResponse.json(
+      {
+        msg: 'No task found !!'
+      },
+      { status: 400 }
+    )
+  }
+
+  const errasedTask = await TaskNextAuthF.findOneAndDelete({ _id: id })
+  return NextResponse.json(
+    {
+      msg: 'ok',
+      task: errasedTask
+    },
+    { status: 200 }
+  )
+}
+
 export const GET = handler(validateJWT, findTaskById)
+export const DELETE = handler(validateJWT, deleteTask)
