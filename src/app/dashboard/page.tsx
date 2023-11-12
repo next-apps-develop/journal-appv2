@@ -2,7 +2,7 @@
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 import './index.css'
-import Tasks from '@/components/tasks/tasks'
+import Tasks from '@/components/tasks/Tasks'
 import { FiPlus } from 'react-icons/fi'
 import { useTasksStore } from '../store/tasks'
 
@@ -29,9 +29,9 @@ const DashboardPage = () => {
   return (
     <div className='dashboard-main-cotainer bg-gray-040 flex'>
       <div
-        className={`tasks-main-container flex justify-center w-full h-screen`}
+        className={`tasks-main-container flex justify-center w-full`}
       >
-        <div className='tasks-container min-w-[400px]'>
+        <div className='min-w-[400px]'>
           <div className='input-container flex items-center relative'>
             <input
               type='text'

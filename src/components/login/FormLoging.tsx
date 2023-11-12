@@ -1,5 +1,5 @@
 import React, { FormEventHandler, useEffect, useState } from 'react'
-import ButtonGeneral from '../buttonGeneral'
+import ButtonGeneral from '../ButtonGeneral'
 import { FieldErrors, useForm } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
 import { ToastContainer, toast } from 'react-toastify'

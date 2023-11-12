@@ -25,7 +25,7 @@ export const validateDataTask = async (
     // next()
     next()
   } catch (err) {
-    // console.log(err)
+    console.log(err)
     // return NextResponse.json({error: err}, { status: 400 })
     return NextResponse.json(
       {

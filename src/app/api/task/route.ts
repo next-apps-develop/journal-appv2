@@ -7,6 +7,7 @@ import { taskSchema } from '@/schemas/task.schema'
 import { validateDataTask } from '@/middlewares/taskmiddleares'
 import { handler } from '@/middlewares/handler'
 import { addAbortListener } from 'events'
+import { validateJWT } from '@/middlewares/validateJWT'
 
 /**
  * Crete task
@@ -16,13 +17,9 @@ import { addAbortListener } from 'events'
  */
 
 // request, { ...params }, next, payload
-export async function createTask(
-  req: any,
-  {},
-  next: any,
-) {
+export async function createTask(req: any, {}, next: any) {
   await connectDB()
-  const { title, description, userId } = req._body
+  const { title, description, userId, categoryId } = req._body
 
   await taskSchema.validate({ title, description, userId })
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -48,9 +45,9 @@ export async function createTask(
 
   const task = new TaskNextAuthF({
     title,
-    description,
+    description: description || '',
     userId: new mongoose.Types.ObjectId(userId),
-    categoryId: null
+    categoryId: categoryId || null
   })
 
   const taskSaved = await task.save()
@@ -64,7 +61,4 @@ export async function createTask(
   )
 }
 
-
-
-export const POST = handler(validateDataTask, createTask)
-
+export const POST = handler(validateJWT, validateDataTask, createTask)

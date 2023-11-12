@@ -1,24 +1,27 @@
-import { journalAPI } from '@/app/utils/axiosConfig'
 import { useSession } from 'next-auth/react'
-import { Card } from 'primereact/card'
 import React, { useEffect, useRef, useState } from 'react'
 import './index.css'
-import { FiEdit2, FiTrash, FiArrowDownCircle } from 'react-icons/fi'
+import { FiEdit2, FiTrash } from 'react-icons/fi'
 import { RiArrowDownSFill } from 'react-icons/ri'
 import { useTasksStore } from '@/app/store/tasks'
-import { Popper, usePopper } from 'react-popper'
 import { ListBox } from 'primereact/listbox'
+
+import './index.css'
+import ModalTask from './ModalTask'
+import { Task } from '@/app/interfaces/types'
+import { Checkbox } from 'primereact/checkbox'
 
 const Tasks = () => {
   const { data: session, status } = useSession()
-  // const [tasks, settasks] = useState<Task[]>([])
   const fetTasks = useTasksStore((state) => state.fetTasks)
   const taskShowOptions = useTasksStore((state) => state.taskShowOptions)
   const hideShowOptions = useTasksStore((state) => state.hideShowOptions)
+  const tasksSelected = useTasksStore((state) => state.tasksSelected)
   const deleteTask = useTasksStore((state) => state.deleteTask)
+  const chooseTask = useTasksStore((state) => state.chooseTask)
 
   const tasks = useTasksStore((state) => state.tasks)
-  // const [showListBoxLanguages, setshowListBoxLanguages] = useState(false)
+  const [showModalTask, setshowModalTask] = useState(false)
   const ref = useRef(null)
 
   useEffect(() => {
@@ -32,23 +35,17 @@ const Tasks = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  console.log({ tasks })
-
   //const router = useRouter();
 
   useEffect(() => {
     const handleOutSideClick = (event: any) => {
       console.log('entra metodo')
-      // console.log(showListBoxLanguages)
-      // if (showListBoxLanguages) {
       // @ts-ignore
       if (!ref.current?.contains(event.target)) {
         console.log('Outside Clicked. ')
         hideShowOptions()
-        // setshowListBoxLanguages(false)
       }
     }
-    // console.log('first')
 
     window.addEventListener('mousedown', handleOutSideClick)
 
@@ -66,7 +63,6 @@ const Tasks = () => {
     console.log({ option })
     return (
       <div className='flex items-center w-full justify-between'>
-        {/* <CountryTempalte option={option} /> */}
         <div className='mr-4'>{option.name}</div>
         {option.code === 'edit' ? <FiEdit2 /> : <FiTrash />}
       </div>
@@ -84,20 +80,34 @@ const Tasks = () => {
     }
   }
 
+  const handleOpenModalTask = (task: Task) => {
+    console.log('openModal')
+    chooseTask(task)
+    setshowModalTask(true)
+  }
+
   return (
-    <>
-      {tasks.length > 0 && (
+    <div className='tasks-container'>
+      {tasks.length > 0 &&  (
         <>
           {tasks.map((task) => (
             <div className='task-item-container my-4' key={task._id}>
               <div className='task-item flex justify-between items-center relative'>
-                {/* <p>{task.title}</p> */}
-                <p>{task.title.slice(0, 30)}</p>
+                <Checkbox
+                  // onChange={(e) => setChecked(e.checked)}
+                  checked={task.status || false}
+                ></Checkbox>
+                <p
+                  onClick={() => handleOpenModalTask(task)}
+                  className='w-[95%] h-full p-2'
+                >
+                  {task.title ? task.title.slice(0, 30) : ''}
+                </p>
                 <RiArrowDownSFill
                   onClick={() => {
                     taskShowOptions(task._id as string)
-                    // setshowListBoxLanguages(true)
                   }}
+                  className='mr-2'
                 />
 
                 {task.showOptions && (
@@ -123,10 +133,15 @@ const Tasks = () => {
               </div>
             </div>
           ))}
-          <h1>sjsj</h1>
+          {tasksSelected && (
+            <ModalTask
+              showModalTask={showModalTask}
+              setshowModalTask={setshowModalTask}
+            />
+          )}
         </>
       )}
-    </>
+    </div>
   )
 }
 

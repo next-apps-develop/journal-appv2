@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer, toast } from 'react-toastify'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import ButtonGeneral from '../buttonGeneral'
+import ButtonGeneral from '../ButtonGeneral'
 
 const RegisterComponent = () => {
   const [error, seterror] = useState(null)

@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import { signIn, useSession } from 'next-auth/react'
 import './index.css'
-import ButtonGeneral from '@/components/buttonGeneral'
-import FormLogin from './formLoging'
-import RegisterComponent from '../register/register'
+import ButtonGeneral from '@/components/ButtonGeneral'
+import FormLogin from './FormLoging'
+import RegisterComponent from '../register/Register'
 import { useRouter } from 'next/navigation'
 const LoginComponent = () => {
   const [containerActive, setContainerActive] = useState(false)

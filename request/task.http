@@ -6,6 +6,7 @@
 
 POST {{URL}}/api/task
 content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE2OTk3NTA2ODMsImV4cCI6MTY5OTc2NTA4M30.uGkGFG9NPqW57v15tCfLku_mTTzcPzXfJ7MAcy5N5s8
 
 {
     "title": "title task new",
@@ -26,3 +27,14 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRi
 ### DELETE TASK
 DELETE {{URL}}/api/task/654c15f402f591a8aa8432a2
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE2OTk0ODk2OTYsImV4cCI6MTY5OTUwNDA5Nn0.IF6eydse-JuYBk2h52TJI-_nfMbKJE4BBN9zGPuQHoI
+
+### UPDATE TASK
+
+PUT {{URL}}/api/task/655012fbc88d01fb3c1aec01
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE2OTk3NTA2ODMsImV4cCI6MTY5OTc2NTA4M30.uGkGFG9NPqW57v15tCfLku_mTTzcPzXfJ7MAcy5N5s8
+
+{
+    "title": "title task new",
+    "description": "descr task"
+}
