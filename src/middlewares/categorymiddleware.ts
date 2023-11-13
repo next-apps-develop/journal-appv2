@@ -1,9 +1,8 @@
-import { taskSchema } from '@/schemas/task.schema'
-import { userSchema } from '@/schemas/user.schema'
+import { categorySchema } from '@/schemas/category.schema'
 import mongoose from 'mongoose'
 import { NextResponse } from 'next/server'
 
-export const validateDataTask = async (
+export const validateDataCategory = async (
   req: any,
   { params }: any,
   next: any
@@ -11,7 +10,7 @@ export const validateDataTask = async (
   try {
     const body = await req.json()
     console.log(body)
-    await taskSchema.validate(body)
+    await categorySchema.validate(body)
     if (!mongoose.Types.ObjectId.isValid(body.userId)) {
       return NextResponse.json(
         {

@@ -12,10 +12,6 @@ const CategorySchemaNextAuthF = new Schema(
       default: ''
     },
 
-    status: {
-      type: Boolean,
-      default: false
-    },
     icon: {
       type: String,
       default: ''

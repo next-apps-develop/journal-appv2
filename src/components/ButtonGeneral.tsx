@@ -6,13 +6,15 @@ interface ButtonGeneral {
   text: string
   handleClick?: Function
   type?: string
-  severity?: Severity
+  severity?: Severity,
+  icon ?: any
 }
-const ButtonGeneral = ({
+const /*  */ButtonGeneral = ({
   text,
   handleClick,
   type,
-  severity
+  severity, 
+  icon
 }: ButtonGeneral) => {
   const [colorbtn, setcolorbtn] = useState('')
 
@@ -45,11 +47,13 @@ const ButtonGeneral = ({
       <button
         className={`px-4 py-2 border-solid  border-white
     rounded-md text-white uppercase text-base font-medium block m-auto 
+    flex justify-between items-center
     ${colorbtn}
     `}
         onClick={() => (handleClick ? handleClick() : null)}
         type={type as any}
       >
+        {icon}
         {text}
       </button>
     </div>

@@ -1,6 +1,4 @@
 @URL = http://localhost:3000 
-# @URL =  https://rest-server-basic.onrender.com
-
 
 ### CREATE TASK
 

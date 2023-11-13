@@ -8,18 +8,21 @@ import { validateDataTask } from '@/middlewares/taskmiddleares'
 import { handler } from '@/middlewares/handler'
 import { addAbortListener } from 'events'
 import { validateJWT } from '@/middlewares/validateJWT'
+import { validateDataCategory } from '@/middlewares/categorymiddleware'
+import CategoryNextAuthF from '@/models/CategoryAuthF'
+import { categorySchema } from '@/schemas/category.schema'
 
 /**
- * Crete task
+ * Crete category
  * @param req
  * @returns
  *
  */
 
 // request, { ...params }, next, payload
-export async function createTask(req: any, {}, next: any) {
+export async function createCategory(req: any, {}, next: any) {
   await connectDB()
-  const { title, description, userId, categoryId } = req._body
+  const { name, userId, color, icon } = req._body
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return NextResponse.json(
@@ -36,28 +39,27 @@ export async function createTask(req: any, {}, next: any) {
   if (!userFound) {
     return NextResponse.json(
       {
-        msg: 'No user found to insert task!!'
+        msg: 'No user found to insert category!!'
       },
       { status: 400 }
     )
   }
 
-  const task = new TaskNextAuthF({
-    title,
-    description: description || '',
-    userId: new mongoose.Types.ObjectId(userId),
-    categoryId: categoryId || null
+  const category = new CategoryNextAuthF({
+    name,
+    color,
+    icon
   })
 
-  const taskSaved = await task.save()
+  const categorySaved = await category.save()
 
   return NextResponse.json(
     {
       msg: 'ok',
-      task: taskSaved
+      task: categorySaved
     },
     { status: 200 }
   )
 }
 
-export const POST = handler(validateJWT, validateDataTask, createTask)
+export const POST = handler(validateJWT, validateDataCategory, createCategory)

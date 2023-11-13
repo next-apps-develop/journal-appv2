@@ -30,7 +30,8 @@ const ModalTask = ({ showModalTask, setshowModalTask }: modalTask) => {
   const handleUpdateTask = async () => {
     await updateTask(
       { ...tasksSelected, title: taskTitle, description: taskDescription },
-      session
+      session,
+      false
     )
   }
 

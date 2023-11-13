@@ -73,7 +73,7 @@ export async function deleteTask(req: any, { params }: any, next: any) {
 
 export async function updateTask(req: any, { params }: any, next: any) {
   await connectDB()
-  const { title, description } = req._body
+  const { title, description , status} = req._body
   const { id } = params
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json(
@@ -96,9 +96,11 @@ export async function updateTask(req: any, { params }: any, next: any) {
     )
   }
 
+  console.log({status})
   const update = {
     title,
-    description
+    description, 
+    status
   }
 
   console.log({ update })
