@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import { signIn, useSession } from 'next-auth/react'
 import './index.css'
-import ButtonGeneral from '@/components/buttonGeneral'
-import FormLogin from './formLoging'
-import RegisterComponent from '../register/register'
+import ButtonGeneral from '@/components/ButtonGeneral'
+import FormLogin from './FormLoging'
+import RegisterComponent from '../register/Register'
 import { useRouter } from 'next/navigation'
 const LoginComponent = () => {
   const [containerActive, setContainerActive] = useState(false)
@@ -38,6 +38,7 @@ const LoginComponent = () => {
                 className='google-btn flex items-center cursor-pointer mb-8'
                 onClick={async () => await signIn('google')}
               >
+                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src='https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg'
                   alt=''

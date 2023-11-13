@@ -1,40 +1,21 @@
 'use client'
 import { useSession } from 'next-auth/react'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './index.css'
-import { AppContext } from '@/context/app.context'
-import Tasks from '@/components/tasks/tasks'
+import Tasks from '@/components/tasks/Tasks'
+import { FiPlus } from 'react-icons/fi'
+import { useTasksStore } from '../store/tasks'
+import { Button } from 'primereact/button'
+import ButtonGeneral from '@/components/ButtonGeneral'
+import { Dialog } from 'primereact/dialog'
+import ModalNewCategory from '@/components/category/ModalNewCategory'
+import CreateTaskInput from '@/components/tasks/CreateTaskInput'
+import { useTask } from '@/hooks/useTask'
 
 const DashboardPage = () => {
   const { data: session, status } = useSession()
-  const { showMenu, setshowMenu } = useContext(AppContext) as any
-  const [screenSize, setScreenSize] = useState(getCurrentDimension())
-
-  function getCurrentDimension() {
-    if (typeof window !== 'undefined') {
-      // Client-side-only code
-      return {
-        width: window.innerWidth,
-        height: window.innerHeight
-      }
-    }
-  }
-
-  useEffect(() => {
-    const updateDimension = () => {
-      setScreenSize(getCurrentDimension())
-    }
-    window.addEventListener('resize', updateDimension)
-
-    if (screenSize && screenSize!.width <= 1000) {
-      setshowMenu(false)
-    } else {
-      setshowMenu(true)
-    }
-    return () => {
-      window.removeEventListener('resize', updateDimension)
-    }
-  }, [screenSize])
+  const createTask = useTasksStore((state) => state.createTask)
+  const [showModalNewCategory, setshowModalNewCategory] = useState(false)
 
   useEffect(() => {
     // @ts-ignore
@@ -44,24 +25,41 @@ const DashboardPage = () => {
   // console.log(screenSize)
 
   console.log({ SESION_: session })
+  const { handleChangeTitle, titleTask, handleClickAddTask } = useTask()
+
   return (
     <div className='dashboard-main-cotainer bg-gray-040 flex'>
-      <div
-        className={`lateral-menu ${
-          showMenu ? 'active' : ''
-        }  max-w-[430px] h-[calc(100vh_-_4.5rem)] flex items-center justify-center`}
-      >
-        <div className='h-[90%] w-[90%]'>
+      <div className={`tasks-main-container flex justify-center w-full`}>
+        <div className='min-w-[400px]'>
+          <div className='input-container flex items-center relative'>
+            <CreateTaskInput
+              handleChangeTitle={handleChangeTitle}
+              titleTask={titleTask}
+              handleClickAdd={handleClickAddTask}
+            />
+          </div>
           <Tasks />
-        </div>
-      </div>
 
-      <div
-        className={`content-dashboard ${
-          showMenu ? 'active' : ''
-        } w-full px-4 py-8 h-[calc(100vh_-_4.5rem)] `}
-      >
-        <h1>jsjs</h1>
+          <Button
+            label='Add category'
+            className='bg-white p-2  mx-auto rounded-3xl flex flex-row-reverse'
+            onClick={() => setshowModalNewCategory(true)}
+          >
+            <FiPlus />
+          </Button>
+
+          <Dialog
+            header={'new Category'}
+            visible={showModalNewCategory}
+            style={{ width: '50vw' }}
+            onHide={() => setshowModalNewCategory(false)}
+            draggable={false}
+            resizable={false}
+            className='modal-category'
+          >
+            <ModalNewCategory />
+          </Dialog>
+        </div>
       </div>
     </div>
   )

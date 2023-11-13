@@ -1,4 +1,17 @@
-.menu-card {
+.dashboard-main-cotainer {
+  background-image: linear-gradient(
+    to top,
+    #051937,
+    #032255,
+    #132972,
+    #302d8e,
+    #512da8
+  );
+  height: 92.2vh;
+}
+
+
+/* .menu-card {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.02), 0 0 2px rgba(0, 0, 0, 0.05),
     0 1px 4px rgba(0, 0, 0, 0.08) !important;
   border-radius: 12px;
@@ -16,10 +29,22 @@
   transform: translateX(0%);
   width: 100%;
   opacity: 1;
-}
+} */
 
 .content-dashboard {
   transition: all 0.6s ease-in-out;
   width: 100vw !important;
   max-width: 100%;
+}
+
+.modal-category .p-dialog-content {
+  background-image: linear-gradient(
+    to bottom,
+    #051937,
+    #032255,
+    #132972,
+    #302d8e,
+    #512da8
+  );
+  background-color: red !important;
 }

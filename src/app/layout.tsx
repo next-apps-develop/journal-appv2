@@ -1,9 +1,10 @@
-import Navbar from '@/components/navbar'
+import Navbar from '@/components/Navbar'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter, Montserrat } from 'next/font/google'
 import Providers from './Providers'
-import "primereact/resources/themes/lara-light-indigo/theme.css";
+import 'primereact/resources/themes/lara-light-indigo/theme.css'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {

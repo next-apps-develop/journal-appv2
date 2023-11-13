@@ -12,10 +12,19 @@ input[type='password'] {
   padding: 0.5rem;
   color: #000;
   border-radius: 5px;
-  margin-bottom: 1rem;
 }
 
 input::placeholder {
   color: #8087b3;
   opacity: 1; /* Firefox */
+}
+
+.input-container .icon-plus {
+  color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
