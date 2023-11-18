@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import './index.css'
 import Tasks from '@/components/tasks/Tasks'
 import { FiPlus } from 'react-icons/fi'
-import { useTasksStore } from '../store/tasks'
+import { useTasksStore } from '../store/useTasks'
 import { Button } from 'primereact/button'
 import ButtonGeneral from '@/components/ButtonGeneral'
 import { Dialog } from 'primereact/dialog'
@@ -22,9 +22,7 @@ const DashboardPage = () => {
     localStorage.setItem('token', session?.user?.token)
   }, [session])
 
-  // console.log(screenSize)
 
-  console.log({ SESION_: session })
   const { handleChangeTitle, titleTask, handleClickAddTask } = useTask()
 
   return (

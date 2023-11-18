@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { InputText } from 'primereact/inputtext'
@@ -8,16 +8,24 @@ import StepColorCategory from './StepColorCategory'
 import StepIconCategory from './StepIconCategory'
 import CreateTaskInput from '../tasks/CreateTaskInput'
 import { useTask } from '@/hooks/useTask'
+import { useCategoryStore } from '@/app/store/useCategory'
+import StepTasks from './StepTasks'
+import { useSession } from 'next-auth/react'
 
 const ModalNewCategory = () => {
   const [nameCategory, setnameCategory] = useState('')
   const [activeIndex, setactiveIndex] = useState(0)
+  const { data: session, status } = useSession()
+
   const {
     handleChangeTitle,
     titleTask,
     handleClickAddTaskCategory,
     tasksFromCategory
   } = useTask()
+  const setNewCategory = useCategoryStore((state) => state.setNewCategory)
+  const newCategoryState = useCategoryStore((state) => state.newCategoryState)
+  const createCategory = useCategoryStore((state) => state.createCategory)
 
   const SwiperButtonNext = ({ children }: any) => {
     const swiper = useSwiper()
@@ -57,8 +65,14 @@ const ModalNewCategory = () => {
     </div>
   )
 
-  console.log({ titleTask })
-  console.log({ tasksFromCategory })
+  useEffect(() => {
+    setNewCategory({ name: nameCategory })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameCategory])
+
+  const handleSaveNewCategory = async () => {
+    await createCategory(newCategoryState, session)
+  }
 
   return (
     <>
@@ -72,26 +86,76 @@ const ModalNewCategory = () => {
           }}
           onSwiper={(swiper1) => console.log({ swiper1 })}
         >
-          <SwiperSlide key={'1'}>{stepNameCategory()}</SwiperSlide>
+          <SwiperSlide key={'1'}>
+            {stepNameCategory()}
+
+            <div className='buttons-section flex justify-end'>
+              <SwiperButtonNext>
+                <ButtonGeneral
+                  text='Next'
+                  icon={<FaChevronRight />}
+                  severity='info'
+                  disabled={newCategoryState.name === ''}
+                />
+              </SwiperButtonNext>
+            </div>
+          </SwiperSlide>
           <SwiperSlide key={'2'}>
             <StepColorCategory />
+            <div className='buttons-section flex justify-between'>
+              <SwiperButtonPrev>
+                <ButtonGeneral
+                  text='Back'
+                  icon={<FaChevronLeft />}
+                  severity='warning'
+                />
+              </SwiperButtonPrev>
+              <SwiperButtonNext>
+                <ButtonGeneral
+                  text='Next'
+                  icon={<FaChevronRight />}
+                  severity='info'
+                  disabled={
+                    newCategoryState.color && newCategoryState.color !== ''
+                      ? false
+                      : true
+                  }
+                />
+              </SwiperButtonNext>
+            </div>
           </SwiperSlide>
 
           <SwiperSlide key={'3'}>
             <StepIconCategory />
-          </SwiperSlide>
-
-          <SwiperSlide key={'4'}>
-            <div className='input-container mt-4 relative flex'>
-              <CreateTaskInput
-                handleChangeTitle={handleChangeTitle}
-                titleTask={titleTask}
-                handleClickAdd={handleClickAddTaskCategory}
-              />
+            <div className='buttons-section flex justify-between'>
+              <SwiperButtonPrev>
+                <ButtonGeneral
+                  text='Back'
+                  icon={<FaChevronLeft />}
+                  severity='warning'
+                />
+              </SwiperButtonPrev>
+              <SwiperButtonNext>
+                <ButtonGeneral
+                  text='Next'
+                  icon={<FaChevronRight />}
+                  severity='info'
+                  disabled={
+                    newCategoryState.icon && newCategoryState.icon !== ''
+                      ? false
+                      : true
+                  }
+                />
+              </SwiperButtonNext>
             </div>
           </SwiperSlide>
 
-          <div
+          <SwiperSlide key={'3'}>
+            <StepTasks />
+            <ButtonGeneral text='Finish' handleClick={handleSaveNewCategory} />
+          </SwiperSlide>
+
+          {/* <div
             className={`buttons-prev-next flex justify-between ${
               activeIndex === 0 ? '!justify-end' : ''
             }`}
@@ -112,6 +176,7 @@ const ModalNewCategory = () => {
                   text='Next'
                   icon={<FaChevronRight />}
                   severity='info'
+                  disabled={!isNextStepEnable}
                 />
               </SwiperButtonNext>
             )}
@@ -121,16 +186,8 @@ const ModalNewCategory = () => {
                 <ButtonGeneral text='Finish' />
               </div>
             )}
-          </div>
+          </div> */}
         </Swiper>
-      </div>
-      <div className='info-container-project m-8'>
-        <div className='title'>
-          {/* <h2 className='main-title'>{selectedProject?.info?.mainTitle}</h2>
-          <h3 className='secondary-title'>
-            {selectedProject?.info?.secondaryTitle}
-          </h3> */}
-        </div>
       </div>
     </>
   )

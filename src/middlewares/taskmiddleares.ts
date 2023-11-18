@@ -10,7 +10,6 @@ export const validateDataTask = async (
 ) => {
   try {
     const body = await req.json()
-    console.log(body)
     await taskSchema.validate(body)
     if (!mongoose.Types.ObjectId.isValid(body.userId)) {
       return NextResponse.json(

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { InputTextarea } from 'primereact/inputtextarea'
-import { useTasksStore } from '@/app/store/tasks'
+import { useTasksStore } from '@/app/store/useTasks'
 import { InputText } from 'primereact/inputtext'
 import ButtonGeneral from '../ButtonGeneral'
 import { useSession } from 'next-auth/react'
@@ -25,7 +25,6 @@ const ModalTask = ({ showModalTask, setshowModalTask }: modalTask) => {
     settaskDescription(tasksSelected.description || '')
   }, [tasksSelected])
 
-  console.log({ tasksSelected })
 
   const handleUpdateTask = async () => {
     await updateTask(

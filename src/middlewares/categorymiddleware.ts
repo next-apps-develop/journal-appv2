@@ -9,7 +9,6 @@ export const validateDataCategory = async (
 ) => {
   try {
     const body = await req.json()
-    console.log(body)
     await categorySchema.validate(body)
     if (!mongoose.Types.ObjectId.isValid(body.userId)) {
       return NextResponse.json(

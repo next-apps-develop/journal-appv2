@@ -15,6 +15,8 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
+ 
 ### dashboard model
 https://sakai.primereact.org/
+
+<!-- TODO Custom page not founfd 404 on routes not defined -->

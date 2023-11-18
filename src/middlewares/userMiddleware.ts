@@ -9,7 +9,6 @@ export const validateBodyUser = async (
   try {
     // console.log(req.json())
     const body = await req.json()
-    console.log({ body })
     await userSchema.validate(body)
     // next({ payload: { body } })
     req._body = body

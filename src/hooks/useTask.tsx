@@ -1,5 +1,5 @@
 import { Task } from '@/app/interfaces/types'
-import { useTasksStore } from '@/app/store/tasks'
+import { useTasksStore } from '@/app/store/useTasks'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 
@@ -15,12 +15,12 @@ export const useTask = () => {
   }
 
   const handleChangeTitle = (e: any) => {
+    console.log('first::', e.target.value)
     settitleTask(e.target.value)
   }
 
   // TODO verify type of e parameter on react ts
   const handleClickAddTaskCategory = (e: any) => {
-    console.log('value::', titleTask)
     settasksFromCategory((prev) => [...prev, { title: titleTask }])
   }
 

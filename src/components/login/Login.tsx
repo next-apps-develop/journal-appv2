@@ -14,13 +14,11 @@ const LoginComponent = () => {
   const router = useRouter()
 
   const handleSignInSignOut = () => {
-    console.log('first')
     setContainerActive((prev) => !prev)
   }
 
   useEffect(() => {
     if (session) {
-      console.log('session exist')
       router.push('/dashboard')}
   }, [router, session])
 

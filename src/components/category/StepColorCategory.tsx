@@ -1,10 +1,13 @@
+import { useCategoryStore } from '@/app/store/useCategory'
 import React, { useEffect, useState } from 'react'
-import {FiCheck} from 'react-icons/fi'
+import { FiCheck } from 'react-icons/fi'
+interface Color {
+  code: string
+  selected: boolean
+}
 const StepColorCategory = () => {
-  interface Color {
-    code: string
-    selected: boolean
-  }
+  const setNewCategory = useCategoryStore((state) => state.setNewCategory)
+  const newCategoryState = useCategoryStore((state) => state.newCategoryState)
 
   const [colors, setcolors] = useState<Color[]>([
     { code: '#ADBCA5', selected: false },
@@ -20,10 +23,7 @@ const StepColorCategory = () => {
     selected: false
   })
 
-  // useEffect(()=>{
-
-  // }, [colors])
-  console.log({ colors })
+  console.log({ newCategoryState })
   return (
     <div className='mt-4'>
       <label htmlFor='name' className='text-white '>
@@ -45,7 +45,9 @@ const StepColorCategory = () => {
                     return { ...colorPrev, selected: false }
                   })
                 )
-                setcolorSelected(color)
+                setNewCategory({ ...newCategoryState, color: color.code })
+                // setNewCategory()
+                // setcolorSelected(color)
               }}
             ></div>
             {color.selected && (
@@ -56,7 +58,7 @@ const StepColorCategory = () => {
             '
               >
                 <div className='icon'>
-                  <FiCheck className= 'text-white text-3xl' />
+                  <FiCheck className='text-white text-3xl' />
                 </div>
               </div>
             )}

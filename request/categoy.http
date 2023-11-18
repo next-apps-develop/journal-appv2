@@ -1,12 +1,15 @@
 @URL = http://localhost:3000 
 
-### CREATE TASK
+### CREATE CATEGORY
 
 POST {{URL}}/api/category
 content-type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE2OTk4MDQ1NzIsImV4cCI6MTY5OTgxODk3Mn0.FgKqlKqURkZxul745bsX5-Nn2frbAyxVxAKJRTWJArE
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE3MDAyNTg2NjMsImV4cCI6MTcwMDI3MzA2M30.7jchzYWsDcDgLTMCqS_hOeEiHKMZbnW53SpRqEtCTzs
 
 {
     "name": "category name",
-    "userId": "652dee4e6df4bc244222db6a"
+    "userId": "652dee4e6df4bc244222db6a",
+    "icon": "folder",
+    "color": "#12344",
+    "tasks": [{"title":"aas", "userId":"sfdew"}]
 }

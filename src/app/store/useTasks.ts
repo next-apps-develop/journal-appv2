@@ -84,7 +84,6 @@ export const useTasksStore = create<State>((set, get) => {
           }
         )
 
-        console.log({ res })
         set({ tasks: [...tasks, res.data.task] })
         set({ tasksTodo: [...tasksTodo, res.data.task] })
       } catch (error) {
@@ -128,7 +127,6 @@ export const useTasksStore = create<State>((set, get) => {
       }
     },
     updateTask: async (taskCurrent: Task, session, isChangeCheck) => {
-      console.log({ taskCurrent })
       const { tasks, tasksCompleted, tasksTodo } = get()
       try {
         const res = await journalAPI.put(

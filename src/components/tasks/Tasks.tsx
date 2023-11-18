@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import './index.css'
 import { FiEdit2, FiTrash } from 'react-icons/fi'
 import { RiArrowDownSFill } from 'react-icons/ri'
-import { useTasksStore } from '@/app/store/tasks'
+import { useTasksStore } from '@/app/store/useTasks'
 import { ListBox } from 'primereact/listbox'
 
 import './index.css'
@@ -32,7 +32,6 @@ const Tasks = () => {
       await fetTasks(session)
     }
     if (session?.user) {
-      console.log({ SESSION: session })
       getTasksUser()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,10 +41,10 @@ const Tasks = () => {
 
   useEffect(() => {
     const handleOutSideClick = (event: any) => {
-      console.log('entra metodo')
+      // console.log('entra metodo')
       // @ts-ignore
       if (!ref.current?.contains(event.target)) {
-        console.log('Outside Clicked. ')
+        // console.log('Outside Clicked. ')
         hideShowOptions()
       }
     }
@@ -63,7 +62,6 @@ const Tasks = () => {
   ]
 
   const optionsTemplate = (option: any) => {
-    console.log({ option })
     return (
       <div className='flex items-center w-full justify-between'>
         <div className='mr-4'>{option.name}</div>
@@ -76,7 +74,6 @@ const Tasks = () => {
     value: any,
     taskId: string | undefined
   ) => {
-    console.log(value)
 
     if (value.code === 'delete' && taskId) {
       await deleteTask(taskId, session)
@@ -84,13 +81,11 @@ const Tasks = () => {
   }
 
   const handleOpenModalTask = (task: Task) => {
-    console.log('openModal')
     chooseTask(task)
     setshowModalTask(true)
   }
 
   const handleChangeStatusTask = async (task: Task) => {
-    console.log({ task })
     await updateTask({ ...task, status: !task.status }, session, true)
   }
 
@@ -101,6 +96,7 @@ const Tasks = () => {
           // onChange={(e) => setChecked(e.checked)}
           onChange={() => handleChangeStatusTask(task)}
           checked={task.status || false}
+          className='ml-2'
         ></Checkbox>
         <p
           onClick={() => handleOpenModalTask(task)}
@@ -110,7 +106,6 @@ const Tasks = () => {
         </p>
         <RiArrowDownSFill
           onClick={() => {
-            console.log('first')
             taskShowOptions(task._id as string)
           }}
           className='mr-2'
@@ -140,8 +135,6 @@ const Tasks = () => {
     </div>
   )
 
-  console.log({ tasksCompleted })
-  console.log({ tasksTodo })
   return (
     <div className='tasks-container'>
       {tasks.length > 0 && (

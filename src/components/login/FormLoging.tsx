@@ -32,7 +32,6 @@ const FormLogin = ({}) => {
   })
 
   const notify = () => {
-    console.log({ errorNot: error })
     toast(error)
     toast.onChange((v) => {
       if (v.status === 'removed') {

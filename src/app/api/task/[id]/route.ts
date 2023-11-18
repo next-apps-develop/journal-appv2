@@ -96,14 +96,11 @@ export async function updateTask(req: any, { params }: any, next: any) {
     )
   }
 
-  console.log({status})
   const update = {
     title,
     description, 
     status
   }
-
-  console.log({ update })
 
   const updateTask = await TaskNextAuthF.findOneAndUpdate(
     { _id: id },
