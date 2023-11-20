@@ -11,6 +11,7 @@ import { useTask } from '@/hooks/useTask'
 import { useCategoryStore } from '@/app/store/useCategory'
 import StepTasks from './StepTasks'
 import { useSession } from 'next-auth/react'
+import { Category, Task } from '@/app/interfaces/types'
 
 const ModalNewCategory = () => {
   const [nameCategory, setnameCategory] = useState('')
@@ -71,7 +72,19 @@ const ModalNewCategory = () => {
   }, [nameCategory])
 
   const handleSaveNewCategory = async () => {
-    await createCategory(newCategoryState, session)
+    let listTasks: Array<Task> = []
+    // @ts-ignore
+    let payload: Category = { ...newCategoryState, userId: session?.user?._id }
+    if (newCategoryState.tasks && newCategoryState.tasks.length > 0) {
+      listTasks = newCategoryState.tasks
+      payload = {
+        ...newCategoryState,
+        // @ts-ignore
+        userId: session?.user?._id,
+        tasks: listTasks
+      }
+    }
+    await createCategory(payload, session)
   }
 
   return (

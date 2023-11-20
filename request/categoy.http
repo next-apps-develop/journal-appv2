@@ -1,3 +1,4 @@
+
 @URL = http://localhost:3000 
 
 ### CREATE CATEGORY
@@ -10,6 +11,5 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRi
     "name": "category name",
     "userId": "652dee4e6df4bc244222db6a",
     "icon": "folder",
-    "color": "#12344",
-    "tasks": [{"title":"aas", "userId":"sfdew"}]
+    "color": "#12344"
 }

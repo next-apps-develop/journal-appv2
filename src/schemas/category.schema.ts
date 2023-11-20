@@ -6,7 +6,7 @@ export const categorySchema = object({
   userId: string().required(),
   color: string().required().max(30),
   icon: string().required().max(30),
-  tasks: array().of(taskSchema).required()
+  tasks: array().of(taskSchema)
 })
 
 export type Task = InferType<typeof categorySchema>

@@ -18,7 +18,7 @@ const CategorySchemaNextAuthF = new Schema(
     },
     userId: {
       type: mongoose.Types.ObjectId
-    },
+    }
   },
   {
     timestamps: true

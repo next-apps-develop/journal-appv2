@@ -1,12 +1,15 @@
 import { Task } from '@/app/interfaces/types'
+import { useCategoryStore } from '@/app/store/useCategory'
 import { useTasksStore } from '@/app/store/useTasks'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const useTask = () => {
   const [titleTask, settitleTask] = useState('')
   const [tasksFromCategory, settasksFromCategory] = useState<Task[]>([])
   const { data: session } = useSession()
+  const setNewCategory = useCategoryStore((state) => state.setNewCategory)
+  const newCategoryState = useCategoryStore((state) => state.newCategoryState)
 
   const createTask = useTasksStore((state) => state.createTask)
 
@@ -21,8 +24,16 @@ export const useTask = () => {
 
   // TODO verify type of e parameter on react ts
   const handleClickAddTaskCategory = (e: any) => {
-    settasksFromCategory((prev) => [...prev, { title: titleTask }])
+    settasksFromCategory((prev) => [
+      ...prev,
+      // @ts-ignore
+      { title: titleTask, userId: session?.user?._id }
+    ])
   }
+
+  useEffect(() => {
+    setNewCategory({ ...newCategoryState, tasks: tasksFromCategory })
+  }, [tasksFromCategory])
 
   return {
     tasksFromCategory,

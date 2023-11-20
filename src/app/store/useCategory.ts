@@ -24,6 +24,7 @@ export const useCategoryStore = create<State>((set, get) => {
     isNextStepEnable: false,
     createCategory: async (category: Category, session) => {
       console.log(category)
+
       const res = await journalAPI.post(`/category`, category, {
         headers: {
           Authorization: session?.user.token || ''
