@@ -3,6 +3,7 @@ import { IconType } from 'react-icons'
 import { FiHome, FiBook, FiMail, FiPhone, FiFolder } from 'react-icons/fi'
 import './category.css'
 import { useCategoryStore } from '@/app/store/useCategory'
+import { useShallow } from 'zustand/react/shallow'
 
 const SteIconCategory = () => {
   interface Icon {
@@ -25,10 +26,9 @@ const SteIconCategory = () => {
     icon: null
   })
 
-  const setNewCategory = useCategoryStore((state) => state.setNewCategory)
-  const newCategoryState = useCategoryStore((state) => state.newCategoryState)
+  const setNewCategory = useCategoryStore(useShallow((state) => state.setNewCategory))
+  const newCategoryState = useCategoryStore(useShallow((state) => state.newCategoryState))
 
-  console.log({ icons })
   return (
     <div className='mt-4'>
       <label htmlFor='name' className='text-white '>
@@ -52,7 +52,6 @@ const SteIconCategory = () => {
                     return { ...icon, selected: false }
                   })
                 )
-                console.log("---", iconItem)
                 setNewCategory({ ...newCategoryState, icon: iconItem.code })
                 // seticonSelected(icon)
               }}

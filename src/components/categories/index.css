@@ -1,0 +1,13 @@
+.categories-main-container {
+  max-height: 80%;
+  overflow-y: auto;
+  width: 300px;
+  cursor: pointer;
+}
+
+.categories-container .category-item {
+  background-color: white;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 10px;
+}

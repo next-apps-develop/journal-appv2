@@ -10,26 +10,27 @@ import './index.css'
 import ModalTask from './ModalTask'
 import { Task } from '@/app/interfaces/types'
 import { Checkbox } from 'primereact/checkbox'
+import { useShallow } from 'zustand/react/shallow'
 
 const Tasks = () => {
-  const { data: session, status } = useSession()
-  const fetTasks = useTasksStore((state) => state.fetTasks)
-  const taskShowOptions = useTasksStore((state) => state.taskShowOptions)
-  const hideShowOptions = useTasksStore((state) => state.hideShowOptions)
-  const tasksSelected = useTasksStore((state) => state.tasksSelected)
-  const deleteTask = useTasksStore((state) => state.deleteTask)
-  const chooseTask = useTasksStore((state) => state.chooseTask)
-  const updateTask = useTasksStore((state) => state.updateTask)
+  const { data: session } = useSession()
+  const fetchTasks = useTasksStore(useShallow((state) => state.fetchTasks))
+  const taskShowOptions = useTasksStore(useShallow((state) => state.taskShowOptions))
+  const hideShowOptions = useTasksStore(useShallow((state) => state.hideShowOptions))
+  const tasksSelected = useTasksStore(useShallow((state) => state.tasksSelected))
+  const deleteTask = useTasksStore(useShallow((state) => state.deleteTask))
+  const chooseTask = useTasksStore(useShallow((state) => state.chooseTask))
+  const updateTask = useTasksStore(useShallow((state) => state.updateTask))
 
-  const tasks = useTasksStore((state) => state.tasks)
-  const tasksCompleted = useTasksStore((state) => state.tasksCompleted)
-  const tasksTodo = useTasksStore((state) => state.tasksTodo)
+  const tasks = useTasksStore(useShallow((state) => state.tasks))
+  const tasksCompleted = useTasksStore(useShallow((state) => state.tasksCompleted))
+  const tasksTodo = useTasksStore(useShallow((state) => state.tasksTodo))
   const [showModalTask, setshowModalTask] = useState(false)
   const ref = useRef(null)
 
   useEffect(() => {
     const getTasksUser = async () => {
-      await fetTasks(session)
+      await fetchTasks(session)
     }
     if (session?.user) {
       getTasksUser()
@@ -74,7 +75,6 @@ const Tasks = () => {
     value: any,
     taskId: string | undefined
   ) => {
-
     if (value.code === 'delete' && taskId) {
       await deleteTask(taskId, session)
     }

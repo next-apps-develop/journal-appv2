@@ -2,7 +2,10 @@ import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
 export const validateJWT = async (req: any, { params }: any, next: any) => {
-  //   console.log(token)
+  // if (req && req.json()) {
+  //   const body = await req.json()
+  // }
+
   const headersList = headers()
   const token = headersList.get('Authorization')
 

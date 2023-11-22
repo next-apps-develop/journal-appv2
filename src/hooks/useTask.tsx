@@ -3,15 +3,20 @@ import { useCategoryStore } from '@/app/store/useCategory'
 import { useTasksStore } from '@/app/store/useTasks'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
 export const useTask = () => {
   const [titleTask, settitleTask] = useState('')
   const [tasksFromCategory, settasksFromCategory] = useState<Task[]>([])
   const { data: session } = useSession()
-  const setNewCategory = useCategoryStore((state) => state.setNewCategory)
-  const newCategoryState = useCategoryStore((state) => state.newCategoryState)
+  const setNewCategory = useCategoryStore(
+    useShallow((state) => state.setNewCategory)
+  )
+  const newCategoryState = useCategoryStore(
+    useShallow((state) => state.newCategoryState)
+  )
 
-  const createTask = useTasksStore((state) => state.createTask)
+  const createTask = useTasksStore(useShallow((state) => state.createTask))
 
   const handleClickAddTask = async () => {
     await createTask({ title: titleTask }, session)

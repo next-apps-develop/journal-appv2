@@ -11,10 +11,12 @@ import { Dialog } from 'primereact/dialog'
 import ModalNewCategory from '@/components/category/ModalNewCategory'
 import CreateTaskInput from '@/components/tasks/CreateTaskInput'
 import { useTask } from '@/hooks/useTask'
+import Categories from '@/components/categories/Categories'
+import { useShallow } from 'zustand/react/shallow'
 
 const DashboardPage = () => {
-  const { data: session, status } = useSession()
-  const createTask = useTasksStore((state) => state.createTask)
+  const { data: session } = useSession()
+  const createTask = useTasksStore(useShallow((state) => state.createTask))
   const [showModalNewCategory, setshowModalNewCategory] = useState(false)
 
   useEffect(() => {
@@ -22,12 +24,15 @@ const DashboardPage = () => {
     localStorage.setItem('token', session?.user?.token)
   }, [session])
 
-
   const { handleChangeTitle, titleTask, handleClickAddTask } = useTask()
 
   return (
     <div className='dashboard-main-cotainer bg-gray-040 flex'>
       <div className={`tasks-main-container flex justify-center w-full`}>
+        <div className='categories-main-container'>
+          <Categories />
+        </div>
+
         <div className='min-w-[400px]'>
           <div className='input-container flex items-center relative'>
             <CreateTaskInput

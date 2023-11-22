@@ -7,7 +7,7 @@ interface State {
   tasksCompleted: Task[]
   tasksTodo: Task[]
   chooseTask: (task: Task) => void
-  fetTasks: (session: any) => Promise<void>
+  fetchTasks: (session: any) => Promise<void>
   createTask: (task: Task, session: any) => Promise<void>
   taskShowOptions: (taskId: string) => void
   hideShowOptions: () => void
@@ -17,6 +17,7 @@ interface State {
     session: any,
     isChangeCheck: boolean
   ) => Promise<void>
+  changeTasksByCategory: (id: string, session: any) => Promise<void>
 }
 
 export const useTasksStore = create<State>((set, get) => {
@@ -25,12 +26,16 @@ export const useTasksStore = create<State>((set, get) => {
     tasksSelected: {},
     tasksCompleted: [],
     tasksTodo: [],
-    fetTasks: async (session) => {
-      const res = await journalAPI.get(`/task/byUser`, {
-        headers: {
-          Authorization: session?.user.token || ''
+    fetchTasks: async (session) => {
+      const res = await journalAPI.post(
+        `/task/query`,
+        { category: '' },
+        {
+          headers: {
+            Authorization: session?.user.token || ''
+          }
         }
-      })
+      )
 
       if (res.data && res.data.tasks) {
         set({
@@ -42,7 +47,6 @@ export const useTasksStore = create<State>((set, get) => {
             (task: Task) => task.status === false
           )
         })
-        // settasks(res.data.tasks)
       }
     },
     taskShowOptions: (taskId: string) => {
@@ -218,6 +222,31 @@ export const useTasksStore = create<State>((set, get) => {
     },
     chooseTask: (task: Task) => {
       set({ tasksSelected: task })
+    },
+    changeTasksByCategory: async (id: string, session) => {
+      const res = await journalAPI.post(
+        `/task/query`,
+        { categoryId: id },
+        {
+          headers: {
+            Authorization: session?.user.token || ''
+          }
+        }
+      )
+
+      console.log({res})
+      if (res.data && res.data.tasks) {
+        set({
+          tasks: res.data.tasks,
+          tasksCompleted: res.data.tasks.filter(
+            (task: Task) => task.status === true
+          ),
+          tasksTodo: res.data.tasks.filter(
+            (task: Task) => task.status === false
+          )
+        })
+        // settasks(res.data.tasks)
+      }
     }
   }
 })

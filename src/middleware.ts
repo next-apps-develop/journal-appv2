@@ -10,7 +10,7 @@ import { headers } from 'next/headers'
 // validate protected routes as dashboard route
 export default withAuth(
   function middleware(req) {
-    console.log(req.nextauth.token)
+    // console.log(req.nextauth.token)
   },
   {
     callbacks: {
