@@ -8,6 +8,7 @@ interface State {
   setNewCategory: (category: Category) => void
   isNextStepEnable: boolean
   createCategory: (category: Category, session: any) => Promise<void>
+  fetchCategories: (session: any) => Promise<void>
 }
 
 export const useCategoryStore = create<State>((set, get) => {
@@ -17,19 +18,29 @@ export const useCategoryStore = create<State>((set, get) => {
     newCategoryState: { name: '', color: 'aaa' },
     setNewCategory: (category) => {
       // TODO Consultar anidamiento
-      const { newCategoryState } = get()
       set({ newCategoryState: { ...category } })
-      //   set({ isNextStepEnable: category.name !== '' })
     },
     isNextStepEnable: false,
     createCategory: async (category: Category, session) => {
-      console.log(category)
 
       const res = await journalAPI.post(`/category`, category, {
         headers: {
           Authorization: session?.user.token || ''
         }
       })
+    },
+    fetchCategories: async (session) => {
+      const res = await journalAPI.get(`/category`, {
+        headers: {
+          Authorization: session?.user.token || ''
+        }
+      })
+
+      if (res.data && res.data.categories) {
+        set({
+          categories: res.data.categories
+        })
+      }
     }
   }
 })

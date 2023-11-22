@@ -6,6 +6,7 @@ import { useTasksStore } from '@/app/store/useTasks'
 import { InputText } from 'primereact/inputtext'
 import ButtonGeneral from '../ButtonGeneral'
 import { useSession } from 'next-auth/react'
+import { useShallow } from 'zustand/react/shallow'
 
 interface modalTask {
   showModalTask: boolean
@@ -13,8 +14,8 @@ interface modalTask {
 }
 
 const ModalTask = ({ showModalTask, setshowModalTask }: modalTask) => {
-  const tasksSelected = useTasksStore((state) => state.tasksSelected)
-  const updateTask = useTasksStore((state) => state.updateTask)
+  const tasksSelected = useTasksStore(useShallow((state) => state.tasksSelected))
+  const updateTask = useTasksStore(useShallow((state) => state.updateTask))
 
   const [taskTitle, settaskTitle] = useState('')
   const [taskDescription, settaskDescription] = useState('')

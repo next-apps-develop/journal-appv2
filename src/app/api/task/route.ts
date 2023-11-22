@@ -20,7 +20,7 @@ import { validateJWT } from '@/middlewares/validateJWT'
 export async function createTask(req: any, {}, next: any) {
   await connectDB()
 
-  console.log("createTask ", req._body)
+  console.log('TASK :: CREATE', req._body)
   const { title, description, userId, categoryId } = req._body
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {

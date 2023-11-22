@@ -12,6 +12,7 @@ import { useCategoryStore } from '@/app/store/useCategory'
 import StepTasks from './StepTasks'
 import { useSession } from 'next-auth/react'
 import { Category, Task } from '@/app/interfaces/types'
+import { useShallow } from 'zustand/react/shallow'
 
 const ModalNewCategory = () => {
   const [nameCategory, setnameCategory] = useState('')
@@ -24,9 +25,9 @@ const ModalNewCategory = () => {
     handleClickAddTaskCategory,
     tasksFromCategory
   } = useTask()
-  const setNewCategory = useCategoryStore((state) => state.setNewCategory)
-  const newCategoryState = useCategoryStore((state) => state.newCategoryState)
-  const createCategory = useCategoryStore((state) => state.createCategory)
+  const setNewCategory = useCategoryStore(useShallow((state) => state.setNewCategory))
+  const newCategoryState = useCategoryStore(useShallow((state) => state.newCategoryState))
+  const createCategory = useCategoryStore(useShallow((state) => state.createCategory))
 
   const SwiperButtonNext = ({ children }: any) => {
     const swiper = useSwiper()
@@ -163,7 +164,7 @@ const ModalNewCategory = () => {
             </div>
           </SwiperSlide>
 
-          <SwiperSlide key={'3'}>
+          <SwiperSlide key={'4'}>
             <StepTasks />
             <ButtonGeneral text='Finish' handleClick={handleSaveNewCategory} />
           </SwiperSlide>

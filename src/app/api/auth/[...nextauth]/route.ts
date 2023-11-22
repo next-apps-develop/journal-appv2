@@ -61,9 +61,13 @@ const handler = NextAuth({
       if (user) token.user = user
       return token
     },
-    session({ session, token }) {
+    async session({ session, token }) {
       session.user = token.user as any
-      return session
+      console.log({ session })
+      // @ts-ignore
+      let token2 = await generateJWT(session.user._id)
+      // session.token=  await generateJWT(userFound._id)
+      return { ...session, user: {...session.user, token:token2}}
     }
   },
   pages: {
