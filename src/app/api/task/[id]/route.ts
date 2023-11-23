@@ -35,10 +35,9 @@ export async function findTaskById(request: any, { params }: any) {
     { status: 200 }
   )
 }
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteTask(req: any, { params }: any, next: any) {
   await connectDB()
-  // const { title, description, userId } = req._body
   const { id } = params
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json(
@@ -70,7 +69,7 @@ export async function deleteTask(req: any, { params }: any, next: any) {
     { status: 200 }
   )
 }
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function updateTask(req: any, { params }: any, next: any) {
   await connectDB()
   const { title, description , status} = req._body

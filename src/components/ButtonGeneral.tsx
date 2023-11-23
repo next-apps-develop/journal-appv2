@@ -4,7 +4,7 @@ type Severity = 'danger' | 'success' | 'warning' | 'info'
 
 interface ButtonGeneral {
   text: string
-  handleClick?: Function
+  handleClick?: any
   type?: string
   severity?: Severity
   icon?: any

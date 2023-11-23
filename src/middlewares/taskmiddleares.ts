@@ -1,10 +1,10 @@
 import { taskSchema } from '@/schemas/task.schema'
-import { userSchema } from '@/schemas/user.schema'
 import mongoose from 'mongoose'
 import { NextResponse } from 'next/server'
 
 export const validateDataTask = async (
   req: any,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   { params }: any,
   next: any
 ) => {

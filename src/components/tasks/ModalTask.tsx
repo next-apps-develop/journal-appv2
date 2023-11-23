@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { InputTextarea } from 'primereact/inputtextarea'
 import { useTasksStore } from '@/app/store/useTasks'
@@ -10,22 +9,23 @@ import { useShallow } from 'zustand/react/shallow'
 
 interface modalTask {
   showModalTask: boolean
-  setshowModalTask: Function
+  setshowModalTask: any
 }
 
 const ModalTask = ({ showModalTask, setshowModalTask }: modalTask) => {
-  const tasksSelected = useTasksStore(useShallow((state) => state.tasksSelected))
+  const tasksSelected = useTasksStore(
+    useShallow((state) => state.tasksSelected)
+  )
   const updateTask = useTasksStore(useShallow((state) => state.updateTask))
 
   const [taskTitle, settaskTitle] = useState('')
   const [taskDescription, settaskDescription] = useState('')
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
 
   useEffect(() => {
     settaskTitle(tasksSelected.title || '')
     settaskDescription(tasksSelected.description || '')
   }, [tasksSelected])
-
 
   const handleUpdateTask = async () => {
     await updateTask(

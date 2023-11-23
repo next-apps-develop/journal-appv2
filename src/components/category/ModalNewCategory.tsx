@@ -6,8 +6,6 @@ import 'swiper/css'
 import ButtonGeneral from '../ButtonGeneral'
 import StepColorCategory from './StepColorCategory'
 import StepIconCategory from './StepIconCategory'
-import CreateTaskInput from '../tasks/CreateTaskInput'
-import { useTask } from '@/hooks/useTask'
 import { useCategoryStore } from '@/app/store/useCategory'
 import StepTasks from './StepTasks'
 import { useSession } from 'next-auth/react'
@@ -16,18 +14,18 @@ import { useShallow } from 'zustand/react/shallow'
 
 const ModalNewCategory = () => {
   const [nameCategory, setnameCategory] = useState('')
-  const [activeIndex, setactiveIndex] = useState(0)
-  const { data: session, status } = useSession()
+  // const [activeIndex, setactiveIndex] = useState(0)
+  const { data: session } = useSession()
 
-  const {
-    handleChangeTitle,
-    titleTask,
-    handleClickAddTaskCategory,
-    tasksFromCategory
-  } = useTask()
-  const setNewCategory = useCategoryStore(useShallow((state) => state.setNewCategory))
-  const newCategoryState = useCategoryStore(useShallow((state) => state.newCategoryState))
-  const createCategory = useCategoryStore(useShallow((state) => state.createCategory))
+  const setNewCategory = useCategoryStore(
+    useShallow((state) => state.setNewCategory)
+  )
+  const newCategoryState = useCategoryStore(
+    useShallow((state) => state.newCategoryState)
+  )
+  const createCategory = useCategoryStore(
+    useShallow((state) => state.createCategory)
+  )
 
   const SwiperButtonNext = ({ children }: any) => {
     const swiper = useSwiper()
@@ -96,7 +94,7 @@ const ModalNewCategory = () => {
           slidesPerView={1}
           onSlideChange={(e) => {
             console.log({ e })
-            setactiveIndex(e.activeIndex)
+            // setactiveIndex(e.activeIndex)
           }}
           onSwiper={(swiper1) => console.log({ swiper1 })}
         >
@@ -168,39 +166,6 @@ const ModalNewCategory = () => {
             <StepTasks />
             <ButtonGeneral text='Finish' handleClick={handleSaveNewCategory} />
           </SwiperSlide>
-
-          {/* <div
-            className={`buttons-prev-next flex justify-between ${
-              activeIndex === 0 ? '!justify-end' : ''
-            }`}
-          >
-            {activeIndex > 0 && (
-              <SwiperButtonPrev>
-                <ButtonGeneral
-                  text='Back'
-                  icon={<FaChevronLeft />}
-                  severity='warning'
-                />
-              </SwiperButtonPrev>
-            )}
-
-            {activeIndex < 3 && (
-              <SwiperButtonNext>
-                <ButtonGeneral
-                  text='Next'
-                  icon={<FaChevronRight />}
-                  severity='info'
-                  disabled={!isNextStepEnable}
-                />
-              </SwiperButtonNext>
-            )}
-
-            {activeIndex === 3 && (
-              <div className='mt-4'>
-                <ButtonGeneral text='Finish' />
-              </div>
-            )}
-          </div> */}
         </Swiper>
       </div>
     </>

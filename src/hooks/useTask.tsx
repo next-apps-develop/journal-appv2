@@ -16,10 +16,17 @@ export const useTask = () => {
     useShallow((state) => state.newCategoryState)
   )
 
+  const categorySelected = useCategoryStore(
+    useShallow((state) => state.categorySelected)
+  )
+
   const createTask = useTasksStore(useShallow((state) => state.createTask))
 
   const handleClickAddTask = async () => {
-    await createTask({ title: titleTask }, session)
+    await createTask(
+      { title: titleTask, categoryId: categorySelected._id },
+      session
+    )
   }
 
   const handleChangeTitle = (e: any) => {
@@ -28,7 +35,7 @@ export const useTask = () => {
   }
 
   // TODO verify type of e parameter on react ts
-  const handleClickAddTaskCategory = (e: any) => {
+  const handleClickAddTaskCategory = () => {
     settasksFromCategory((prev) => [
       ...prev,
       // @ts-ignore
@@ -38,6 +45,8 @@ export const useTask = () => {
 
   useEffect(() => {
     setNewCategory({ ...newCategoryState, tasks: tasksFromCategory })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasksFromCategory])
 
   return {

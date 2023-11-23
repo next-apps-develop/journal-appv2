@@ -50,7 +50,7 @@ export const useTasksStore = create<State>((set, get) => {
       }
     },
     taskShowOptions: (taskId: string) => {
-      const { tasks, tasksCompleted, tasksTodo } = get()
+      const { tasksCompleted, tasksTodo } = get()
       const tasksCompletedAux = tasksCompleted.map((task: Task) => {
         if (task._id === taskId) {
           return { ...task, showOptions: true }
@@ -234,7 +234,7 @@ export const useTasksStore = create<State>((set, get) => {
         }
       )
 
-      console.log({res})
+      console.log({ res })
       if (res.data && res.data.tasks) {
         set({
           tasks: res.data.tasks,

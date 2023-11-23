@@ -3,10 +3,8 @@ import UserNextAuthF from '../../../models/UserNextAuthF'
 import mongoose from 'mongoose'
 import { NextResponse } from 'next/server'
 import { connectDB } from '@/libs/mongodb'
-import { taskSchema } from '@/schemas/task.schema'
 import { validateDataTask } from '@/middlewares/taskmiddleares'
 import { handler } from '@/middlewares/handler'
-import { addAbortListener } from 'events'
 import { validateJWT } from '@/middlewares/validateJWT'
 
 /**
@@ -16,8 +14,8 @@ import { validateJWT } from '@/middlewares/validateJWT'
  *
  */
 
-// request, { ...params }, next, payload
-export async function createTask(req: any, {}, next: any) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function createTask(req: any, {params}: any, next: any) {
   await connectDB()
 
   console.log('TASK :: CREATE', req._body)

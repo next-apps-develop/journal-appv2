@@ -7,7 +7,7 @@ const UserSchemaNextAuthF = new Schema(
       unique: true,
       required: [true, 'email is required'],
       match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
         'Email is not valid'
       ]
     },

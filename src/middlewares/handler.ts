@@ -12,7 +12,6 @@ export const handler =
   (...middleware: Middleware[]) =>
   async (request: Request, { ...params }) => {
     let result
-    let payload
 
     for (let i = 0; i < middleware.length; i++) {
       let nextInvoked = false
@@ -21,7 +20,6 @@ export const handler =
         nextInvoked = true
       }
 
-      //   console.log(request.json())
       // @ts-ignore
       result = await middleware[i](request, { ...params }, next)
 

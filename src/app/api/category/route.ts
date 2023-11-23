@@ -6,7 +6,6 @@ import { handler } from '@/middlewares/handler'
 import { validateJWT } from '@/middlewares/validateJWT'
 import { validateDataCategory } from '@/middlewares/categorymiddleware'
 import CategoryNextAuthF from '@/models/CategoryAuthF'
-import { createTask } from '../task/route'
 import TaskNextAuthF from '@/models/TaskNextAuthF'
 
 /**
@@ -15,8 +14,8 @@ import TaskNextAuthF from '@/models/TaskNextAuthF'
  * @returns
  *
  */
-
-export async function createCategory(req: any, {}, next: any) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function createCategory(req: any, { params }: any, next: any) {
   await connectDB()
   const { name, userId, color, icon, tasks } = req._body
 
@@ -73,7 +72,8 @@ export async function createCategory(req: any, {}, next: any) {
   )
 }
 
-export async function getCategories(req: any, {}, next: any) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function getCategories(req: any, { params }: any, next: any) {
   await connectDB()
 
   const categories = await CategoryNextAuthF.find({ userId: req.uid })

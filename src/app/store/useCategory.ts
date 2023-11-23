@@ -9,6 +9,7 @@ interface State {
   isNextStepEnable: boolean
   createCategory: (category: Category, session: any) => Promise<void>
   fetchCategories: (session: any) => Promise<void>
+  chooseCategory: (category: Category) => void
 }
 
 export const useCategoryStore = create<State>((set, get) => {
@@ -22,8 +23,7 @@ export const useCategoryStore = create<State>((set, get) => {
     },
     isNextStepEnable: false,
     createCategory: async (category: Category, session) => {
-
-      const res = await journalAPI.post(`/category`, category, {
+      await journalAPI.post(`/category`, category, {
         headers: {
           Authorization: session?.user.token || ''
         }
@@ -41,6 +41,12 @@ export const useCategoryStore = create<State>((set, get) => {
           categories: res.data.categories
         })
       }
+    },
+
+    chooseCategory: (category: Category) => {
+      set({
+        categorySelected: Object.keys(category).length > 0 ? category : {}
+      })
     }
   }
 })

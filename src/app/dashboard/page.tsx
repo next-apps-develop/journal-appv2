@@ -4,19 +4,15 @@ import React, { useEffect, useState } from 'react'
 import './index.css'
 import Tasks from '@/components/tasks/Tasks'
 import { FiPlus } from 'react-icons/fi'
-import { useTasksStore } from '../store/useTasks'
 import { Button } from 'primereact/button'
-import ButtonGeneral from '@/components/ButtonGeneral'
 import { Dialog } from 'primereact/dialog'
 import ModalNewCategory from '@/components/category/ModalNewCategory'
 import CreateTaskInput from '@/components/tasks/CreateTaskInput'
 import { useTask } from '@/hooks/useTask'
 import Categories from '@/components/categories/Categories'
-import { useShallow } from 'zustand/react/shallow'
 
 const DashboardPage = () => {
   const { data: session } = useSession()
-  const createTask = useTasksStore(useShallow((state) => state.createTask))
   const [showModalNewCategory, setshowModalNewCategory] = useState(false)
 
   useEffect(() => {

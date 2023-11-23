@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { IconType } from 'react-icons'
+import React, { useState } from 'react'
 import { FiHome, FiBook, FiMail, FiPhone, FiFolder } from 'react-icons/fi'
 import './category.css'
 import { useCategoryStore } from '@/app/store/useCategory'
@@ -20,14 +19,12 @@ const SteIconCategory = () => {
     { icon: <FiHome />, selected: false, code: 'home' }
   ])
 
-  const [iconSelected, seticonSelected] = useState<Icon>({
-    code: '',
-    selected: false,
-    icon: null
-  })
-
-  const setNewCategory = useCategoryStore(useShallow((state) => state.setNewCategory))
-  const newCategoryState = useCategoryStore(useShallow((state) => state.newCategoryState))
+  const setNewCategory = useCategoryStore(
+    useShallow((state) => state.setNewCategory)
+  )
+  const newCategoryState = useCategoryStore(
+    useShallow((state) => state.newCategoryState)
+  )
 
   return (
     <div className='mt-4'>
@@ -53,7 +50,6 @@ const SteIconCategory = () => {
                   })
                 )
                 setNewCategory({ ...newCategoryState, icon: iconItem.code })
-                // seticonSelected(icon)
               }}
             >
               {iconItem.icon}

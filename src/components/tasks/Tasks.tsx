@@ -11,20 +11,32 @@ import ModalTask from './ModalTask'
 import { Task } from '@/app/interfaces/types'
 import { Checkbox } from 'primereact/checkbox'
 import { useShallow } from 'zustand/react/shallow'
+import { useCategoryStore } from '@/app/store/useCategory'
 
 const Tasks = () => {
   const { data: session } = useSession()
   const fetchTasks = useTasksStore(useShallow((state) => state.fetchTasks))
-  const taskShowOptions = useTasksStore(useShallow((state) => state.taskShowOptions))
-  const hideShowOptions = useTasksStore(useShallow((state) => state.hideShowOptions))
-  const tasksSelected = useTasksStore(useShallow((state) => state.tasksSelected))
+  const taskShowOptions = useTasksStore(
+    useShallow((state) => state.taskShowOptions)
+  )
+  const hideShowOptions = useTasksStore(
+    useShallow((state) => state.hideShowOptions)
+  )
+  const tasksSelected = useTasksStore(
+    useShallow((state) => state.tasksSelected)
+  )
   const deleteTask = useTasksStore(useShallow((state) => state.deleteTask))
   const chooseTask = useTasksStore(useShallow((state) => state.chooseTask))
   const updateTask = useTasksStore(useShallow((state) => state.updateTask))
 
   const tasks = useTasksStore(useShallow((state) => state.tasks))
-  const tasksCompleted = useTasksStore(useShallow((state) => state.tasksCompleted))
+  const tasksCompleted = useTasksStore(
+    useShallow((state) => state.tasksCompleted)
+  )
   const tasksTodo = useTasksStore(useShallow((state) => state.tasksTodo))
+  const categorySelected = useCategoryStore(
+    useShallow((state) => state.categorySelected)
+  )
   const [showModalTask, setshowModalTask] = useState(false)
   const ref = useRef(null)
 
@@ -37,8 +49,6 @@ const Tasks = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
-
-  //const router = useRouter();
 
   useEffect(() => {
     const handleOutSideClick = (event: any) => {
@@ -57,7 +67,7 @@ const Tasks = () => {
     }
   }, [ref, hideShowOptions])
 
-  const countries = [
+  const options = [
     { name: 'Edit', code: 'edit' },
     { name: 'Delete', code: 'delete' }
   ]
@@ -122,7 +132,7 @@ const Tasks = () => {
                 onChange={(e) => {
                   handleClickSingleOption(e.value, task._id)
                 }}
-                options={countries}
+                options={options}
                 optionLabel='name'
                 itemTemplate={optionsTemplate}
                 className='w-full md:w-14rem'
@@ -139,7 +149,9 @@ const Tasks = () => {
     <div className='tasks-container'>
       {tasks.length > 0 && (
         <div className='mt-4'>
-          <h3 className='text-white'>Uncategorized</h3>
+          <h3 className='text-white'>
+            {categorySelected?.name || 'Uncategorized'}
+          </h3>
           {tasksTodo.map((task) => functionalityTasktoUser(task))}
 
           {tasksCompleted.length > 0 && (

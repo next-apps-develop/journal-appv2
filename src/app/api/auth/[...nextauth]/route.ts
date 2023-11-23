@@ -31,6 +31,7 @@ const handler = NextAuth({
           placeholder: '****'
         }
       },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       async authorize(credentials, req) {
         await connectDB()
         const userFound = await UserNextAuthF.findOne({
@@ -57,6 +58,7 @@ const handler = NextAuth({
     })
   ],
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     jwt({ account, token, user, profile, session }) {
       if (user) token.user = user
       return token
@@ -65,9 +67,9 @@ const handler = NextAuth({
       session.user = token.user as any
       console.log({ session })
       // @ts-ignore
-      let token2 = await generateJWT(session.user._id)
+      const token2 = await generateJWT(session.user._id)
       // session.token=  await generateJWT(userFound._id)
-      return { ...session, user: {...session.user, token:token2}}
+      return { ...session, user: { ...session.user, token: token2 } }
     }
   },
   pages: {

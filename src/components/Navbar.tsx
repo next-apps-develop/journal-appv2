@@ -1,16 +1,12 @@
 'use client'
-import { AppContext } from '@/context/app.context'
-import { signIn, signOut, useSession } from 'next-auth/react'
-import Image from 'next/image'
+import {  signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import React, { useContext } from 'react'
-import { FiMenu } from 'react-icons/fi'
+import React from 'react'
 import ButtonGeneral from './ButtonGeneral'
 import { useRouter } from 'next/navigation'
 
 const Navbar = () => {
   const { data: session } = useSession()
-  // const { setshowMenu } = useContext(AppContext) as any
   const router = useRouter()
 
   console.log({ session })
@@ -22,9 +18,7 @@ const Navbar = () => {
             <Link href={'/'}>
               <h1>Journal APP</h1>
             </Link>
-            {/* <div onClick={() => setshowMenu((prev: boolean) => !prev)}>
-              <FiMenu className='text-white cursor-pointer text-xl' />
-            </div> */}
+            
             <ButtonGeneral
               text='Log out'
               severity='warning'
@@ -35,7 +29,6 @@ const Navbar = () => {
               }}
             />
           </div>
-          {/* <RiMenuLine/> */}
         </nav>
       )}
     </>

@@ -2,8 +2,8 @@ import { connectDB } from '@/libs/mongodb'
 import { handler } from '@/middlewares/handler'
 import { validateJWT } from '@/middlewares/validateJWT'
 import TaskNextAuthF from '@/models/TaskNextAuthF'
-import mongoose from 'mongoose'
 import { NextResponse } from 'next/server'
+
 /**
  * Find task by user id
  * @param req

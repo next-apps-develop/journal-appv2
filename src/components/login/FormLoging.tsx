@@ -1,28 +1,20 @@
-import React, { FormEventHandler, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ButtonGeneral from '../ButtonGeneral'
-import { FieldErrors, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
 import { ToastContainer, toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 
-const FormLogin = ({}) => {
+const FormLogin = () => {
   const [error, seterror] = useState(null)
   const router = useRouter()
-
-  const handleSignIn = async () => {
-    try {
-      await signIn('google')
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
-    setValue,
+    // watch,
+    // setValue,
     reset
   } = useForm({
     // defaultValues: {
@@ -48,7 +40,7 @@ const FormLogin = ({}) => {
   useEffect(() => {
     reset()
   }, [reset])
-  
+
   const onSubmit = handleSubmit(async (data) => {
     const { email, password } = data
     const resSignIn = await signIn('credentials', {
@@ -75,7 +67,6 @@ const FormLogin = ({}) => {
         <input
           type='email'
           placeholder='someemail@gmail.com'
-          // className='bg-zinc-800 px-4 py-2 block mb-2 w-full text-white'
           autoComplete='off'
           {...register('email', {
             required: {
@@ -83,7 +74,7 @@ const FormLogin = ({}) => {
               message: 'Email is required'
             },
             pattern: {
-              value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+              value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
               message: 'email is not valid'
             }
           })}
@@ -118,14 +109,6 @@ const FormLogin = ({}) => {
         )}
 
         <ButtonGeneral text='Log In' />
-        {/* <button
-        type='button'
-        className='bg-indigo-500 px-4 py-2 w-full mt-3'
-        onClick={async () => await signIn('google')}
-      >
-        Sign in with Google
-      </button> */}
-        {/* {/* <pre>{JSON.stringify(watch(), null, 2)}</pre> */}
       </form>
     </>
   )

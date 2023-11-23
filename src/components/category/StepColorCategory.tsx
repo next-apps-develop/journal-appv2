@@ -1,5 +1,5 @@
 import { useCategoryStore } from '@/app/store/useCategory'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FiCheck } from 'react-icons/fi'
 import { useShallow } from 'zustand/react/shallow'
 interface Color {
@@ -7,8 +7,12 @@ interface Color {
   selected: boolean
 }
 const StepColorCategory = () => {
-  const setNewCategory = useCategoryStore(useShallow((state) => state.setNewCategory))
-  const newCategoryState = useCategoryStore(useShallow((state) => state.newCategoryState))
+  const setNewCategory = useCategoryStore(
+    useShallow((state) => state.setNewCategory)
+  )
+  const newCategoryState = useCategoryStore(
+    useShallow((state) => state.newCategoryState)
+  )
 
   const [colors, setcolors] = useState<Color[]>([
     { code: '#ADBCA5', selected: false },
@@ -18,11 +22,6 @@ const StepColorCategory = () => {
     { code: '#FF9F1C', selected: false },
     { code: '#34623F', selected: false }
   ])
-
-  const [colorSelected, setcolorSelected] = useState<Color>({
-    code: '',
-    selected: false
-  })
 
   return (
     <div className='mt-4'>
