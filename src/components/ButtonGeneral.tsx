@@ -48,7 +48,7 @@ const /*  */ ButtonGeneral = ({
       <div>
         <button
           className={`px-4 py-2 border-solid  border-white
-    rounded-md text-white uppercase text-base font-medium  m-auto 
+    rounded-md  uppercase text-base font-medium  m-auto 
     flex justify-between items-center
     ${colorbtn}
     ${disabled ? 'bg-gray-400' : ''}
