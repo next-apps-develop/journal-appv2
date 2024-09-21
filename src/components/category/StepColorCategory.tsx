@@ -1,5 +1,5 @@
 import { useCategoryStore } from '@/app/store/useCategory'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FiCheck } from 'react-icons/fi'
 import { useShallow } from 'zustand/react/shallow'
 interface Color {
@@ -8,10 +8,10 @@ interface Color {
 }
 const StepColorCategory = () => {
   const setNewCategory = useCategoryStore(
-    useShallow((state) => state.setNewCategory)
+    useShallow(state => state.setNewCategory)
   )
   const newCategoryState = useCategoryStore(
-    useShallow((state) => state.newCategoryState)
+    useShallow(state => state.newCategoryState)
   )
 
   const [colors, setcolors] = useState<Color[]>([
@@ -20,23 +20,25 @@ const StepColorCategory = () => {
     { code: '#D33F49', selected: false },
     { code: '#D17B0F', selected: false },
     { code: '#FF9F1C', selected: false },
-    { code: '#34623F', selected: false }
+    { code: '#34623F', selected: false },
   ])
 
+  
+  
   return (
-    <div className='mt-4'>
-      <label htmlFor='name' className='text-white '>
+    <div className="mt-4">
+      <label htmlFor="name" className="text-white ">
         Color
       </label>
 
-      <div className='colors-container flex justify-between'>
+      <div className="colors-container flex flex-wrap  justify-between w-full">
         {colors.map((color, index) => (
-          <div className='color-item m-4 relative' key={index}>
+          <div className="flex w-1/2 sm:w-1/3 justify-center items-center mt-4" key={index}>
             <div
-              className={`h-24 w-16 rounded-lg cursor-pointer`}
+              className={`h-24 rounded-lg w-16 cursor-pointer`}
               style={{ backgroundColor: color.code }}
               onClick={() => {
-                setcolors((colorsPrev) =>
+                setcolors(colorsPrev =>
                   colorsPrev.map((colorPrev: Color) => {
                     if (colorPrev.code === color.code) {
                       return { ...colorPrev, selected: true }
@@ -48,19 +50,18 @@ const StepColorCategory = () => {
                 // setNewCategory()
                 // setcolorSelected(color)
               }}
-            ></div>
-            {color.selected && (
-              <div
-                className='color-selected-icon absolute top-0  left-0 m-auto 
-            flex justify-center items-center h-full w-full
-            
-            '
-              >
-                <div className='icon'>
-                  <FiCheck className='text-white text-3xl' />
+            >
+              {color.selected && (
+                <div
+                  className="color-selected-icon  top-0  left-0 m-auto 
+                  flex justify-center items-center h-full w-full"
+                >
+                  <div className="icon">
+                    <FiCheck className="text-white text-3xl" />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         ))}
       </div>

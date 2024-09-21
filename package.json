@@ -16,6 +16,7 @@
     "mongoose": "^7.5.4",
     "next": "13.5.4",
     "next-auth": "^4.23.2",
+    "prettier": "^3.3.3",
     "primereact": "^10.0.9",
     "react": "^18",
     "react-dom": "^18",

@@ -16,32 +16,32 @@ const SteIconCategory = () => {
     { icon: <FiMail />, selected: false, code: 'mail' },
     { icon: <FiPhone />, selected: false, code: 'phone' },
     { icon: <FiBook />, selected: false, code: 'book' },
-    { icon: <FiHome />, selected: false, code: 'home' }
+    { icon: <FiHome />, selected: false, code: 'home' },
   ])
 
   const setNewCategory = useCategoryStore(
-    useShallow((state) => state.setNewCategory)
+    useShallow(state => state.setNewCategory)
   )
   const newCategoryState = useCategoryStore(
-    useShallow((state) => state.newCategoryState)
+    useShallow(state => state.newCategoryState)
   )
 
   return (
-    <div className='mt-4'>
-      <label htmlFor='name' className='text-white '>
+    <div className="mt-4">
+      <label htmlFor="name" className="text-white ">
         Icon
       </label>
 
-      <div className='icons-container flex justify-between'>
+      <div className="icons-container flex flex-wrap justify-between">
         {icons.map((iconItem, index) => (
-          <div className=' m-4' key={index}>
+          <div className="w-1/2 sm:w-1/3 flex justify-center mt-4" key={index}>
             <div
               className={`icon-item bg-gray-300 h-24 w-16 rounded-lg cursor-pointer
               flex justify-center items-center text-xl 
               ${iconItem.selected ? 'active' : ''}
               `}
               onClick={() => {
-                seticons((iconsPrev) =>
+                seticons(iconsPrev =>
                   iconsPrev.map((icon: Icon) => {
                     if (icon.code === iconItem.code) {
                       return { ...icon, selected: true }

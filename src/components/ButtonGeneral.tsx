@@ -10,58 +10,63 @@ interface ButtonGeneral {
   icon?: any
   disabled?: boolean
 }
-const /*  */ ButtonGeneral = ({
-    text,
-    handleClick,
-    type,
-    severity,
-    icon,
-    disabled = false
-  }: ButtonGeneral) => {
-    const [colorbtn, setcolorbtn] = useState('')
+const ButtonGeneral = ({
+  text,
+  handleClick,
+  type,
+  severity,
+  icon,
+  disabled = false,
+}: ButtonGeneral) => {
 
-    useEffect(() => {
-      switch (severity) {
-        case 'danger':
-          setcolorbtn('bg-red-500')
-          break
+  const [colorbtn, setcolorbtn] = useState('')
 
-        case 'success':
-          setcolorbtn('bg-green-cool-vivid-200')
-          break
+  useEffect(() => {
+    switch (severity) {
+      case 'danger':
+        console.log('entra ')
+        setcolorbtn('bg-red-500')
+        break
 
-        case 'warning':
-          setcolorbtn('bg-yellow-200')
-          break
+      case 'success':
+        console.log('entra ')
+        setcolorbtn('bg-green-cool-vivid-200')
+        break
 
-        case 'info':
-          setcolorbtn('bg-blue-500')
-          break
+      case 'warning':
+        console.log('entra ')
+        setcolorbtn('bg-yellow-200')
+        break
 
-        default:
-          setcolorbtn('bg-primary')
-          break
-      }
-    }, [severity])
+      case 'info':
+        console.log('entra ')
+        setcolorbtn('bg-blue-500')
+        break
 
-    return (
-      <div>
-        <button
-          className={`px-4 py-2 border-solid  border-white
+      default:
+        setcolorbtn('bg-primary')
+        break
+    }
+  }, [severity])
+
+  return (
+    <div>
+      <button
+        className={`px-4 py-2 border-solid  border-white
     rounded-md  uppercase text-base font-medium  m-auto 
     flex justify-between items-center
     ${colorbtn}
     ${disabled ? 'bg-gray-400' : ''}
     `}
-          onClick={() => (handleClick ? handleClick() : null)}
-          type={type as any}
-          disabled={disabled}
-        >
-          {icon}
-          {text}
-        </button>
-      </div>
-    )
-  }
+        onClick={() => (handleClick ? handleClick() : null)}
+        type={type as any}
+        disabled={disabled}
+      >
+        {icon}
+        {text}
+      </button>
+    </div>
+  )
+}
 
 export default ButtonGeneral

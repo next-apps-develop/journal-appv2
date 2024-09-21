@@ -20,3 +20,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 https://sakai.primereact.org/
 
 <!-- TODO Custom page not founfd 404 on routes not defined -->
+
+## git config
+
+git config --global user.email "henry_gustavo18@hotmail.com"
+git config --global user.name "henryGustav"
+
+### mongo db cuenta en google henrygustavo1892@gmail.com
