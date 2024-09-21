@@ -19,7 +19,8 @@
     "formulahendry.auto-rename-tag",
     "mikestead.dotenv",
     "dracula-theme.theme-dracula",
-    "Gruntfuggly.todo-tree"
+    "Gruntfuggly.todo-tree",
+    "humao.rest-client"
   ],
   "postCreateCommand": "yarn install",
   "remoteUser": "node",

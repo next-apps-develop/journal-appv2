@@ -87,5 +87,7 @@ export async function getCategories(req: any, { params }: any, next: any) {
   )
 }
 
+
+
 export const POST = handler(validateJWT, validateDataCategory, createCategory)
 export const GET = handler(validateJWT, getCategories)
