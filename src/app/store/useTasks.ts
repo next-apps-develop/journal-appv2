@@ -3,14 +3,12 @@ import { Task } from '../interfaces/types'
 import { journalAPI } from '../utils/axiosConfig'
 interface State {
   tasks: Task[]
-  tasksSelected: Task
+  taskSelected: Task
   tasksCompleted: Task[]
   tasksTodo: Task[]
   chooseTask: (task: Task) => void
   fetchTasks: (session: any) => Promise<void>
   createTask: (task: Task, session: any) => Promise<void>
-  taskShowOptions: (taskId: string) => void
-  hideShowOptions: () => void
   deleteTask: (taskId: string, session: any) => Promise<void>
   updateTask: (
     task: Task,
@@ -23,17 +21,17 @@ interface State {
 export const useTasksStore = create<State>((set, get) => {
   return {
     tasks: [],
-    tasksSelected: {},
+    taskSelected: {},
     tasksCompleted: [],
     tasksTodo: [],
-    fetchTasks: async (session) => {
+    fetchTasks: async session => {
       const res = await journalAPI.post(
         `/task/query`,
         { category: '' },
         {
           headers: {
-            Authorization: session?.user.token || ''
-          }
+            Authorization: session?.user.token || '',
+          },
         }
       )
 
@@ -45,29 +43,11 @@ export const useTasksStore = create<State>((set, get) => {
           ),
           tasksTodo: res.data.tasks.filter(
             (task: Task) => task.status === false
-          )
+          ),
         })
       }
     },
-    taskShowOptions: (taskId: string) => {
-      const { tasksCompleted, tasksTodo } = get()
-      const tasksCompletedAux = tasksCompleted.map((task: Task) => {
-        if (task._id === taskId) {
-          return { ...task, showOptions: true }
-        } else {
-          return { ...task, showOptions: false }
-        }
-      })
 
-      const tasksTodoAux = tasksTodo.map((task: Task) => {
-        if (task._id === taskId) {
-          return { ...task, showOptions: true }
-        } else {
-          return { ...task, showOptions: false }
-        }
-      })
-      set({ tasksCompleted: tasksCompletedAux, tasksTodo: tasksTodoAux })
-    },
     createTask: async (task: Task, session) => {
       try {
         const { tasks, tasksTodo } = get()
@@ -79,12 +59,12 @@ export const useTasksStore = create<State>((set, get) => {
             title: task.title,
             description: task.description,
             categoryId: task.categoryId,
-            status: false
+            status: false,
           },
           {
             headers: {
-              Authorization: session?.user.token || ''
-            }
+              Authorization: session?.user.token || '',
+            },
           }
         )
 
@@ -95,36 +75,20 @@ export const useTasksStore = create<State>((set, get) => {
       }
     },
 
-    hideShowOptions: () => {
-      const { tasksCompleted, tasksTodo } = get()
-
-      set({
-        tasksCompleted: tasksCompleted.map((task) => ({
-          ...task,
-          showOptions: false
-        }))
-      })
-      set({
-        tasksTodo: tasksTodo.map((task) => ({
-          ...task,
-          showOptions: false
-        }))
-      })
-    },
     deleteTask: async (taskId: string, session) => {
       const { tasksCompleted, tasksTodo } = get()
       try {
         const res = await journalAPI.delete(`/task/${taskId}`, {
           headers: {
-            Authorization: session?.user.token || ''
-          }
+            Authorization: session?.user.token || '',
+          },
         })
 
         if (res && res.data.msg === 'ok') {
           set({
-            tasksCompleted: tasksCompleted.filter((task) => task._id !== taskId)
+            tasksCompleted: tasksCompleted.filter(task => task._id !== taskId),
           })
-          set({ tasksTodo: tasksTodo.filter((task) => task._id !== taskId) })
+          set({ tasksTodo: tasksTodo.filter(task => task._id !== taskId) })
         }
       } catch (error) {
         console.log(error)
@@ -140,12 +104,12 @@ export const useTasksStore = create<State>((set, get) => {
             title: taskCurrent.title,
             description: taskCurrent.description,
             categoryId: taskCurrent.categoryId,
-            status: taskCurrent.status
+            status: taskCurrent.status,
           },
           {
             headers: {
-              Authorization: session?.user.token || ''
-            }
+              Authorization: session?.user.token || '',
+            },
           }
         )
 
@@ -157,12 +121,12 @@ export const useTasksStore = create<State>((set, get) => {
                   ...task,
                   title: res.data.task.title,
                   description: res.data.task.description,
-                  status: res.data.task.status
+                  status: res.data.task.status,
                 }
               } else {
                 return { ...task }
               }
-            })
+            }),
           })
           // if task is on todo tasks
           if (res.data.task.status) {
@@ -173,12 +137,12 @@ export const useTasksStore = create<State>((set, get) => {
                     ...task,
                     title: res.data.task.title,
                     description: res.data.task.description,
-                    status: res.data.task.status
+                    status: res.data.task.status,
                   }
                 } else {
                   return { ...task }
                 }
-              })
+              }),
             })
           } else {
             set({
@@ -188,12 +152,12 @@ export const useTasksStore = create<State>((set, get) => {
                     ...task,
                     title: res.data.task.title,
                     description: res.data.task.description,
-                    status: res.data.task.status
+                    status: res.data.task.status,
                   }
                 } else {
                   return { ...task }
                 }
-              })
+              }),
             })
           }
 
@@ -204,14 +168,14 @@ export const useTasksStore = create<State>((set, get) => {
                 tasksTodo: tasksTodo.filter(
                   (task: Task) => task._id !== taskCurrent._id
                 ),
-                tasksCompleted: [res.data.task, ...tasksCompleted]
+                tasksCompleted: [res.data.task, ...tasksCompleted],
               })
             } else {
               set({
                 tasksCompleted: tasksCompleted.filter(
                   (task: Task) => task._id !== taskCurrent._id
                 ),
-                tasksTodo: [...tasksTodo, res.data.task]
+                tasksTodo: [...tasksTodo, res.data.task],
               })
             }
           }
@@ -221,7 +185,7 @@ export const useTasksStore = create<State>((set, get) => {
       }
     },
     chooseTask: (task: Task) => {
-      set({ tasksSelected: task })
+      set({ taskSelected: task })
     },
     changeTasksByCategory: async (id: string, session) => {
       const res = await journalAPI.post(
@@ -229,12 +193,11 @@ export const useTasksStore = create<State>((set, get) => {
         { categoryId: id },
         {
           headers: {
-            Authorization: session?.user.token || ''
-          }
+            Authorization: session?.user.token || '',
+          },
         }
       )
 
-      console.log({ res })
       if (res.data && res.data.tasks) {
         set({
           tasks: res.data.tasks,
@@ -243,10 +206,10 @@ export const useTasksStore = create<State>((set, get) => {
           ),
           tasksTodo: res.data.tasks.filter(
             (task: Task) => task.status === false
-          )
+          ),
         })
         // settasks(res.data.tasks)
       }
-    }
+    },
   }
 })

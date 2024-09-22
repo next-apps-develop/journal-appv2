@@ -6,13 +6,8 @@ FROM node:18-alpine
 LABEL name="Journal app v2"
 
 # Instalar Git
-RUN apk add --no-cache git
-
-# Set the default shell to Zsh
-
-# Install Zsh
-RUN apk add --no-cache zsh
-SHELL ["/bin/zsh", "-c"]
+RUN apk add --no-cache zsh curl git
+# SHELL ["/bin/zsh", "-c"]
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -27,6 +22,6 @@ RUN yarn install
 COPY . .
     
 EXPOSE 5173
-
+USER root
 # Start the application
 CMD ["yarn", "dev"]

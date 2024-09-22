@@ -1,14 +1,3 @@
-.modal-category .p-dialog-content {
-  background-image: linear-gradient(
-    to bottom,
-    #051937,
-    #032255,
-    #132972,
-    #302d8e,
-    #512da8
-  );
-}
-
 .icons-container .icon-item.active {
   /* background-color: red; */
   transform: scale(1.2);

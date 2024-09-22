@@ -28,7 +28,6 @@ const FormLogin = () => {
     toast(error);
     toast.onChange((v) => {
       if (v.status === "removed") {
-        console.log("remover");
         seterror(null);
       }
     });

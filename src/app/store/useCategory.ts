@@ -24,11 +24,18 @@ export const useCategoryStore = create<State>((set, get) => {
     },
     isNextStepEnable: false,
     createCategory: async (category: Category, session) => {
-      await journalAPI.post(`/category`, category, {
+      const res = await journalAPI.post(`/category`, category, {
         headers: {
           Authorization: session?.user.token || '',
         },
       })
+      const { categories } = get()
+
+      if (res.data) {
+        set({
+          categories: [...categories, res.data.category],
+        })
+      }
     },
     fetchCategories: async session => {
       const res = await journalAPI.get(`/category`, {

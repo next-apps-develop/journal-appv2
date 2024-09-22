@@ -1,50 +1,6 @@
-.task-item-container {
-  background-color: theme('colors.primary');
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-}
-
-.modal-task .p-dialog-header {
-  background-color: theme('colors.gray.900');
-  color: white;
-}
-
-.modal-task .p-dialog-header button {
-  display: none;
-}
-
-.modal-task .p-dialog-content {
-  background-image: linear-gradient(
-    to bottom,
-    #051937,
-    #032255,
-    #132972,
-    #302d8e,
-    #512da8
-  );
-  background-color: red !important;
-}
-
-.modal-task-input,
-.modal-task-description {
-  width: 100%;
-  background: transparent;
-  border: solid 2px theme('colors.gray.300');
-  margin-top: 1rem;
-  outline: none;
-  padding: 1rem;
-  color: white;
-}
-
-.modal-task-input {
-  margin: 0;
-}
-
-.tasks-container{
+.tasks-container {
   overflow-y: auto;
-  max-height: 80%;
-  height: 80%;
+
   /* height: 80%; */
   /* height: 80%; */
 }

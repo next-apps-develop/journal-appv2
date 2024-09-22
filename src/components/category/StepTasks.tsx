@@ -20,7 +20,7 @@ const StepTasks = () => {
         />
       </div>
       <div className="w-full flex justify-center flex-col items-center">
-        <h3 className="text-white mt-8 text-base font-bold">Tareas agregadas</h3>
+        <h3 className=" mt-8 text-base font-bold">Tareas agregadas</h3>
         {tasksFromCategory.map((task: Task) => (
           <div
             key={task._id}
@@ -31,7 +31,10 @@ const StepTasks = () => {
         ))}
         {tasksFromCategory.length === 0 && (
           <>
-            <p className='text-white text-sm mt-4'>No ha agregado tareas para esta categoria, escriba un tarea y pulse sobre el boton +</p>
+            <p className=" text-sm mt-4">
+              No ha agregado tareas para esta categoria, escriba un tarea y
+              pulse sobre el boton +
+            </p>
           </>
         )}
       </div>
