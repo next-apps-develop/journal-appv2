@@ -14,8 +14,8 @@ const handler = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       httpOptions: {
-        timeout: 40000
-      }
+        timeout: 40000,
+      },
     }),
     CredentialsProvider({
       name: 'credentials',
@@ -24,20 +24,20 @@ const handler = NextAuth({
           label: 'Email',
           type: 'email',
           placeholder: 'jsmith',
-          autoComplete: 'off'
+          autoComplete: 'off',
         },
         password: {
           label: 'Password',
           type: 'password',
           autoComplete: 'off',
-          placeholder: '****'
-        }
+          placeholder: '****',
+        },
       },
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       async authorize(credentials, req) {
         await connectDB()
         const userFound = await UserNextAuthF.findOne({
-          email: credentials?.email
+          email: credentials?.email,
         }).select('+password')
 
         if (!userFound) {
@@ -56,8 +56,8 @@ const handler = NextAuth({
 
         const userFoundAndToken = { ...userFound._doc, token }
         return userFoundAndToken
-      }
-    })
+      },
+    }),
   ],
   callbacks: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -72,11 +72,11 @@ const handler = NextAuth({
       const token2 = await generateJWT(session.user._id)
       // session.token=  await generateJWT(userFound._id)
       return { ...session, user: { ...session.user, token: token2 } }
-    }
+    },
   },
   pages: {
-    signIn: '/'
-  }
+    signIn: '/',
+  },
 })
 
 export { handler as GET, handler as POST }

@@ -24,22 +24,18 @@ const ButtonGeneral = ({
   useEffect(() => {
     switch (severity) {
       case 'danger':
-        console.log('entra ')
         setcolorbtn('bg-red-500')
         break
 
       case 'success':
-        console.log('entra ')
         setcolorbtn('bg-green-cool-vivid-200')
         break
 
       case 'warning':
-        console.log('entra ')
         setcolorbtn('bg-yellow-200')
         break
 
       case 'info':
-        console.log('entra ')
         setcolorbtn('bg-blue-500')
         break
 

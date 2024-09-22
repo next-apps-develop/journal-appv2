@@ -12,17 +12,16 @@ const StepNameCategory = () => {
   )
   return (
     <div className="mt-4">
-      <label htmlFor="name" className="text-white ">
-        Name
+      <label htmlFor="name" className="text-sm">
+        Name Category
       </label>
       <InputText
         value={newCategoryState.name}
         onChange={e => {
           setNewCategory({ name: e.target.value })
-          // setnameCategory(e.target.value)
         }}
         placeholder="Name category"
-        className="mt-4"
+        className=""
         id="name"
       />
     </div>

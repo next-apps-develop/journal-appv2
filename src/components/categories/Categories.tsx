@@ -9,10 +9,24 @@ import { FiHome, FiBook, FiMail, FiPhone, FiFolder } from 'react-icons/fi'
 import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { ListBox } from 'primereact/listbox'
 import { OverlayPanel } from 'primereact/overlaypanel'
+import { Dialog } from 'primereact/dialog'
+import StepNameCategory from '../category/StepNameCategory'
 
+type ChangeCategory = {
+  show: boolean
+  headerTitle: string
+  content: any
+}
 const Categories = () => {
   const ref = useRef(null)
   const op = useRef(null)
+
+  const [showModalChangeCategory, setshowModalChangeCategory] =
+    useState<ChangeCategory>({
+      show: false,
+      headerTitle: '',
+      content: () => <></>,
+    })
 
   const { data: session } = useSession()
   const changeTasksByCategory = useTasksStore(
@@ -49,7 +63,6 @@ const Categories = () => {
   }, [session])
 
   const handleClickCategory = (category?: Category) => {
-    console.log(222222)
     if (category) {
       changeTasksByCategory(category._id || '', session)
       chooseCategory(category)
@@ -97,10 +110,14 @@ const Categories = () => {
         deleteCategory(session, idCategory)
         //@ts-ignore
         op.current.toggle(e)
-
         break
 
       case 'changeName':
+        setshowModalChangeCategory({
+          show: true,
+          headerTitle: 'Change name category',
+          content: () => <StepNameCategory />,
+        })
         break
       case 'changeColor':
         break
@@ -111,6 +128,7 @@ const Categories = () => {
         break
     }
   }
+
   return (
     <div>
       {categories && categories.length > 0 && (
@@ -122,7 +140,6 @@ const Categories = () => {
                   categorySelected._id === category._id ? 'active' : ''
                 }`}
                 onClick={() => {
-                  console.log('click aca')
                   handleClickCategory(category)
                 }}
               >
@@ -178,6 +195,24 @@ const Categories = () => {
           </div>
         </div>
       )}
+
+      <Dialog
+        header={showModalChangeCategory.headerTitle}
+        visible={showModalChangeCategory.show}
+        style={{ width: '50vw' }}
+        onHide={() =>
+          setshowModalChangeCategory({
+            show: false,
+            content: () => <></>,
+            headerTitle: '',
+          })
+        }
+        draggable={false}
+        resizable={false}
+        className="modal-category !w-[80%] sm:max-w-[450px]"
+      >
+        {showModalChangeCategory.content()}
+      </Dialog>
     </div>
   )
 }

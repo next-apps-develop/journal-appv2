@@ -44,7 +44,6 @@ export async function deleteCategory(req: any, { params }: any, next: any) {
   const categoryToDelete = await CategoryNextAuthF.findOne({ _id: params.id })
   await TaskNextAuthF.find({ categoryId: id })
   await CategoryNextAuthF.deleteOne({ _id: id })
-  // console.log({ tasks });
   return NextResponse.json(
     {
       msg: 'ok',

@@ -30,7 +30,6 @@ export const useTask = () => {
   }
 
   const handleChangeTitle = (e: any) => {
-    console.log('first::', e.target.value)
     settitleTask(e.target.value)
   }
 

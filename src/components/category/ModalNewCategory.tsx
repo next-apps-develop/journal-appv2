@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
-import { InputText } from 'primereact/inputtext'
 import 'swiper/css'
 import ButtonGeneral from '../ButtonGeneral'
 import StepColorCategory from './StepColorCategory'
@@ -13,14 +12,10 @@ import { Category, Task } from '@/app/interfaces/types'
 import { useShallow } from 'zustand/react/shallow'
 import StepNameCategory from './StepNameCategory'
 
-const ModalNewCategory = () => {
-  // const [nameCategory, setnameCategory] = useState('')
-  // const [activeIndex, setactiveIndex] = useState(0)
+const ModalNewCategory = ({ setshowModalNewCategory }: any) => {
   const { data: session } = useSession()
   const [heightStep, setheightStep] = useState(0)
-  // const setNewCategory = useCategoryStore(
-  //   useShallow(state => state.setNewCategory)
-  // )
+
   const newCategoryState = useCategoryStore(
     useShallow(state => state.newCategoryState)
   )
@@ -66,19 +61,18 @@ const ModalNewCategory = () => {
       }
     }
     await createCategory(payload, session)
+    setshowModalNewCategory(false)
   }
 
-  useEffect(() => {
-    const element: any = document.querySelector('.swiper-slide-active')
-    if (element) {
-      console.log(element.offsetHeight)
-      setheightStep(element.offsetHeight)
-      // setHeight(element.offsetHeight); // Get the height of the element
-    }
-  }, [])
+  // useEffect(() => {
+  //   const element: any = document.querySelector('.swiper-slide-active')
+  //   if (element) {
+  //     console.log(element.offsetHeight)
+  //     setheightStep(element.offsetHeight)
+  //     setHeight(element.offsetHeight); // Get the height of the element
+  //   }
+  // }, [])
 
-console.log({newCategoryState})
-  
   return (
     <>
       <div
@@ -186,13 +180,13 @@ console.log({newCategoryState})
           </SwiperSlide>
 
           <SwiperSlide key={'4'}>
-            <h2 className='text-white mt-4'>Agregue una tarea</h2>
+            <h2 className="text-white mt-4">Agregue una tarea</h2>
             <StepTasks />
             <div className="mt-4">
               <ButtonGeneral
                 text="Finish"
                 handleClick={handleSaveNewCategory}
-                disabled={newCategoryState?.tasks?.length===0}
+                disabled={newCategoryState?.tasks?.length === 0}
               />
             </div>
           </SwiperSlide>

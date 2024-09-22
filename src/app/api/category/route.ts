@@ -22,19 +22,19 @@ export async function createCategory(req: any, { params }: any, next: any) {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return NextResponse.json(
       {
-        msg: 'id user invalid'
+        msg: 'id user invalid',
       },
       { status: 400 }
     )
   }
   const userFound = await UserNextAuthF.findById({
-    _id: new mongoose.Types.ObjectId(userId)
+    _id: new mongoose.Types.ObjectId(userId),
   })
 
   if (!userFound) {
     return NextResponse.json(
       {
-        msg: 'No user found to insert category!!'
+        msg: 'No user found to insert category!!',
       },
       { status: 400 }
     )
@@ -44,7 +44,7 @@ export async function createCategory(req: any, { params }: any, next: any) {
     name,
     color,
     icon,
-    userId: req.uid
+    userId: req.uid,
   })
 
   const categorySaved = await category.save()
@@ -55,7 +55,7 @@ export async function createCategory(req: any, { params }: any, next: any) {
         title: task.title,
         description: task.description || '',
         userId: new mongoose.Types.ObjectId(task.userId),
-        categoryId: category._id || null
+        categoryId: category._id || null,
       })
 
       const taskc = await taskAux.save()
@@ -66,7 +66,7 @@ export async function createCategory(req: any, { params }: any, next: any) {
   return NextResponse.json(
     {
       msg: 'ok',
-      task: categorySaved
+      category: categorySaved,
     },
     { status: 200 }
   )
@@ -81,13 +81,11 @@ export async function getCategories(req: any, { params }: any, next: any) {
   return NextResponse.json(
     {
       msg: 'ok',
-      categories
+      categories,
     },
     { status: 200 }
   )
 }
-
-
 
 export const POST = handler(validateJWT, validateDataCategory, createCategory)
 export const GET = handler(validateJWT, getCategories)
