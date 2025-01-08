@@ -10,6 +10,7 @@ const StepTasks = () => {
     handleClickAddTaskCategory,
     tasksFromCategory,
   } = useTask()
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="relative w-full mt-4 input-container">

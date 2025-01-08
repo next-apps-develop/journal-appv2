@@ -192,7 +192,10 @@ const ModalNewCategory = ({
               <ButtonGeneral
                 text="Finish"
                 handleClick={handleSaveNewCategory}
-                disabled={newCategoryState?.tasks?.length === 0}
+                disabled={
+                  newCategoryState?.tasks?.length === 0 ||
+                  newCategoryState?.tasks === undefined
+                }
               />
             </div>
           </SwiperSlide>
