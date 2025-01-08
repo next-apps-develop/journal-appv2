@@ -67,7 +67,7 @@ const handler = NextAuth({
     },
     async session({ session, token }) {
       session.user = token.user as any
-      console.log({ session })
+      // console.log({ session })
       // @ts-ignore
       const token2 = await generateJWT(session.user._id)
       // session.token=  await generateJWT(userFound._id)

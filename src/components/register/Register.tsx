@@ -16,7 +16,6 @@ const RegisterComponent = () => {
     handleSubmit,
     formState: { errors },
     watch,
-    setValue,
     reset
   } = useForm({
     // defaultValues: {
@@ -61,13 +60,13 @@ const RegisterComponent = () => {
   }, [reset])
   
   return (
-    <div className='flex w-full justify-center flex-col p-4'>
+    <div className='flex flex-col justify-center w-full p-4'>
       {error && <ToastContainer />}
       {/* <p className='block'>enter your credentials</p> */}
       <form
         action=''
         onSubmit={onSubmit}
-        className='w-full block'
+        className='block w-full'
         autoComplete='off'
       >
         <label htmlFor='fullName'>Name</label>
@@ -93,7 +92,7 @@ const RegisterComponent = () => {
         />
         {errors.fullName && (
           // @ts-ignore
-          <span className='text-red-400 block'>{errors.fullName?.message}</span>
+          <span className='block text-red-400'>{errors.fullName?.message}</span>
         )}
         <label htmlFor='email'>Email</label>
         <input
@@ -106,14 +105,14 @@ const RegisterComponent = () => {
               message: 'Email is required'
             },
             pattern: {
-              value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+              value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
               message: 'email is not valid'
             }
           })}
         />
         {errors.email && (
           // @ts-ignore
-          <span className='text-red-400 block'>{errors.email?.message}</span>
+          <span className='block text-red-400'>{errors.email?.message}</span>
         )}
         <label htmlFor='password'>Password</label>
         <input
@@ -133,13 +132,13 @@ const RegisterComponent = () => {
         />
         {errors.password && (
           // @ts-ignore
-          <span className='text-red-400 block'>{errors.password?.message}</span>
+          <span className='block text-red-400'>{errors.password?.message}</span>
         )}
         <label htmlFor='confirmPassword'>Confirm Password</label>
         <input
           type='password'
           placeholder='*****'
-          className='bg-zinc-800 px-4 py-2 block mb-2 w-full text-white'
+          className='block w-full px-4 py-2 mb-2 text-white bg-zinc-800'
           {...register('confirmPassword', {
             required: {
               value: true,
@@ -155,13 +154,13 @@ const RegisterComponent = () => {
           })}
         />
         {errors.confirmPassword && (
-          <span className='text-red-400 block'>
+          <span className='block text-red-400'>
             {/* @ts-ignore */}
             {errors.confirmPassword?.message}
           </span>
         )}
 
-        {/* <button className='bg-indigo-500 px-4 py-2 w-full mt-3'>
+        {/* <button className='w-full px-4 py-2 mt-3 bg-indigo-500'>
           Register
         </button> */}
         <ButtonGeneral text={'Register'} />

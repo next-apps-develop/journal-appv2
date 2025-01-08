@@ -7,12 +7,12 @@ import { useSession } from 'next-auth/react'
 import { useShallow } from 'zustand/react/shallow'
 import { Button } from 'primereact/button'
 
-interface modalTask {
+type ModalTaskProps = {
   showModalTask: boolean
-  setshowModalTask: any
+  setshowModalTask: (value: boolean) => void
 }
 
-const ModalTask = ({ showModalTask, setshowModalTask }: modalTask) => {
+const ModalTask = ({ showModalTask, setshowModalTask }: ModalTaskProps) => {
   const tasksSelected = useTasksStore(useShallow(state => state.taskSelected))
   const updateTask = useTasksStore(useShallow(state => state.updateTask))
 
@@ -43,7 +43,7 @@ const ModalTask = ({ showModalTask, setshowModalTask }: modalTask) => {
             // <InputText
             //   value={taskTitle}
             //   onChange={(e) => settaskTitle(e.target.value)}
-            //   className='modal-task-input bg-transparent '
+            //   className='bg-transparent modal-task-input '
             // />
           )}
           visible={showModalTask}
@@ -53,7 +53,7 @@ const ModalTask = ({ showModalTask, setshowModalTask }: modalTask) => {
           draggable={false}
           resizable={false}
         >
-          <div className="title-container mt-4">
+          <div className="mt-4 title-container">
             <label className="text-sm !my-4" htmlFor="">
               Title
             </label>
@@ -63,7 +63,7 @@ const ModalTask = ({ showModalTask, setshowModalTask }: modalTask) => {
               className="modal-task-input "
             />
           </div>
-          <div className="description-container flex flex-col mt-4">
+          <div className="flex flex-col mt-4 description-container">
             <label className="text-sm" htmlFor="">
               Description
             </label>
@@ -77,7 +77,7 @@ const ModalTask = ({ showModalTask, setshowModalTask }: modalTask) => {
               // cols={30}
             />
           </div>
-          <div className="buttons-container flex justify-end mt-4">
+          <div className="flex justify-end mt-4 buttons-container">
             {/* <ButtonGeneral
               text="Cancel"
               severity="danger"
@@ -86,7 +86,7 @@ const ModalTask = ({ showModalTask, setshowModalTask }: modalTask) => {
             <Button
               link
               onClick={() => setshowModalTask(false)}
-              className="mr-4 px-4 py-2"
+              className="px-4 py-2 mr-4"
             >
               Cancel
             </Button>

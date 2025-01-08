@@ -30,10 +30,10 @@ const LoginComponent = () => {
 
           <div className={`container-comp ${containerActive ? 'active' : ''}`}>
             <div className='content1'>
-              <h1 className='font-bold text-3xl mb-10 '>Sign In</h1>
+              <h1 className='mb-10 text-3xl font-bold '>Sign In</h1>
 
               <div
-                className='google-btn flex items-center cursor-pointer mb-8'
+                className='flex items-center mb-8 cursor-pointer google-btn'
                 onClick={async () => await signIn('google')}
               >
                  {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -48,7 +48,7 @@ const LoginComponent = () => {
               <FormLogin />
             </div>
             <div className='content2'>
-              <h1 className='font-bold text-3xl mb-4 text-center'>
+              <h1 className='mb-4 text-3xl font-bold text-center'>
                 Create account
               </h1>
               <RegisterComponent />
@@ -57,9 +57,9 @@ const LoginComponent = () => {
             <div className='toggle-container_'>
               <div className='toggle_'>
                 <div className='panel tg-left'>
-                  <h1 className='font-bold text-3xl mb-10 '>Welcome back !</h1>
+                  <h1 className='mb-10 text-3xl font-bold '>Welcome back !</h1>
 
-                  <p className='text-center text-sm'>
+                  <p className='text-sm text-center'>
                     Enter your personal credentials to use all of side features
                   </p>
                   <ButtonGeneral
@@ -67,10 +67,10 @@ const LoginComponent = () => {
                     handleClick={handleSignInSignOut}
                   />
                 </div>
-                <div className='panel tg-right px-4'>
-                  <h1 className='font-bold text-3xl mb-10 '>Hello, Friend !</h1>
+                <div className='px-4 panel tg-right'>
+                  <h1 className='mb-10 text-3xl font-bold '>Hello, Friend !</h1>
 
-                  <p className='text-center text-sm'>
+                  <p className='text-sm text-center'>
                     Register with your credentials to use all of side features
                   </p>
                   <ButtonGeneral

@@ -16,6 +16,7 @@ import TaskNextAuthF from '@/models/TaskNextAuthF'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getCategoryById(req: any, { params }: any, next: any) {
   await connectDB()
+  console.log({params})
 
   const category = await CategoryNextAuthF.findOne({ _id: params.id })
 
@@ -37,7 +38,6 @@ export async function getCategoryById(req: any, { params }: any, next: any) {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteCategory(req: any, { params }: any, next: any) {
   await connectDB()
-  console.log('params', params)
   const { id } = params
 
   await TaskNextAuthF.deleteMany({ categoryId: id })

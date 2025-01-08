@@ -57,13 +57,11 @@ export const useCategoryStore = create<State>((set, get) => {
       })
     },
     deleteCategory: async (session, id: any) => {
-      console.log({ id })
       const res = await journalAPI.delete(`/category/${id}`, {
         headers: {
           Authorization: session?.user.token || '',
         },
       })
-      console.log(res.data)
 
       if (res.data) {
         const { categories } = get()

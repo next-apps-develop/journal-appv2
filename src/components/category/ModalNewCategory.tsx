@@ -12,7 +12,13 @@ import { Category, Task } from '@/app/interfaces/types'
 import { useShallow } from 'zustand/react/shallow'
 import StepNameCategory from './StepNameCategory'
 
-const ModalNewCategory = ({ setshowModalNewCategory }: any) => {
+type ModalNewCategoryProps = {
+  setshowModalNewCategory: any
+}
+
+const ModalNewCategory = ({
+  setshowModalNewCategory,
+}: ModalNewCategoryProps) => {
   const { data: session } = useSession()
   const [heightStep, setheightStep] = useState(0)
 
@@ -103,7 +109,7 @@ const ModalNewCategory = ({ setshowModalNewCategory }: any) => {
           <SwiperSlide key={'1'}>
             {/* {stepNameCategory()} */}
             <StepNameCategory />
-            <div className="buttons-section flex justify-end">
+            <div className="flex justify-end buttons-section">
               <SwiperButtonNext>
                 {/* <ButtonGeneral
                   text="Next"
@@ -131,7 +137,7 @@ const ModalNewCategory = ({ setshowModalNewCategory }: any) => {
           </SwiperSlide>
           <SwiperSlide key={'2'}>
             <StepColorCategory />
-            <div className="buttons-section flex justify-between">
+            <div className="flex justify-between buttons-section">
               <SwiperButtonPrev>
                 <ButtonGeneral
                   text="Back"
@@ -156,7 +162,7 @@ const ModalNewCategory = ({ setshowModalNewCategory }: any) => {
 
           <SwiperSlide key={'3'}>
             <StepIconCategory />
-            <div className="buttons-section flex justify-between">
+            <div className="flex justify-between buttons-section">
               <SwiperButtonPrev>
                 <ButtonGeneral
                   text="Back"
@@ -180,7 +186,7 @@ const ModalNewCategory = ({ setshowModalNewCategory }: any) => {
           </SwiperSlide>
 
           <SwiperSlide key={'4'}>
-            <h2 className="text-white mt-4">Agregue una tarea</h2>
+            <h2 className="mt-4 text-white">Agregue una tarea</h2>
             <StepTasks />
             <div className="mt-4">
               <ButtonGeneral

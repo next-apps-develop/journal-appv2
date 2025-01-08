@@ -33,8 +33,7 @@ const Tasks = () => {
     useShallow(state => state.categorySelected)
   )
   const [showModalTask, setshowModalTask] = useState(false)
-  const ref = useRef(null)
-  const op = useRef(null)
+  const op = useRef<OverlayPanel>(null)
   useEffect(() => {
     const getTasksUser = async () => {
       await fetchTasks(session)
@@ -52,7 +51,7 @@ const Tasks = () => {
 
   const optionsTemplate = (option: any) => {
     return (
-      <div className="flex items-center w-full justify-between">
+      <div className="flex items-center justify-between w-full">
         <div className="mr-4">{option.name}</div>
         {option.code === 'edit' ? <FiEdit2 /> : <FiTrash />}
       </div>
@@ -65,6 +64,7 @@ const Tasks = () => {
   ) => {
     if (value.code === 'delete' && taskId) {
       await deleteTask(taskId, session)
+      op?.current?.hide()
     }
   }
 
@@ -79,19 +79,18 @@ const Tasks = () => {
 
   const functionalityTasktoUser = (task: Task) => (
     <div
-      className="task-item-container border-b border-gray-600"
+      className="border-b border-gray-600 task-item-container"
       key={task._id}
     >
-      <div className="task-item flex justify-between items-center cursor-pointer">
+      <div className="flex items-center justify-between cursor-pointer task-item">
         <Checkbox
-          // onChange={(e) => setChecked(e.checked)}
           onChange={() => handleChangeStatusTask(task)}
           checked={task.status || false}
           className="ml-2"
         ></Checkbox>
         <p
           onClick={() => handleOpenModalTask(task)}
-          className="w-[95%] h-full p-2 hover:bg-gray-200 rounded-md m-1"
+          className="w-[95%] h-full p-2 hover:bg-neutral-100 rounded-md m-1"
         >
           {task.title ? task.title.slice(0, 30) : ''}
         </p>
@@ -107,28 +106,15 @@ const Tasks = () => {
 
         <OverlayPanel ref={op}>
           <ListBox
-            // value={selectedCountry}
             onChange={e => {
               handleClickSingleOption(e.value, taskSelected._id)
             }}
             options={options}
             optionLabel="name"
             itemTemplate={optionsTemplate}
-            // className="w-full md:w-14rem"
             listStyle={{ maxHeight: '250px' }}
           />
         </OverlayPanel>
-
-        {/* {task.showOptions && (
-            <div
-              className="list-box-languages card flex justify-content-center absolute right-0"
-              ref={ref}
-            >
-              <div className="card flex justify-content-center"> */}
-
-        {/* </div>
-            </div> */}
-        {/* )} */}
       </div>
       <div className="w-full border-b-black"></div>
     </div>
@@ -140,13 +126,13 @@ const Tasks = () => {
       <ScrollPanel style={{ width: '100%', height: '100%' }}>
         {tasks.length > 0 && (
           <div className="">
-            <h3 className="text-center text-sm">
+            <h3 className="text-sm text-center">
               {categorySelected?.name || 'Uncategorized'}
             </h3>
             {tasksTodo.map(task => functionalityTasktoUser(task))}
 
             {tasksCompleted.length > 0 && (
-              <h3 className="text-sm mt-4">Completed to day</h3>
+              <h3 className="mt-4 text-sm">Completed to day</h3>
             )}
             {tasksCompleted.length > 0 &&
               tasksCompleted.map(task => functionalityTasktoUser(task))}

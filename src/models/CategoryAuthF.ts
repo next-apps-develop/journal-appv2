@@ -4,24 +4,25 @@ const CategorySchemaNextAuthF = new Schema(
   {
     name: {
       type: String,
-      required: [true, 'title is required']
+      required: [true, 'title is required'],
+      unique: true,
     },
 
     color: {
       type: String,
-      default: ''
+      default: '',
     },
 
     icon: {
       type: String,
-      default: ''
+      default: '',
     },
     userId: {
-      type: mongoose.Types.ObjectId
-    }
+      type: mongoose.Types.ObjectId,
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 )
 

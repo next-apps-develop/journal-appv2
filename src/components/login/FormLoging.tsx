@@ -81,7 +81,7 @@ const FormLogin = () => {
         />
         {errors.email && (
           // @ts-ignore
-          <span className="text-red-400 block">
+          <span className="block text-red-400">
             {errors.email?.message as any}
           </span>
         )}
@@ -89,7 +89,7 @@ const FormLogin = () => {
         <input
           type="password"
           placeholder="*****"
-          className="bg-zinc-800 px-4 py-2 block mb-2 w-full text-white"
+          className="block w-full px-4 py-2 mb-2 text-white bg-zinc-800"
           {...register("password", {
             required: {
               value: true,
@@ -103,7 +103,7 @@ const FormLogin = () => {
           autoComplete="new-password"
         />
         {errors.password && (
-          <span className="text-red-400 block">
+          <span className="block text-red-400">
             {errors.password?.message as any}
           </span>
         )}
