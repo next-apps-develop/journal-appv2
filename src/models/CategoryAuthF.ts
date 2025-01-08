@@ -4,7 +4,7 @@ const CategorySchemaNextAuthF = new Schema(
   {
     name: {
       type: String,
-      required: [true, 'title is required']
+      required: [true, 'title is required'],
     },
 
     color: {

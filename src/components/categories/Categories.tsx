@@ -97,14 +97,13 @@ const Categories = () => {
 
   const optionsTemplate = (option: any) => {
     return (
-      <div className="flex items-center w-full justify-between">
+      <div className="flex items-center justify-between w-full">
         <div className="mr-4">{option.name}</div>
       </div>
     )
   }
 
   const handleChangeOptions = (e: any, idCategory: any) => {
-    console.log({ e })
     switch (e.value.code) {
       case 'deleteCategory':
         deleteCategory(session, idCategory)

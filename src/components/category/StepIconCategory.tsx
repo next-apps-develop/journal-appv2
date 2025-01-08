@@ -32,9 +32,9 @@ const SteIconCategory = () => {
         Icon
       </label>
 
-      <div className="icons-container flex flex-wrap justify-between">
+      <div className="flex flex-wrap justify-between icons-container">
         {icons.map((iconItem, index) => (
-          <div className="w-1/2 sm:w-1/3 flex justify-center mt-4" key={index}>
+          <div className="flex justify-center w-1/2 mt-4 sm:w-1/3" key={index}>
             <div
               className={`icon-item bg-gray-300 h-24 w-16 rounded-lg cursor-pointer
               flex justify-center items-center text-xl 

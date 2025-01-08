@@ -1,12 +1,12 @@
 .dashboard-main-cotainer {
-  background-image: linear-gradient(
+  /* background-image: linear-gradient(
     to top,
     #051937,
     #032255,
     #132972,
     #302d8e,
     #512da8
-  );
+  ); */
   height: 92.2vh;
 }
 

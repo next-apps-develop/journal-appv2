@@ -14,7 +14,7 @@ const Navbar = () => {
     <>
       {session && (
         <nav className='bg-primary  justify-between px-8 items-center  text-white !h-[72px]'>
-          <div className='menu-main-content  flex justify-between items-center h-full'>
+          <div className='flex items-center justify-between h-full menu-main-content '>
             <Link href={'/'}>
               <h1>Journal APP</h1>
             </Link>

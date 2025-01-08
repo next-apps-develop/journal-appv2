@@ -22,7 +22,7 @@ const RegisterPage = () => {
 
   // console.log({ errors })
   return (
-    <div className='flex w-full justify-center'>
+    <div className='flex justify-center w-full'>
       <form action='' onSubmit={onSubmit} className='w-1/3' autoComplete='off'>
         <h1 className='text-4xl text-center'>Sign up</h1>
         <label htmlFor='fullName'>Name</label>
@@ -31,7 +31,7 @@ const RegisterPage = () => {
           placeholder='Jhon Doe'
           autoComplete='off'
           // name='fullName'
-          className='bg-zinc-800 px-4 py-2 block mb-2 w-full text-white'
+          className='block w-full px-4 py-2 mb-2 text-white bg-zinc-800'
           {...register('fullName', {
             required: {
               value: true,
@@ -49,13 +49,13 @@ const RegisterPage = () => {
         />
         {errors.fullName && (
           // @ts-ignore
-          <span className='text-red-400 block'>{errors.fullName?.message}</span>
+          <span className='block text-red-400'>{errors.fullName?.message}</span>
         )}
         <label htmlFor='email'>Email</label>
         <input
           type='email'
           placeholder='someemail@gmail.com'
-          className='bg-zinc-800 px-4 py-2 block mb-2 w-full text-white'
+          className='block w-full px-4 py-2 mb-2 text-white bg-zinc-800'
           autoComplete='nope'
           {...register('email', {
             required: {
@@ -70,13 +70,13 @@ const RegisterPage = () => {
         />
         {errors.email && (
           // @ts-ignore
-          <span className='text-red-400 block'>{errors.email?.message}</span>
+          <span className='block text-red-400'>{errors.email?.message}</span>
         )}
         <label htmlFor='password'>Password</label>
         <input
           type='password'
           placeholder='*****'
-          className='bg-zinc-800 px-4 py-2 block mb-2 w-full text-white'
+          className='block w-full px-4 py-2 mb-2 text-white bg-zinc-800'
           {...register('password', {
             required: {
               value: true,
@@ -91,13 +91,13 @@ const RegisterPage = () => {
         />
         {errors.password && (
           // @ts-ignore
-          <span className='text-red-400 block'>{errors.password?.message}</span>
+          <span className='block text-red-400'>{errors.password?.message}</span>
         )}
         <label htmlFor='confirmPassword'>Confirm Password</label>
         <input
           type='password'
           placeholder='*****'
-          className='bg-zinc-800 px-4 py-2 block mb-2 w-full text-white'
+          className='block w-full px-4 py-2 mb-2 text-white bg-zinc-800'
           {...register('confirmPassword', {
             required: {
               value: true,
@@ -113,7 +113,7 @@ const RegisterPage = () => {
           })}
         />
         {errors.confirmPassword && (
-          <span className='text-red-400 block'>
+          <span className='block text-red-400'>
             {/* @ts-ignore */}
             {errors.confirmPassword?.message}
           </span>
@@ -121,7 +121,7 @@ const RegisterPage = () => {
         <label htmlFor='birdthDate'>Birdth date</label>
         <input
           type='date'
-          className='bg-zinc-800 px-4 py-2 block mb-2 text-white w-full'
+          className='block w-full px-4 py-2 mb-2 text-white bg-zinc-800'
           {...register('birdthDate', {
             required: {
               value: true,
@@ -142,7 +142,7 @@ const RegisterPage = () => {
         />
 
         {errors.birdthDate && (
-          <span className='text-red-400 block'>
+          <span className='block text-red-400'>
             {/* @ts-ignore */}
             {errors.birdthDate?.message}
           </span>
@@ -165,11 +165,11 @@ const RegisterPage = () => {
                   message: 'Province is required'
                 }
               })}
-              className='bg-zinc-800 px-4 py-2 block mb-2 text-white w-full'
+              className='block w-full px-4 py-2 mb-2 text-white bg-zinc-800'
             />
 
             {errors.province && (
-              <span className='text-red-400 block'>
+              <span className='block text-red-400'>
                 {/* @ts-ignore */}
                 {errors.province?.message}
               </span>
@@ -201,12 +201,12 @@ const RegisterPage = () => {
           })}
         />
         {errors.terms && (
-          <span className='text-red-400 block'>
+          <span className='block text-red-400'>
             {/* @ts-ignore */}
             {errors.terms?.message}
           </span>
         )}
-        <button className='bg-indigo-500 px-4 py-2 w-full mt-3'>
+        <button className='w-full px-4 py-2 mt-3 bg-indigo-500'>
           Register
         </button>
         <pre>{JSON.stringify(watch(), null, 2)}</pre>

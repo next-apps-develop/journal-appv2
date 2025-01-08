@@ -10,23 +10,24 @@ export const useTask = () => {
   const [tasksFromCategory, settasksFromCategory] = useState<Task[]>([])
   const { data: session } = useSession()
   const setNewCategory = useCategoryStore(
-    useShallow((state) => state.setNewCategory)
+    useShallow(state => state.setNewCategory)
   )
   const newCategoryState = useCategoryStore(
-    useShallow((state) => state.newCategoryState)
+    useShallow(state => state.newCategoryState)
   )
 
   const categorySelected = useCategoryStore(
-    useShallow((state) => state.categorySelected)
+    useShallow(state => state.categorySelected)
   )
 
-  const createTask = useTasksStore(useShallow((state) => state.createTask))
+  const createTask = useTasksStore(useShallow(state => state.createTask))
 
   const handleClickAddTask = async () => {
     await createTask(
       { title: titleTask, categoryId: categorySelected._id },
       session
     )
+    settitleTask('')
   }
 
   const handleChangeTitle = (e: any) => {
@@ -35,10 +36,10 @@ export const useTask = () => {
 
   // TODO verify type of e parameter on react ts
   const handleClickAddTaskCategory = () => {
-    settasksFromCategory((prev) => [
+    settasksFromCategory(prev => [
       ...prev,
       // @ts-ignore
-      { title: titleTask, userId: session?.user?._id }
+      { title: titleTask, userId: session?.user?._id },
     ])
   }
 
@@ -54,6 +55,6 @@ export const useTask = () => {
     settitleTask,
     handleChangeTitle,
     handleClickAddTask,
-    handleClickAddTaskCategory
+    handleClickAddTaskCategory,
   }
 }

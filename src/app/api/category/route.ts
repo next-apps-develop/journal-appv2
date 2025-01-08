@@ -59,7 +59,7 @@ export async function createCategory(req: any, { params }: any, next: any) {
       })
 
       const taskc = await taskAux.save()
-      console.log({ taskc })
+      // console.log({ taskc })
     })
   }
 
