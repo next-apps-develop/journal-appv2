@@ -62,6 +62,15 @@ const Categories = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
+  useEffect(() => {
+    if (categories.length === 1) {
+      chooseCategory(categories[0])
+      changeTasksByCategory(categories[0]._id || '', session)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories])
+
   const handleClickCategory = (category?: Category) => {
     if (category) {
       changeTasksByCategory(category._id || '', session)
@@ -149,7 +158,7 @@ const Categories = () => {
                   <p className="ml-4">{category.name}</p>
                 </div>
 
-                {categorySelected._id === category._id && (
+                {categorySelected._id === category._id && categorySelected.name!== 'Uncategorized'&&(
                   <>
                     <div
                       className="tools-category"
@@ -188,10 +197,6 @@ const Categories = () => {
               </OverlayPanel>
             </div>
           ))}
-          {/* Space to tasks without category */}
-          <div className="category-item" onClick={() => handleClickCategory()}>
-            <p>Uncategorized</p>
-          </div>
         </div>
       )}
 

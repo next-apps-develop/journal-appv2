@@ -58,13 +58,12 @@ const Tasks = () => {
     )
   }
 
-  const handleClickSingleOption = async (
-    value: any,
-    taskId: string | undefined
-  ) => {
-    if (value.code === 'delete' && taskId) {
-      await deleteTask(taskId, session)
+  const handleClickSingleOption = async (value: any, task: Task) => {
+    if (value.code === 'delete' && task._id) {
+      await deleteTask(task._id, session)
       op?.current?.hide()
+    } else if (value.code === 'edit') {
+      handleOpenModalTask(task)
     }
   }
 
@@ -107,7 +106,7 @@ const Tasks = () => {
         <OverlayPanel ref={op}>
           <ListBox
             onChange={e => {
-              handleClickSingleOption(e.value, taskSelected._id)
+              handleClickSingleOption(e.value, taskSelected)
             }}
             options={options}
             optionLabel="name"
