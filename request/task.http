@@ -1,0 +1,43 @@
+@URL = http://localhost:3000 
+
+### CREATE TASK
+
+POST {{URL}}/api/task
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE2OTk3NTA2ODMsImV4cCI6MTY5OTc2NTA4M30.uGkGFG9NPqW57v15tCfLku_mTTzcPzXfJ7MAcy5N5s8
+
+{
+    "title": "title task new",
+    "description": "descr task",
+    "userId": "65451e2933f162ecc56968a5"
+}
+
+### GET TASK BY ID
+
+GET {{URL}}/api/task/653703e36355fb52be588d94
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NmVhM2ZlY2Y5NGZkNDM0NmNjNDQwZDkiLCJpYXQiOjE3MjY4NzI4NTEsImV4cCI6MTcyNjg4NzI1MX0.t05F8PLk7T_TzVUz9TOyiW2bsH72QzvX3vlbY5inrVo
+
+### GET TASK QUERY
+
+POST {{URL}}/api/task/query
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE3MDA2NjIxMDYsImV4cCI6MTcwMDY3NjUwNn0.Th9tL38UI_M8oGRPGkx452WtBOuTVSbg7cGcnDYslIw
+
+{
+    "categoryId": "uncategoruzed"
+}
+
+### DELETE TASK
+DELETE {{URL}}/api/task/654c15f402f591a8aa8432a2
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE2OTk0ODk2OTYsImV4cCI6MTY5OTUwNDA5Nn0.IF6eydse-JuYBk2h52TJI-_nfMbKJE4BBN9zGPuQHoI
+
+### UPDATE TASK
+
+PUT {{URL}}/api/task/655012fbc88d01fb3c1aec01
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE2OTk3NTA2ODMsImV4cCI6MTY5OTc2NTA4M30.uGkGFG9NPqW57v15tCfLku_mTTzcPzXfJ7MAcy5N5s8
+
+{
+    "title": "title task new",
+    "description": "descr task"
+}

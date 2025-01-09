@@ -1,0 +1,19 @@
+.categories-main-container {
+  max-height: 80%;
+  overflow-y: auto;
+  width: 350px;
+  cursor: pointer;
+  padding: 0 2rem;
+}
+
+.categories-container .category-item {
+  background-color: white;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.categories-container .category-item.active {
+  transform: scale(1.1);
+  transition: all 0.2s ease-in;
+}

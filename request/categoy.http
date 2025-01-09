@@ -1,0 +1,29 @@
+
+@URL=http://localhost:3000 
+@access-token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NmVhM2ZlY2Y5NGZkNDM0NmNjNDQwZDkiLCJpYXQiOjE3MjY4NzUxMzEsImV4cCI6MTcyNjg4OTUzMX0.x92kdXci3T3igPMfaZVpBB3WtphylLRJ29W9gfZ21dE
+
+### CREATE CATEGORY
+
+POST {{URL}}/api/category
+content-type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE3MDAyNTg2NjMsImV4cCI6MTcwMDI3MzA2M30.7jchzYWsDcDgLTMCqS_hOeEiHKMZbnW53SpRqEtCTzs
+
+{
+    "name": "category name",
+    "userId": "652dee4e6df4bc244222db6a",
+    "icon": "folder",
+    "color": "#12344"
+}
+
+
+### GET CATEGORIES
+GET {{URL}}/api/category
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE3MDA1MjQyMTQsImV4cCI6MTcwMDUzODYxNH0.5At0Aq20-ABUQsgezXX_3SbwJaJmNumoU2fKotIi3RE
+
+### GET CATEGORY BY ID
+GET {{URL}}/api/category/655bf63a5d0fd3536dc2f2b0
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2NTJkZWU0ZTZkZjRiYzI0NDIyMmRiNmEiLCJpYXQiOjE3MDA1MjQyMTQsImV4cCI6MTcwMDUzODYxNH0.5At0Aq20-ABUQsgezXX_3SbwJaJmNumoU2fKotIi3RE
+
+### DELETE CATEGORY 
+DELETE {{URL}}/api/category/66ea418cf94fd4346cc441c8
+Authorization: {{access-token}}

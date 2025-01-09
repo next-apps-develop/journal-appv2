@@ -10,7 +10,7 @@ export const connectDB = async () => {
   try {
     const { connection } = await mongoose.connect(MONGODB_ATLAS || '')
     if (connection.readyState === 1) {
-      console.log('Data base connect')
+      // console.log('Data base connect')
       return Promise.resolve(true)
     }
   } catch (error) {

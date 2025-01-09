@@ -2,8 +2,12 @@ import User from '@/models/UserNextAuthF'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { connectDB } from '@/libs/mongodb'
-export async function POST(request: Request) {
-  const { fullName, email, password } = await request.json()
+import { handler } from '@/middlewares/handler'
+import { validateBodyUser } from '@/middlewares/userMiddleware'
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function createUser(req: any, { params }: any, next: any) {
+  const { fullName, email, password } = req._body
 
   try {
     await connectDB()
@@ -38,4 +42,7 @@ export async function POST(request: Request) {
       )
     }
   }
+  return NextResponse.json({ msg: 'ok' })
 }
+
+export const POST = handler(validateBodyUser, createUser)

@@ -3,19 +3,33 @@
 @tailwind utilities;
 
 input,
-input[type='password'] {
+input[type='password'],
+textarea {
   display: block;
   width: 100%;
   outline: none;
   background-color: theme('colors.gray.100');
-  /* background-color: var(--primary); */
   padding: 0.5rem;
   color: #000;
   border-radius: 5px;
-  margin-bottom: 1rem;
 }
 
 input::placeholder {
   color: #8087b3;
   opacity: 1; /* Firefox */
+}
+
+.input-container .icon-plus {
+  color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.p-dialog-header {
+  background-color: theme('colors.gray.300');
+  color: white;
 }

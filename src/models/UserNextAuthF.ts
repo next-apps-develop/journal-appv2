@@ -7,7 +7,7 @@ const UserSchemaNextAuthF = new Schema(
       unique: true,
       required: [true, 'email is required'],
       match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
         'Email is not valid'
       ]
     },
@@ -23,6 +23,10 @@ const UserSchemaNextAuthF = new Schema(
       required: [true, 'Fullname is required'],
       minLength: [3, 'Full name must be at least 3 characters'],
       maxLength: [30, 'Full name must be at most 30 characters']
+    },
+    status:{
+      type: Boolean,
+      default: true
     }
   },
   {

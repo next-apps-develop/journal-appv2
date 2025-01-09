@@ -1,0 +1,5 @@
+.icons-container .icon-item.active {
+  /* background-color: red; */
+  transform: scale(1.2);
+  transition: all 0.2s ease-in;
+}
