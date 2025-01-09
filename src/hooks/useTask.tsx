@@ -20,6 +20,10 @@ export const useTask = () => {
     useShallow(state => state.categorySelected)
   )
 
+  const fetchCategories = useCategoryStore(
+    useShallow(state => state.fetchCategories)
+  )
+
   const createTask = useTasksStore(useShallow(state => state.createTask))
 
   const handleClickAddTask = async () => {
@@ -27,6 +31,10 @@ export const useTask = () => {
       { title: titleTask, categoryId: categorySelected._id },
       session
     )
+    // get unahuorized category
+    if (categorySelected._id === undefined) {
+      await fetchCategories(session)
+    }
     settitleTask('')
   }
 

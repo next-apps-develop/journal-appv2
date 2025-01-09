@@ -9,7 +9,7 @@ interface State {
   isNextStepEnable: boolean
   createCategory: (category: Category, session: any) => Promise<void>
   fetchCategories: (session: any) => Promise<void>
-  chooseCategory: (category: Category) => void
+  chooseCategory: (category: Category) => Promise<void>
   deleteCategory: (session: any, id: number) => void
 }
 
@@ -51,7 +51,7 @@ export const useCategoryStore = create<State>((set, get) => {
       }
     },
 
-    chooseCategory: (category: Category) => {
+    chooseCategory: async(category: Category) => {
       set({
         categorySelected: Object.keys(category).length > 0 ? category : {},
       })
