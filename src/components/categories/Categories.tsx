@@ -11,6 +11,7 @@ import { ListBox } from 'primereact/listbox'
 import { OverlayPanel } from 'primereact/overlaypanel'
 import { Dialog } from 'primereact/dialog'
 import StepNameCategory from '../category/StepNameCategory'
+import { areObjectsEqual } from '@/helpers'
 
 type ChangeCategory = {
   show: boolean
@@ -27,6 +28,9 @@ const Categories = () => {
       headerTitle: '',
       content: () => <></>,
     })
+
+  const [categoriesWithoutUncategorized, setcategoriesWithoutUncategorized] =
+    useState<Category[]>([])
 
   const { data: session } = useSession()
   const changeTasksByCategory = useTasksStore(
@@ -63,36 +67,50 @@ const Categories = () => {
   }, [session])
 
   useEffect(() => {
-    if (categories.length === 1) {
-      chooseCategory(categories[0])
-      changeTasksByCategory(categories[0]._id || '', session)
-    }
+    setcategoriesWithoutUncategorized(
+      categories.filter(category => category.name !== 'Uncategorized')
+    )
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories])
 
   const handleClickCategory = (category?: Category) => {
+    console.log({ category })
+    console.log({ categorySelected })
     if (category) {
-      changeTasksByCategory(category._id || '', session)
-      chooseCategory(category)
+      if (areObjectsEqual(category, categorySelected)) {
+        console.log('pasa11', categories)
+        const categoryUncategorized = categories.find(
+          category => category.name === 'Uncategorized'
+        )
+        if (categoryUncategorized) {
+          console.log('pasa2')
+          changeTasksByCategory(categoryUncategorized._id || '', session)
+          chooseCategory(categoryUncategorized)
+        }
+      } else {
+        changeTasksByCategory(category._id || '', session)
+        chooseCategory(category)
+      }
+
       return
     }
-    changeTasksByCategory('uncategorized', session)
-    chooseCategory({})
+    // changeTasksByCategory('uncategorized', session)
+    // chooseCategory({})
   }
 
   const IconCategory = (iconCode: string, color?: string) => {
     switch (iconCode) {
       case 'folder':
-        return <FiFolder fill={color} className="text-2xl text-gray-400" />
+        return <FiFolder fill={color} className="text-2xl text-white" />
       case 'mail':
-        return <FiMail fill={color} className="text-2xl text-gray-600" />
+        return <FiMail fill={color} className="text-2xl text-white" />
       case 'phone':
-        return <FiPhone fill={color} className="text-2xl text-gray-600" />
+        return <FiPhone fill={color} className="text-2xl text-white" />
       case 'book':
-        return <FiBook fill={color} className="text-2xl text-gray-600" />
+        return <FiBook fill={color} className="text-2xl text-white" />
       case 'home':
-        return <FiHome fill={color} className="text-2xl text-gray-600" />
+        return <FiHome fill={color} className="text-2xl text-white" />
       default:
         break
     }
@@ -136,69 +154,74 @@ const Categories = () => {
         break
     }
   }
-
+  console.log({ categorySelected })
   return (
-    <div>
-      {categories && categories.length > 0 && (
-        <div className="categories-container">
-          {categories.map((category: Category) => (
-            <div key={category._id}>
-              <div
-                className={`category-item flex items-center justify-between   ${
-                  categorySelected._id === category._id ? 'active' : ''
-                }`}
-                onClick={() => {
-                  handleClickCategory(category)
-                }}
-              >
-                <div className="icon-name-category flex w-[80%]">
-                  <div className="icon-category">
-                    {IconCategory(category.icon || '', category.color)}
-                  </div>
-                  <p className="ml-4">{category.name}</p>
-                </div>
-
-                {categorySelected._id === category._id && categorySelected.name!== 'Uncategorized'&&(
-                  <>
+    <>
+      {categoriesWithoutUncategorized &&
+        categoriesWithoutUncategorized.length > 0 && (
+          <div className="categories-main-container p-[1rem]">
+            <div className="categories-container">
+              {categoriesWithoutUncategorized
+                .filter(category => category.name !== 'Uncategorized')
+                .map((category: Category) => (
+                  <div key={category._id} className="flex items-center w-full">
                     <div
-                      className="tools-category"
-                      onClick={e => {
-                        // setshowOptionsCategory(true)
-                        //@ts-ignore
-                        op.current.toggle(e)
-                      }}
+                      className={`category-item-container flex w-full justify-start items-center
+                         bg-white rounded-lg h-full shadow-md ${
+                        categorySelected._id === category._id &&
+                        categorySelected.name !== 'Uncategorized'
+                          ? 'active'
+                          : ''
+                      }`}
                     >
-                      <HiOutlineDotsVertical />
+                      <div
+                        className={`category-item flex items-start justify-between  w-full p-4 `}
+                        onClick={() => {
+                          handleClickCategory(category)
+                        }}
+                      >
+                        <div className="icon-name-category flex w-full">
+                          <div className="icon-category">
+                            {IconCategory(category.icon || '', category.color)}
+                          </div>
+                          <p className="ml-4">{category.name}</p>
+                        </div>
+                      </div>
+                      {categorySelected._id === category._id && (
+                        <div
+                          className="h-full flex py-4 px-2"
+                          onClick={e => {
+                            //@ts-ignore
+                            op.current.toggle(e)
+                          }}
+                        >
+                          <div>
+                            <HiOutlineDotsVertical />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </>
-                )}
-              </div>
-              <OverlayPanel ref={op}>
-                {/* {showOptionsCategory && ( */}
-                <div className="" ref={ref}>
-                  <div className="flex justify-content-center">
-                    <ListBox
-                      // value={selectedCountry}
-                      // onChange={(e) => {
-                      //   handleClickSingleOption(e.value, task._id)
-                      // }}
-                      options={options}
-                      optionLabel="name"
-                      itemTemplate={optionsTemplate}
-                      className="w-full md:w-14rem"
-                      listStyle={{ maxHeight: '250px' }}
-                      onChange={e =>
-                        handleChangeOptions(e, categorySelected._id)
-                      }
-                    />
+                    <OverlayPanel ref={op}>
+                      <div className="" ref={ref}>
+                        <div className="flex justify-content-center">
+                          <ListBox
+                            options={options}
+                            optionLabel="name"
+                            itemTemplate={optionsTemplate}
+                            className="w-full md:w-14rem"
+                            listStyle={{ maxHeight: '250px' }}
+                            onChange={e =>
+                              handleChangeOptions(e, categorySelected._id)
+                            }
+                          />
+                        </div>
+                      </div>
+                    </OverlayPanel>
                   </div>
-                </div>
-                {/* )} */}
-              </OverlayPanel>
+                ))}
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        )}
 
       <Dialog
         header={showModalChangeCategory.headerTitle}
@@ -217,7 +240,7 @@ const Categories = () => {
       >
         {showModalChangeCategory.content()}
       </Dialog>
-    </div>
+    </>
   )
 }
 

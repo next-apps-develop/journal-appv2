@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react'
 import { Category, Task } from '@/app/interfaces/types'
 import { useShallow } from 'zustand/react/shallow'
 import StepNameCategory from './StepNameCategory'
+import { Button } from 'primereact/button'
 
 type ModalNewCategoryProps = {
   setshowModalNewCategory: any
@@ -109,19 +110,19 @@ const ModalNewCategory = ({
           <SwiperSlide key={'1'}>
             {/* {stepNameCategory()} */}
             <StepNameCategory />
-            <div className="flex justify-end buttons-section">
+            <div className="flex justify-between items-center buttons-section mt-[180px]">
+              <Button
+                link
+                onClick={() => setshowModalNewCategory(false)}
+                className="px-4 py-2 mt-4"
+              >
+                Cancel
+              </Button>
               <SwiperButtonNext>
-                {/* <ButtonGeneral
-                  text="Next"
-                  icon={<FaChevronRight />}
-                  severity="info"
-                  disabled={newCategoryState.name === ''}
-                /> */}
-
                 <button
                   className={`px-4 py-2 border-solid  border-white
                     rounded-md  uppercase text-base font-medium  m-auto 
-                    flex justify-between items-center bg-blue-500
+                    flex justify-between items-center bg-blue-500 text-white
                   
                     ${newCategoryState.name === '' ? 'bg-gray-400' : ''}
                     `}
