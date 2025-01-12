@@ -20,14 +20,14 @@ const DashboardPage = () => {
     localStorage.setItem('token', session?.user?.token)
   }, [session])
 
-  const { handleChangeTitle, titleTask,handleClickAddTask } = useTask()
+  const { handleChangeTitle, titleTask, handleClickAddTask } = useTask()
 
   return (
-    <div className="flex dashboard-main-cotainer bg-gray-040">
-      <div className={`tasks-main-container flex justify-center w-full`}>
-        <div className="categories-main-container">
-          <Categories />
-        </div>
+    <div className="flex items-center justify-center dashboard-main-cotainer ">
+      <div
+        className={`tasks-main-container1 flex justify-center  p-[2rem] w-[800px] h-[80%] bg-gray-030 rounded-2xl gap-[2rem] `}
+      >
+        <Categories />
 
         <div className="min-w-[400px] flex flex-col items-center">
           <div className="relative flex items-center w-full input-container">
@@ -41,7 +41,7 @@ const DashboardPage = () => {
 
           <Button
             label="Add category"
-            className="flex flex-row-reverse p-2 mx-auto bg-white rounded-3xl"
+            className="flex flex-row-reverse p-2 mx-auto bg-white rounded-3xl mt-[2rem]"
             onClick={() => setshowModalNewCategory(true)}
           >
             <FiPlus />

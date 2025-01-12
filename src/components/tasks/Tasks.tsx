@@ -120,8 +120,7 @@ const Tasks = () => {
   )
 
   return (
-    <div className="tasks-main-container w-[90%] bg-gray-200 bg-opacity-50 p-4 max-h-[80%] rounded-bl-lg rounded-br-lg">
-      {/* <div className="tasks-container max-h-[100%]"> */}
+    <div className="tasks-main-container w-[90%] bg-gray-200 bg-opacity-50 p-4  rounded-bl-lg rounded-br-lg h-full">
       <ScrollPanel style={{ width: '100%', height: '100%' }}>
         {tasks.length > 0 && (
           <div className="">
@@ -145,7 +144,6 @@ const Tasks = () => {
         )}
       </ScrollPanel>
     </div>
-    // </div>
   )
 }
 
