@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Dialog } from 'primereact/dialog'
 import { InputTextarea } from 'primereact/inputtextarea'
-import { useTasksStore } from '@/app/store/useTasks'
 import { InputText } from 'primereact/inputtext'
 import { useSession } from 'next-auth/react'
 import { useShallow } from 'zustand/react/shallow'
 import { Button } from 'primereact/button'
+import { useBoundStore } from '@/app/store/useBoundStore'
 
 type ModalTaskProps = {
   showModalTask: boolean
@@ -13,21 +13,19 @@ type ModalTaskProps = {
 }
 
 const ModalTask = ({ showModalTask, setshowModalTask }: ModalTaskProps) => {
-  const tasksSelected = useTasksStore(useShallow(state => state.taskSelected))
-  const updateTask = useTasksStore(useShallow(state => state.updateTask))
-
+  const { taskSelected, updateTask } = useBoundStore(useShallow(state => state))
   const [taskTitle, settaskTitle] = useState('')
   const [taskDescription, settaskDescription] = useState('')
   const { data: session } = useSession()
 
   useEffect(() => {
-    settaskTitle(tasksSelected.title || '')
-    settaskDescription(tasksSelected.description || '')
-  }, [tasksSelected])
+    settaskTitle(taskSelected.title || '')
+    settaskDescription(taskSelected.description || '')
+  }, [taskSelected])
 
   const handleUpdateTask = async () => {
     await updateTask(
-      { ...tasksSelected, title: taskTitle, description: taskDescription },
+      { ...taskSelected, title: taskTitle, description: taskDescription },
       session,
       false
     )
@@ -35,17 +33,9 @@ const ModalTask = ({ showModalTask, setshowModalTask }: ModalTaskProps) => {
 
   return (
     <>
-      {Object.keys(tasksSelected).length > 0 && (
+      {Object.keys(taskSelected).length > 0 && (
         <Dialog
-          header={() => (
-            <p>Edit task</p>
-
-            // <InputText
-            //   value={taskTitle}
-            //   onChange={(e) => settaskTitle(e.target.value)}
-            //   className='bg-transparent modal-task-input '
-            // />
-          )}
+          header={() => <p>Edit task</p>}
           visible={showModalTask}
           style={{ width: '50vw' }}
           onHide={() => setshowModalTask(false)}
@@ -78,11 +68,6 @@ const ModalTask = ({ showModalTask, setshowModalTask }: ModalTaskProps) => {
             />
           </div>
           <div className="flex justify-end mt-4 buttons-container">
-            {/* <ButtonGeneral
-              text="Cancel"
-              severity="danger"
-              handleClick={() => setshowModalTask(false)}
-            /> */}
             <Button
               link
               onClick={() => setshowModalTask(false)}
@@ -92,7 +77,6 @@ const ModalTask = ({ showModalTask, setshowModalTask }: ModalTaskProps) => {
             </Button>
 
             <Button
-              // onClick={() => setshowModalTask(false)}
               className="mr-4 px-4 py-2 bg-[#007bff] text-white"
               label="Submit"
               onClick={() => {
@@ -100,10 +84,6 @@ const ModalTask = ({ showModalTask, setshowModalTask }: ModalTaskProps) => {
                 setshowModalTask(false)
               }}
             />
-            {/* <ButtonGeneral
-              text="Save"
-              severity="info"
-            /> */}
           </div>
         </Dialog>
       )}

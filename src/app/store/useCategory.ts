@@ -1,7 +1,6 @@
-import { create } from 'zustand'
 import { Category } from '../interfaces/types'
 import { journalAPI } from '../utils/axiosConfig'
-interface State {
+export interface StateCategory {
   categories: Category[]
   categorySelected: Category
   newCategoryState: Category
@@ -13,17 +12,20 @@ interface State {
   deleteCategory: (session: any, id: number) => void
 }
 
-export const useCategoryStore = create<State>((set, get) => {
+export const useCategoryStore = (
+  set: (state: Partial<StateCategory>) => void,
+  get: () => StateCategory
+) => {
   return {
     categories: [],
     categorySelected: {},
     newCategoryState: { name: '', color: 'aaa' },
-    setNewCategory: category => {
+    setNewCategory: (category: Category) => {
       // TODO Consultar anidamiento
       set({ newCategoryState: { ...category } })
     },
     isNextStepEnable: false,
-    createCategory: async (category: Category, session) => {
+    createCategory: async (category: Category, session: any) => {
       const res = await journalAPI.post(`/category`, category, {
         headers: {
           Authorization: session?.user.token || '',
@@ -37,7 +39,7 @@ export const useCategoryStore = create<State>((set, get) => {
         })
       }
     },
-    fetchCategories: async session => {
+    fetchCategories: async (session: any) => {
       const res = await journalAPI.get(`/category`, {
         headers: {
           Authorization: session?.user.token || '',
@@ -51,12 +53,12 @@ export const useCategoryStore = create<State>((set, get) => {
       }
     },
 
-    chooseCategory: async(category: Category) => {
+    chooseCategory: async (category: Category) => {
       set({
         categorySelected: Object.keys(category).length > 0 ? category : {},
       })
     },
-    deleteCategory: async (session, id: any) => {
+    deleteCategory: async (session: any, id: any) => {
       const res = await journalAPI.delete(`/category/${id}`, {
         headers: {
           Authorization: session?.user.token || '',
@@ -71,4 +73,4 @@ export const useCategoryStore = create<State>((set, get) => {
       }
     },
   }
-})
+}

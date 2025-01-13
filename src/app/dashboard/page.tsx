@@ -10,11 +10,14 @@ import ModalNewCategory from '@/components/category/ModalNewCategory'
 import CreateTaskInput from '@/components/tasks/CreateTaskInput'
 import { useTask } from '@/hooks/useTask'
 import Categories from '@/components/categories/Categories'
+import { useBoundStore } from '../store/useBoundStore'
+import { useShallow } from 'zustand/react/shallow'
 
 const DashboardPage = () => {
   const { data: session } = useSession()
   const [showModalNewCategory, setshowModalNewCategory] = useState(false)
 
+  const { setNewCategory } = useBoundStore(useShallow(state => state))
   useEffect(() => {
     // @ts-ignore
     localStorage.setItem('token', session?.user?.token)
@@ -51,7 +54,10 @@ const DashboardPage = () => {
             header={'New category'}
             visible={showModalNewCategory}
             style={{ width: '50vw' }}
-            onHide={() => setshowModalNewCategory(false)}
+            onHide={() => {
+              setshowModalNewCategory(false)
+              setNewCategory({ name: '', color: '', icon: '', tasks: [] })
+            }}
             draggable={false}
             resizable={false}
             className="modal-category  !w-[80%] sm:max-w-[450px]"

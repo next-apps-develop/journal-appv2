@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { FiHome, FiBook, FiMail, FiPhone, FiFolder } from 'react-icons/fi'
 import './category.css'
-import { useCategoryStore } from '@/app/store/useCategory'
 import { useShallow } from 'zustand/react/shallow'
+import { useBoundStore } from '@/app/store/useBoundStore'
 
 const SteIconCategory = () => {
   interface Icon {
@@ -12,24 +12,21 @@ const SteIconCategory = () => {
   }
 
   const [icons, seticons] = useState<Icon[]>([
-    { icon: <FiFolder />, selected: false, code: 'folder' },
-    { icon: <FiMail />, selected: false, code: 'mail' },
-    { icon: <FiPhone />, selected: false, code: 'phone' },
-    { icon: <FiBook />, selected: false, code: 'book' },
-    { icon: <FiHome />, selected: false, code: 'home' },
+    { icon: <FiFolder className='text-white'/>, selected: false, code: 'folder' },
+    { icon: <FiMail className='text-white'/>, selected: false, code: 'mail' },
+    { icon: <FiPhone className='text-white'/>, selected: false, code: 'phone' },
+    { icon: <FiBook className='text-white'/>, selected: false, code: 'book' },
+    { icon: <FiHome className='text-white'/>, selected: false, code: 'home' },
   ])
 
-  const setNewCategory = useCategoryStore(
-    useShallow(state => state.setNewCategory)
-  )
-  const newCategoryState = useCategoryStore(
-    useShallow(state => state.newCategoryState)
+  const { setNewCategory, newCategoryState } = useBoundStore(
+    useShallow(state => state)
   )
 
   return (
     <div className="mt-4">
-      <label htmlFor="name" className="text-white ">
-        Icon
+      <label htmlFor="name" className="text-sm">
+        Icon Category
       </label>
 
       <div className="flex flex-wrap justify-between icons-container">

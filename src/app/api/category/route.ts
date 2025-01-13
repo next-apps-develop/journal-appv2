@@ -67,7 +67,6 @@ export async function createCategory(req: any, { params }: any, next: any) {
       })
 
       await taskAux.save()
-      // console.log({ taskc })
     })
   }
   if (!(await existCategoryUncategorized(req))) {

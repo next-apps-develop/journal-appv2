@@ -1,13 +1,14 @@
-import { create } from 'zustand'
 import { Task } from '../interfaces/types'
 import { journalAPI } from '../utils/axiosConfig'
-interface State {
-  tasks: Task[]
+export interface StateTasks {
+  tasksByCategory: Task[]
   taskSelected: Task
-  tasksCompleted: Task[]
-  tasksTodo: Task[]
+  tasksByCategoryCompleted: Task[]
+  tasksByCategoryTodo: Task[]
+  tasksTodo: number
+
   chooseTask: (task: Task) => void
-  fetchTasks: (session: any) => Promise<void>
+  fetchAllTasks: (session: any) => Promise<void>
   createTask: (task: Task, session: any) => Promise<void>
   deleteTask: (taskId: string, session: any) => Promise<void>
   updateTask: (
@@ -15,42 +16,38 @@ interface State {
     session: any,
     isChangeCheck: boolean
   ) => Promise<void>
-  changeTasksByCategory: (id: string, session: any) => Promise<void>
+  fetchTasksByCategory: (id: string, session: any) => Promise<void>
 }
 
-export const useTasksStore = create<State>((set, get) => {
+export const useTasksStore = (set: any, get: any) => {
   return {
-    tasks: [],
+    tasksByCategory: [],
     taskSelected: {},
-    tasksCompleted: [],
-    tasksTodo: [],
-    fetchTasks: async session => {
+    tasksByCategoryCompleted: [],
+    tasksByCategoryTodo: [],
+    tasksTodo: 0,
+    fetchAllTasks: async (session: any) => {
       const res = await journalAPI.post(
         `/task/query`,
-        { category: '' },
+        { categoryId: '' },
         {
           headers: {
             Authorization: session?.user.token || '',
           },
         }
       )
-
       if (res.data && res.data.tasks) {
         set({
-          tasks: res.data.tasks,
-          tasksCompleted: res.data.tasks.filter(
-            (task: Task) => task.status === true
-          ),
           tasksTodo: res.data.tasks.filter(
             (task: Task) => task.status === false
-          ),
+          ).length,
         })
       }
     },
 
-    createTask: async (task: Task, session) => {
+    createTask: async (task: Task, session: any) => {
       try {
-        const { tasks, tasksTodo } = get()
+        const { tasksByCategory, tasksByCategoryTodo } = get()
 
         const res = await journalAPI.post(
           `/task`,
@@ -68,15 +65,15 @@ export const useTasksStore = create<State>((set, get) => {
           }
         )
 
-        set({ tasks: [...tasks, res.data.task] })
-        set({ tasksTodo: [...tasksTodo, res.data.task] })
+        set({ tasksByCategory: [...tasksByCategory, res.data.task] })
+        set({ tasksByCategoryTodo: [...tasksByCategoryTodo, res.data.task] })
       } catch (error) {
         console.log(error)
       }
     },
 
-    deleteTask: async (taskId: string, session) => {
-      const { tasksCompleted, tasksTodo } = get()
+    deleteTask: async (taskId: string, session: any) => {
+      const { tasksByCategoryCompleted, tasksByCategoryTodo } = get()
       try {
         const res = await journalAPI.delete(`/task/${taskId}`, {
           headers: {
@@ -86,16 +83,29 @@ export const useTasksStore = create<State>((set, get) => {
 
         if (res && res.data.msg === 'ok') {
           set({
-            tasksCompleted: tasksCompleted.filter(task => task._id !== taskId),
+            tasksByCategoryCompleted: tasksByCategoryCompleted.filter(
+              (task: Task) => task._id !== taskId
+            ),
           })
-          set({ tasksTodo: tasksTodo.filter(task => task._id !== taskId) })
+          set({
+            tasksByCategoryTodo: tasksByCategoryTodo.filter((task: Task) => task._id !== taskId),
+          })
         }
       } catch (error) {
         console.log(error)
       }
     },
-    updateTask: async (taskCurrent: Task, session, isChangeCheck) => {
-      const { tasks, tasksCompleted, tasksTodo } = get()
+    updateTask: async (
+      taskCurrent: Task,
+      session: any,
+      isChangeCheck: boolean
+    ) => {
+      const {
+        tasksByCategory,
+        tasksByCategoryCompleted,
+        tasksByCategoryTodo,
+        tasksTodo
+      } = get()
       try {
         const res = await journalAPI.put(
           `/task/${taskCurrent._id}`,
@@ -115,7 +125,7 @@ export const useTasksStore = create<State>((set, get) => {
 
         if (res && res.data.msg === 'ok' && res.data.task) {
           set({
-            tasks: tasks.map((task: Task) => {
+            tasks: tasksByCategory.map((task: Task) => {
               if (task._id === taskCurrent._id) {
                 return {
                   ...task,
@@ -131,7 +141,7 @@ export const useTasksStore = create<State>((set, get) => {
           // if task is on todo tasks
           if (res.data.task.status) {
             set({
-              tasksCompleted: tasksCompleted.map((task: Task) => {
+              tasksByCategoryCompleted: tasksByCategoryCompleted.map((task: Task) => {
                 if (task._id === taskCurrent._id) {
                   return {
                     ...task,
@@ -146,7 +156,7 @@ export const useTasksStore = create<State>((set, get) => {
             })
           } else {
             set({
-              tasksTodo: tasksTodo.map((task: Task) => {
+              tasksByCategoryTodo: tasksByCategoryTodo.map((task: Task) => {
                 if (task._id === taskCurrent._id) {
                   return {
                     ...task,
@@ -165,17 +175,19 @@ export const useTasksStore = create<State>((set, get) => {
           if (isChangeCheck) {
             if (taskCurrent.status) {
               set({
-                tasksTodo: tasksTodo.filter(
+                tasksByCategoryTodo: tasksByCategoryTodo.filter(
                   (task: Task) => task._id !== taskCurrent._id
                 ),
-                tasksCompleted: [res.data.task, ...tasksCompleted],
+                tasksByCategoryCompleted: [res.data.task, ...tasksByCategoryCompleted],
+                // tasksTodo: tasksTodo - 1
               })
             } else {
               set({
-                tasksCompleted: tasksCompleted.filter(
+                tasksByCategoryCompleted: tasksByCategoryCompleted.filter(
                   (task: Task) => task._id !== taskCurrent._id
                 ),
-                tasksTodo: [...tasksTodo, res.data.task],
+                tasksByCategoryTodo: [...tasksByCategoryTodo, res.data.task],
+                // tasksTodo: tasksTodo + 1
               })
             }
           }
@@ -187,7 +199,7 @@ export const useTasksStore = create<State>((set, get) => {
     chooseTask: (task: Task) => {
       set({ taskSelected: task })
     },
-    changeTasksByCategory: async (id: string, session) => {
+    fetchTasksByCategory: async (id: string, session: any) => {
       const res = await journalAPI.post(
         `/task/query`,
         { categoryId: id },
@@ -200,11 +212,11 @@ export const useTasksStore = create<State>((set, get) => {
 
       if (res.data && res.data.tasks) {
         set({
-          tasks: res.data.tasks,
-          tasksCompleted: res.data.tasks.filter(
+          tasksByCategory: res.data.tasks,
+          tasksByCategoryCompleted: res.data.tasks.filter(
             (task: Task) => task.status === true
           ),
-          tasksTodo: res.data.tasks.filter(
+          tasksByCategoryTodo: res.data.tasks.filter(
             (task: Task) => task.status === false
           ),
         })
@@ -212,4 +224,4 @@ export const useTasksStore = create<State>((set, get) => {
       }
     },
   }
-})
+}

@@ -1,14 +1,11 @@
-import { useCategoryStore } from '@/app/store/useCategory'
+import { useBoundStore } from '@/app/store/useBoundStore'
 import { InputText } from 'primereact/inputtext'
 import React from 'react'
 import { useShallow } from 'zustand/react/shallow'
 
 const StepNameCategory = () => {
-  const setNewCategory = useCategoryStore(
-    useShallow(state => state.setNewCategory)
-  )
-  const newCategoryState = useCategoryStore(
-    useShallow(state => state.newCategoryState)
+  const { setNewCategory, newCategoryState } = useBoundStore(
+    useShallow(state => state)
   )
   return (
     <div className="mt-4">

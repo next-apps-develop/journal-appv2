@@ -1,10 +1,8 @@
 import { Category } from '@/app/interfaces/types'
-import { useCategoryStore } from '@/app/store/useCategory'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import './index.css'
-import { useTasksStore } from '@/app/store/useTasks'
 import { FiHome, FiBook, FiMail, FiPhone, FiFolder } from 'react-icons/fi'
 import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { ListBox } from 'primereact/listbox'
@@ -12,6 +10,7 @@ import { OverlayPanel } from 'primereact/overlaypanel'
 import { Dialog } from 'primereact/dialog'
 import StepNameCategory from '../category/StepNameCategory'
 import { areObjectsEqual } from '@/helpers'
+import { useBoundStore } from '@/app/store/useBoundStore'
 
 type ChangeCategory = {
   show: boolean
@@ -29,31 +28,18 @@ const Categories = () => {
       content: () => <></>,
     })
 
-  const [categoriesWithoutUncategorized, setcategoriesWithoutUncategorized] =
-    useState<Category[]>([])
+  // categories without uncategorized category
+  const [categoriesAux, setcategoriesAux] = useState<Category[]>([])
 
   const { data: session } = useSession()
-  const changeTasksByCategory = useTasksStore(
-    useShallow(state => state.changeTasksByCategory)
-  )
-
-  const deleteCategory = useCategoryStore(
-    useShallow(state => state.deleteCategory)
-  )
-
-  const chooseCategory = useCategoryStore(
-    useShallow(state => state.chooseCategory)
-  )
-
-  const fetchCategories = useCategoryStore(
-    useShallow(state => state.fetchCategories)
-  )
-
-  const categorySelected = useCategoryStore(
-    useShallow(state => state.categorySelected)
-  )
-
-  const categories = useCategoryStore(useShallow(state => state.categories))
+  const {
+    fetchCategories,
+    fetchTasksByCategory,
+    deleteCategory,
+    chooseCategory,
+    categorySelected,
+    categories,
+  } = useBoundStore(useShallow(state => state))
 
   useEffect(() => {
     const getCategories = async () => {
@@ -67,7 +53,7 @@ const Categories = () => {
   }, [session])
 
   useEffect(() => {
-    setcategoriesWithoutUncategorized(
+    setcategoriesAux(
       categories.filter(category => category.name !== 'Uncategorized')
     )
 
@@ -75,28 +61,22 @@ const Categories = () => {
   }, [categories])
 
   const handleClickCategory = (category?: Category) => {
-    console.log({ category })
-    console.log({ categorySelected })
     if (category) {
       if (areObjectsEqual(category, categorySelected)) {
-        console.log('pasa11', categories)
         const categoryUncategorized = categories.find(
           category => category.name === 'Uncategorized'
         )
         if (categoryUncategorized) {
-          console.log('pasa2')
-          changeTasksByCategory(categoryUncategorized._id || '', session)
+          fetchTasksByCategory(categoryUncategorized._id || '', session)
           chooseCategory(categoryUncategorized)
         }
       } else {
-        changeTasksByCategory(category._id || '', session)
+        fetchTasksByCategory(category._id || '', session)
         chooseCategory(category)
       }
 
       return
     }
-    // changeTasksByCategory('uncategorized', session)
-    // chooseCategory({})
   }
 
   const IconCategory = (iconCode: string, color?: string) => {
@@ -154,74 +134,65 @@ const Categories = () => {
         break
     }
   }
-  console.log({ categorySelected })
   return (
     <>
-      {categoriesWithoutUncategorized &&
-        categoriesWithoutUncategorized.length > 0 && (
-          <div className="categories-main-container p-[1rem]">
-            <div className="categories-container">
-              {categoriesWithoutUncategorized
-                .filter(category => category.name !== 'Uncategorized')
-                .map((category: Category) => (
-                  <div key={category._id} className="flex items-center w-full">
-                    <div
-                      className={`category-item-container flex w-full justify-start items-center
+      {categoriesAux && categoriesAux.length > 0 && (
+        <div className="categories-main-container p-[1rem] flex flex-col items-center w-full gap-4">
+          {categoriesAux.map((category: Category) => (
+            <div key={category._id} className="flex items-center w-full">
+              <div
+                className={`category-item-container flex w-full justify-start items-center
                          bg-white rounded-lg h-full shadow-md ${
-                        categorySelected._id === category._id &&
-                        categorySelected.name !== 'Uncategorized'
-                          ? 'active'
-                          : ''
-                      }`}
-                    >
-                      <div
-                        className={`category-item flex items-start justify-between  w-full p-4 `}
-                        onClick={() => {
-                          handleClickCategory(category)
-                        }}
-                      >
-                        <div className="icon-name-category flex w-full">
-                          <div className="icon-category">
-                            {IconCategory(category.icon || '', category.color)}
-                          </div>
-                          <p className="ml-4">{category.name}</p>
-                        </div>
-                      </div>
-                      {categorySelected._id === category._id && (
-                        <div
-                          className="h-full flex py-4 px-2"
-                          onClick={e => {
-                            //@ts-ignore
-                            op.current.toggle(e)
-                          }}
-                        >
-                          <div>
-                            <HiOutlineDotsVertical />
-                          </div>
-                        </div>
-                      )}
+                           categorySelected._id === category._id ? 'active' : ''
+                         }`}
+              >
+                <div
+                  className={`category-item flex items-start justify-between  w-full p-4 `}
+                  onClick={() => {
+                    handleClickCategory(category)
+                  }}
+                >
+                  <div className="flex w-full icon-name-category">
+                    <div className="icon-category">
+                      {IconCategory(category.icon || '', category.color)}
                     </div>
-                    <OverlayPanel ref={op}>
-                      <div className="" ref={ref}>
-                        <div className="flex justify-content-center">
-                          <ListBox
-                            options={options}
-                            optionLabel="name"
-                            itemTemplate={optionsTemplate}
-                            className="w-full md:w-14rem"
-                            listStyle={{ maxHeight: '250px' }}
-                            onChange={e =>
-                              handleChangeOptions(e, categorySelected._id)
-                            }
-                          />
-                        </div>
-                      </div>
-                    </OverlayPanel>
+                    <p className="ml-4">{category.name}</p>
                   </div>
-                ))}
+                </div>
+                {categorySelected._id === category._id && (
+                  <div
+                    className="flex items-center justify-center h-full px-2 py-4"
+                    onClick={e => {
+                      //@ts-ignore
+                      op.current.toggle(e)
+                    }}
+                  >
+                    <div className="p-2 bg-gray-200 border border-gray-300 rounded-full cursor-pointer">
+                      <HiOutlineDotsVertical />
+                    </div>
+                  </div>
+                )}
+              </div>
+              <OverlayPanel ref={op}>
+                <div className="" ref={ref}>
+                  <div className="flex justify-content-center">
+                    <ListBox
+                      options={options}
+                      optionLabel="name"
+                      itemTemplate={optionsTemplate}
+                      className="w-full md:w-14rem"
+                      listStyle={{ maxHeight: '250px' }}
+                      onChange={e =>
+                        handleChangeOptions(e, categorySelected._id)
+                      }
+                    />
+                  </div>
+                </div>
+              </OverlayPanel>
             </div>
-          </div>
-        )}
+          ))}
+        </div>
+      )}
 
       <Dialog
         header={showModalChangeCategory.headerTitle}

@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import './index.css'
 import { FiEdit2, FiTrash } from 'react-icons/fi'
 import { RiArrowDownSFill } from 'react-icons/ri'
-import { useTasksStore } from '@/app/store/useTasks'
 import { ListBox } from 'primereact/listbox'
 
 import './index.css'
@@ -11,38 +10,28 @@ import ModalTask from './ModalTask'
 import { Task } from '@/app/interfaces/types'
 import { Checkbox } from 'primereact/checkbox'
 import { useShallow } from 'zustand/react/shallow'
-import { useCategoryStore } from '@/app/store/useCategory'
 import { ScrollPanel } from 'primereact/scrollpanel'
 import { OverlayPanel } from 'primereact/overlaypanel'
+import { useBoundStore } from '@/app/store/useBoundStore'
 
 const Tasks = () => {
   const { data: session } = useSession()
-  const fetchTasks = useTasksStore(useShallow(state => state.fetchTasks))
 
-  const taskSelected = useTasksStore(useShallow(state => state.taskSelected))
-  const deleteTask = useTasksStore(useShallow(state => state.deleteTask))
-  const chooseTask = useTasksStore(useShallow(state => state.chooseTask))
-  const updateTask = useTasksStore(useShallow(state => state.updateTask))
-
-  const tasks = useTasksStore(useShallow(state => state.tasks))
-  const tasksCompleted = useTasksStore(
-    useShallow(state => state.tasksCompleted)
-  )
-  const tasksTodo = useTasksStore(useShallow(state => state.tasksTodo))
-  const categorySelected = useCategoryStore(
-    useShallow(state => state.categorySelected)
-  )
+  const {
+    fetchTasksByCategory,
+    taskSelected,
+    deleteTask,
+    chooseTask,
+    updateTask,
+    tasksByCategory,
+    tasksByCategoryCompleted,
+    tasksByCategoryTodo,
+    categorySelected,
+    categories,
+    chooseCategory,
+  } = useBoundStore(useShallow(state => state))
   const [showModalTask, setshowModalTask] = useState(false)
   const op = useRef<OverlayPanel>(null)
-  useEffect(() => {
-    const getTasksUser = async () => {
-      await fetchTasks(session)
-    }
-    if (session?.user) {
-      getTasksUser()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session])
 
   const options = [
     { name: 'Edit', code: 'edit' },
@@ -76,72 +65,93 @@ const Tasks = () => {
     await updateTask({ ...task, status: !task.status }, session, true)
   }
 
-  const functionalityTasktoUser = (task: Task) => (
-    <div
-      className="border-b border-gray-600 task-item-container"
-      key={task._id}
-    >
-      <div className="flex items-center justify-between cursor-pointer task-item">
-        <Checkbox
-          onChange={() => handleChangeStatusTask(task)}
-          checked={task.status || false}
-          className="ml-2"
-        ></Checkbox>
-        <p
-          onClick={() => handleOpenModalTask(task)}
-          className="w-[95%] h-full p-2 hover:bg-neutral-100 rounded-md m-1"
-        >
-          {task.title ? task.title.slice(0, 30) : ''}
-        </p>
-        <button
-          onClick={e => {
-            //@ts-ignore
-            op.current.toggle(e)
-            chooseTask(task)
-          }}
-        >
-          <RiArrowDownSFill className="mr-2" />
-        </button>
+  useEffect(() => {
+    const getTasksUser = async (categoryId: string) => {
+      await fetchTasksByCategory(categoryId, session)
+    }
+    if (session?.user) {
+      if (categories && categories.length > 0) {
+        getTasksUser(categories[0]?._id || '')
+        chooseCategory(categories[0])
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session, categories])
 
-        <OverlayPanel ref={op}>
-          <ListBox
-            onChange={e => {
-              handleClickSingleOption(e.value, taskSelected)
+  const functionalityTasktoUser = (task: Task) => {
+    return (
+      <div
+        className="border-b border-gray-600 task-item-container"
+        key={task._id}
+      >
+        <div className="flex items-center justify-between cursor-pointer task-item">
+          <Checkbox
+            onChange={() => handleChangeStatusTask(task)}
+            checked={task.status || false}
+            className="ml-2"
+          ></Checkbox>
+          <p
+            onClick={() => handleOpenModalTask(task)}
+            className="w-[95%] h-full p-2 hover:bg-neutral-100 rounded-md m-1"
+          >
+            {task.title ? task.title.slice(0, 30) : ''}
+          </p>
+          <button
+            onClick={e => {
+              //@ts-ignore
+              op.current.toggle(e)
+              chooseTask(task)
             }}
-            options={options}
-            optionLabel="name"
-            itemTemplate={optionsTemplate}
-            listStyle={{ maxHeight: '250px' }}
-          />
-        </OverlayPanel>
+          >
+            <RiArrowDownSFill className="mr-2" />
+          </button>
+
+          <OverlayPanel ref={op}>
+            <ListBox
+              onChange={e => {
+                handleClickSingleOption(e.value, taskSelected)
+              }}
+              options={options}
+              optionLabel="name"
+              itemTemplate={optionsTemplate}
+              listStyle={{ maxHeight: '250px' }}
+            />
+          </OverlayPanel>
+        </div>
+        <div className="w-full border-b-black"></div>
       </div>
-      <div className="w-full border-b-black"></div>
-    </div>
-  )
+    )
+  }
 
   return (
     <div className="tasks-main-container w-[90%] bg-gray-200 bg-opacity-50 p-4  rounded-bl-lg rounded-br-lg h-full">
       <ScrollPanel style={{ width: '100%', height: '100%' }}>
-        {tasks.length > 0 && (
-          <div className="">
-            <h3 className="text-sm text-center">
-              {categorySelected?.name || 'Uncategorized'}
-            </h3>
-            {tasksTodo.map(task => functionalityTasktoUser(task))}
+        <div className="">
+          <h3 className="text-sm text-center">
+            {categorySelected?.name || 'Uncategorized'}
+          </h3>
+          {tasksByCategory.length > 0 && (
+            <>
+              {tasksByCategoryTodo.map(task => {
+                return functionalityTasktoUser(task)
+              })}
 
-            {tasksCompleted.length > 0 && (
-              <h3 className="mt-4 text-sm">Completed to day</h3>
-            )}
-            {tasksCompleted.length > 0 &&
-              tasksCompleted.map(task => functionalityTasktoUser(task))}
-            {taskSelected && (
-              <ModalTask
-                showModalTask={showModalTask}
-                setshowModalTask={setshowModalTask}
-              />
-            )}
-          </div>
-        )}
+              {tasksByCategoryCompleted.length > 0 && (
+                <h3 className="mt-4 text-sm">Completed to day</h3>
+              )}
+              {tasksByCategoryCompleted.length > 0 &&
+                tasksByCategoryCompleted.map(task =>
+                  functionalityTasktoUser(task)
+                )}
+              {taskSelected && (
+                <ModalTask
+                  showModalTask={showModalTask}
+                  setshowModalTask={setshowModalTask}
+                />
+              )}
+            </>
+          )}
+        </div>
       </ScrollPanel>
     </div>
   )
