@@ -3,14 +3,12 @@ import { useSession } from 'next-auth/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import './index.css'
-import { FiHome, FiBook, FiMail, FiPhone, FiFolder } from 'react-icons/fi'
-import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { ListBox } from 'primereact/listbox'
 import { OverlayPanel } from 'primereact/overlaypanel'
 import { Dialog } from 'primereact/dialog'
 import StepNameCategory from '../category/StepNameCategory'
-import { areObjectsEqual } from '@/helpers'
 import { useBoundStore } from '@/app/store/useBoundStore'
+import CategoryItem from './CategoryItem'
 
 type ChangeCategory = {
   show: boolean
@@ -60,41 +58,6 @@ const Categories = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories])
 
-  const handleClickCategory = (category?: Category) => {
-    if (category) {
-      if (areObjectsEqual(category, categorySelected)) {
-        const categoryUncategorized = categories.find(
-          category => category.name === 'Uncategorized'
-        )
-        if (categoryUncategorized) {
-          fetchTasksByCategory(categoryUncategorized._id || '', session)
-          chooseCategory(categoryUncategorized)
-        }
-      } else {
-        fetchTasksByCategory(category._id || '', session)
-        chooseCategory(category)
-      }
-
-      return
-    }
-  }
-
-  const IconCategory = (iconCode: string, color?: string) => {
-    switch (iconCode) {
-      case 'folder':
-        return <FiFolder fill={color} className="text-2xl text-white" />
-      case 'mail':
-        return <FiMail fill={color} className="text-2xl text-white" />
-      case 'phone':
-        return <FiPhone fill={color} className="text-2xl text-white" />
-      case 'book':
-        return <FiBook fill={color} className="text-2xl text-white" />
-      case 'home':
-        return <FiHome fill={color} className="text-2xl text-white" />
-      default:
-        break
-    }
-  }
   const options = [
     { name: 'Delete category', code: 'deleteCategory' },
     { name: 'Change name', code: 'changeName' },
@@ -140,39 +103,7 @@ const Categories = () => {
         <div className="categories-main-container p-[1rem] flex flex-col items-center w-full gap-4">
           {categoriesAux.map((category: Category) => (
             <div key={category._id} className="flex items-center w-full">
-              <div
-                className={`category-item-container flex w-full justify-start items-center
-                         bg-white rounded-lg h-full shadow-md ${
-                           categorySelected._id === category._id ? 'active' : ''
-                         }`}
-              >
-                <div
-                  className={`category-item flex items-start justify-between  w-full p-4 `}
-                  onClick={() => {
-                    handleClickCategory(category)
-                  }}
-                >
-                  <div className="flex w-full icon-name-category">
-                    <div className="icon-category">
-                      {IconCategory(category.icon || '', category.color)}
-                    </div>
-                    <p className="ml-4">{category.name}</p>
-                  </div>
-                </div>
-                {categorySelected._id === category._id && (
-                  <div
-                    className="flex items-center justify-center h-full px-2 py-4"
-                    onClick={e => {
-                      //@ts-ignore
-                      op.current.toggle(e)
-                    }}
-                  >
-                    <div className="p-2 bg-gray-200 border border-gray-300 rounded-full cursor-pointer">
-                      <HiOutlineDotsVertical />
-                    </div>
-                  </div>
-                )}
-              </div>
+              <CategoryItem category={category} op={op} />
               <OverlayPanel ref={op}>
                 <div className="" ref={ref}>
                   <div className="flex justify-content-center">
@@ -180,7 +111,7 @@ const Categories = () => {
                       options={options}
                       optionLabel="name"
                       itemTemplate={optionsTemplate}
-                      className="w-full md:w-14rem"
+                      className="w-full text-sm md:w-14rem"
                       listStyle={{ maxHeight: '250px' }}
                       onChange={e =>
                         handleChangeOptions(e, categorySelected._id)
