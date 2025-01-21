@@ -1,18 +1,16 @@
-import { Category } from '@/app/interfaces/types'
-import { useCategoryStore } from '@/app/store/useCategory'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import './index.css'
-import { useTasksStore } from '@/app/store/useTasks'
-import { FiHome, FiBook, FiMail, FiPhone, FiFolder } from 'react-icons/fi'
-import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { ListBox } from 'primereact/listbox'
 import { OverlayPanel } from 'primereact/overlaypanel'
 import { Dialog } from 'primereact/dialog'
 import StepNameCategory from '../category/StepNameCategory'
+import { useBoundStore } from '@/app/store/useBoundStore'
+import CategoryItem from './CategoryItem'
+import { ICategoryFront } from '@/app/interfaces/IFront'
 
-type ChangeCategory = {
+export type ChangeCategory = {
   show: boolean
   headerTitle: string
   content: any
@@ -28,28 +26,17 @@ const Categories = () => {
       content: () => <></>,
     })
 
+  // categories without uncategorized category
+  const [categoriesAux, setcategoriesAux] = useState<ICategoryFront[]>([])
+
   const { data: session } = useSession()
-  const changeTasksByCategory = useTasksStore(
-    useShallow(state => state.changeTasksByCategory)
-  )
-
-  const deleteCategory = useCategoryStore(
-    useShallow(state => state.deleteCategory)
-  )
-
-  const chooseCategory = useCategoryStore(
-    useShallow(state => state.chooseCategory)
-  )
-
-  const fetchCategories = useCategoryStore(
-    useShallow(state => state.fetchCategories)
-  )
-
-  const categorySelected = useCategoryStore(
-    useShallow(state => state.categorySelected)
-  )
-
-  const categories = useCategoryStore(useShallow(state => state.categories))
+  const {
+    fetchCategories,
+    deleteCategory,
+    categorySelected,
+    categories,
+    setNewCategory
+  } = useBoundStore(useShallow(state => state))
 
   useEffect(() => {
     const getCategories = async () => {
@@ -62,32 +49,14 @@ const Categories = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  const handleClickCategory = (category?: Category) => {
-    if (category) {
-      changeTasksByCategory(category._id || '', session)
-      chooseCategory(category)
-      return
-    }
-    changeTasksByCategory('uncategorized', session)
-    chooseCategory({})
-  }
+  useEffect(() => {
+    setcategoriesAux(
+      categories.filter(category => category.name !== 'Uncategorized')
+    )
 
-  const IconCategory = (iconCode: string, color?: string) => {
-    switch (iconCode) {
-      case 'folder':
-        return <FiFolder fill={color} className="text-2xl text-gray-400" />
-      case 'mail':
-        return <FiMail fill={color} className="text-2xl text-gray-600" />
-      case 'phone':
-        return <FiPhone fill={color} className="text-2xl text-gray-600" />
-      case 'book':
-        return <FiBook fill={color} className="text-2xl text-gray-600" />
-      case 'home':
-        return <FiHome fill={color} className="text-2xl text-gray-600" />
-      default:
-        break
-    }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories])
+
   const options = [
     { name: 'Delete category', code: 'deleteCategory' },
     { name: 'Change name', code: 'changeName' },
@@ -115,7 +84,7 @@ const Categories = () => {
         setshowModalChangeCategory({
           show: true,
           headerTitle: 'Change name category',
-          content: () => <StepNameCategory />,
+          content: () => <StepNameCategory isFormSubmit={true} setshowModalChangeCategory={setshowModalChangeCategory} />,
         })
         break
       case 'changeColor':
@@ -127,56 +96,21 @@ const Categories = () => {
         break
     }
   }
-
   return (
-    <div>
-      {categories && categories.length > 0 && (
-        <div className="categories-container">
-          {categories.map((category: Category) => (
-            <div key={category._id}>
-              <div
-                className={`category-item flex items-center justify-between   ${
-                  categorySelected._id === category._id ? 'active' : ''
-                }`}
-                onClick={() => {
-                  handleClickCategory(category)
-                }}
-              >
-                <div className="icon-name-category flex w-[80%]">
-                  <div className="icon-category">
-                    {IconCategory(category.icon || '', category.color)}
-                  </div>
-                  <p className="ml-4">{category.name}</p>
-                </div>
-
-                {categorySelected._id === category._id && (
-                  <>
-                    <div
-                      className="tools-category"
-                      onClick={e => {
-                        // setshowOptionsCategory(true)
-                        //@ts-ignore
-                        op.current.toggle(e)
-                      }}
-                    >
-                      <HiOutlineDotsVertical />
-                    </div>
-                  </>
-                )}
-              </div>
+    <>
+      {categoriesAux && categoriesAux.length > 0 && (
+        <div className="categories-main-container p-[1rem] flex flex-col items-center w-full gap-4">
+          {categoriesAux.map((category: ICategoryFront) => (
+            <div key={category._id} className="flex items-center w-full">
+              <CategoryItem category={category} op={op} />
               <OverlayPanel ref={op}>
-                {/* {showOptionsCategory && ( */}
                 <div className="" ref={ref}>
                   <div className="flex justify-content-center">
                     <ListBox
-                      // value={selectedCountry}
-                      // onChange={(e) => {
-                      //   handleClickSingleOption(e.value, task._id)
-                      // }}
                       options={options}
                       optionLabel="name"
                       itemTemplate={optionsTemplate}
-                      className="w-full md:w-14rem"
+                      className="w-full text-sm md:w-14rem"
                       listStyle={{ maxHeight: '250px' }}
                       onChange={e =>
                         handleChangeOptions(e, categorySelected._id)
@@ -184,14 +118,9 @@ const Categories = () => {
                     />
                   </div>
                 </div>
-                {/* )} */}
               </OverlayPanel>
             </div>
           ))}
-          {/* Space to tasks without category */}
-          <div className="category-item" onClick={() => handleClickCategory()}>
-            <p>Uncategorized</p>
-          </div>
         </div>
       )}
 
@@ -199,12 +128,15 @@ const Categories = () => {
         header={showModalChangeCategory.headerTitle}
         visible={showModalChangeCategory.show}
         style={{ width: '50vw' }}
-        onHide={() =>
+        onHide={() => {
           setshowModalChangeCategory({
             show: false,
             content: () => <></>,
             headerTitle: '',
           })
+          setNewCategory({ name: '', color: '', icon: '' })
+        }
+
         }
         draggable={false}
         resizable={false}
@@ -212,7 +144,7 @@ const Categories = () => {
       >
         {showModalChangeCategory.content()}
       </Dialog>
-    </div>
+    </>
   )
 }
 

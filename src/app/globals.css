@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  /*background: -webkit-linear-gradient(*/
+  /*  0deg,*/
+  /*  #ffffff,*/
+  /*  #512da8*/
+  /*background: linear-gradient(*/
+  /*  0deg,*/
+  /*  #ffffff,*/
+  /*  #512da8*/
+}
 input,
 input[type='password'],
 textarea {
@@ -30,6 +40,6 @@ input::placeholder {
 }
 
 .p-dialog-header {
-  background-color: theme('colors.gray.300');
+  background-color: theme('colors.gray.600');
   color: white;
 }

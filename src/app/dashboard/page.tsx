@@ -10,24 +10,32 @@ import ModalNewCategory from '@/components/category/ModalNewCategory'
 import CreateTaskInput from '@/components/tasks/CreateTaskInput'
 import { useTask } from '@/hooks/useTask'
 import Categories from '@/components/categories/Categories'
+import { useBoundStore } from '../store/useBoundStore'
+import { useShallow } from 'zustand/react/shallow'
 
 const DashboardPage = () => {
   const { data: session } = useSession()
   const [showModalNewCategory, setshowModalNewCategory] = useState(false)
 
+  const { setNewCategory, categorySelected } = useBoundStore(useShallow(state => state))
   useEffect(() => {
     // @ts-ignore
     localStorage.setItem('token', session?.user?.token)
   }, [session])
 
-  const { handleChangeTitle, titleTask,handleClickAddTask } = useTask()
+  const { handleChangeTitle, titleTask, handleClickAddTask } = useTask()
+  console.log({ categorySelected });
 
   return (
-    <div className="flex dashboard-main-cotainer bg-gray-040">
-      <div className={`tasks-main-container flex justify-center w-full`}>
-        <div className="categories-main-container">
-          <Categories />
-        </div>
+    <div className="flex items-center justify-center dashboard-main-cotainer "
+      style={{
+        background:
+          `linear-gradient(0deg, #ffffff, ${categorySelected && categorySelected.color ? categorySelected.color : '#512da8'})`
+      }} >
+      <div
+        className={`tasks-main-container1 flex justify-center  p-[2rem] w-[800px] h-[80%] bg-gray-030 rounded-2xl gap-[2rem] `}
+      >
+        <Categories />
 
         <div className="min-w-[400px] flex flex-col items-center">
           <div className="relative flex items-center w-full input-container">
@@ -41,7 +49,7 @@ const DashboardPage = () => {
 
           <Button
             label="Add category"
-            className="flex flex-row-reverse p-2 mx-auto bg-white rounded-3xl"
+            className="flex flex-row-reverse p-2 mx-auto bg-white rounded-3xl mt-[2rem]"
             onClick={() => setshowModalNewCategory(true)}
           >
             <FiPlus />
@@ -51,7 +59,10 @@ const DashboardPage = () => {
             header={'New category'}
             visible={showModalNewCategory}
             style={{ width: '50vw' }}
-            onHide={() => setshowModalNewCategory(false)}
+            onHide={() => {
+              setshowModalNewCategory(false)
+              setNewCategory({ name: '', color: '', icon: '', tasks: [] })
+            }}
             draggable={false}
             resizable={false}
             className="modal-category  !w-[80%] sm:max-w-[450px]"
@@ -62,7 +73,7 @@ const DashboardPage = () => {
           </Dialog>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

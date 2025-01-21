@@ -5,6 +5,8 @@ import { handler } from '@/middlewares/handler'
 import { validateJWT } from '@/middlewares/validateJWT'
 import CategoryNextAuthF from '@/models/CategoryAuthF'
 import TaskNextAuthF from '@/models/TaskNextAuthF'
+import { validateDataCategory } from '@/middlewares/categorymiddleware'
+import { getTasksLeftCategory } from '../../utils'
 
 /**
  * get category by id
@@ -16,7 +18,6 @@ import TaskNextAuthF from '@/models/TaskNextAuthF'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getCategoryById(req: any, { params }: any, next: any) {
   await connectDB()
-  console.log({params})
 
   const category = await CategoryNextAuthF.findOne({ _id: params.id })
 
@@ -53,5 +54,30 @@ export async function deleteCategory(req: any, { params }: any, next: any) {
   )
 }
 
+export async function updateCategory(req: any, { params }: any, next: any) {
+  await connectDB()
+  try {
+    const { id } = params
+
+    const category = req._body
+
+    await CategoryNextAuthF.findByIdAndUpdate(id, category)
+
+    const categoryAux = await CategoryNextAuthF.findOne({ _id: id })
+
+    const categoryAppendLeftTasks = await getTasksLeftCategory([categoryAux])
+    return NextResponse.json(
+      {
+        msg: 'ok',
+        category: categoryAppendLeftTasks[0],
+      },
+      { status: 200 }
+    )
+  } catch (error) {
+    console.log({ error })
+  }
+}
+
 export const GET = handler(validateJWT, getCategoryById)
 export const DELETE = handler(validateJWT, deleteCategory)
+export const PUT = handler(validateJWT, validateDataCategory, updateCategory)

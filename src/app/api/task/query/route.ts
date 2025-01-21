@@ -26,12 +26,10 @@ export async function findTaskQuery(req: any) {
         : body.categoryId
   }
 
-  console.log({ query })
   const tasks: any = await TaskNextAuthF.find({
     ...query,
   })
 
-  // console.log({ query })
   return NextResponse.json(
     {
       msg: 'ok',
