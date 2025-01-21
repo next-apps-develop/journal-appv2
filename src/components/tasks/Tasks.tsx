@@ -7,12 +7,12 @@ import { ListBox } from 'primereact/listbox'
 
 import './index.css'
 import ModalTask from './ModalTask'
-import { Task } from '@/app/interfaces/types'
 import { Checkbox } from 'primereact/checkbox'
 import { useShallow } from 'zustand/react/shallow'
 import { ScrollPanel } from 'primereact/scrollpanel'
 import { OverlayPanel } from 'primereact/overlaypanel'
 import { useBoundStore } from '@/app/store/useBoundStore'
+import { ITaskFront } from '@/app/interfaces/IFront'
 
 const Tasks = () => {
   const { data: session } = useSession()
@@ -47,7 +47,7 @@ const Tasks = () => {
     )
   }
 
-  const handleClickSingleOption = async (value: any, task: Task) => {
+  const handleClickSingleOption = async (value: any, task: ITaskFront) => {
     if (value.code === 'delete' && task._id) {
       await deleteTask(task._id, session)
       op?.current?.hide()
@@ -56,12 +56,12 @@ const Tasks = () => {
     }
   }
 
-  const handleOpenModalTask = (task: Task) => {
+  const handleOpenModalTask = (task: ITaskFront) => {
     chooseTask(task)
     setshowModalTask(true)
   }
 
-  const handleChangeStatusTask = async (task: Task) => {
+  const handleChangeStatusTask = async (task: ITaskFront) => {
     await updateTask({ ...task, status: !task.status }, session, true)
   }
 
@@ -70,20 +70,24 @@ const Tasks = () => {
       await fetchTasksByCategory(categoryId, session)
     }
     if (session?.user) {
-      if (categories && categories.length > 0) {
+      if (categories && categories.length === 1) {
         getTasksUser(categories[0]?._id || '')
         chooseCategory(categories[0])
+      } else if (categories.length > 1) {
+        if (categorySelected) {
+          getTasksUser(categorySelected?._id || categories[1]?._id || '')
+          return
+        }
+        getTasksUser(categories[1]?._id || '')
+        chooseCategory(categories[1])
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, categories])
 
-  const functionalityTasktoUser = (task: Task) => {
+  const functionalityTasktoUser = (task: ITaskFront) => {
     return (
-      <div
-        className="border-b border-gray-600 task-item-container"
-        key={task._id}
-      >
+      <div className="border-b border-gray-600 task-item-container" key={task._id}>
         <div className="flex items-center justify-between cursor-pointer task-item">
           <Checkbox
             onChange={() => handleChangeStatusTask(task)}
@@ -127,9 +131,7 @@ const Tasks = () => {
     <div className="tasks-main-container w-[90%] bg-gray-200 bg-opacity-50 p-4  rounded-bl-lg rounded-br-lg h-full">
       <ScrollPanel style={{ width: '100%', height: '100%' }}>
         <div className="">
-          <h3 className="text-sm text-center">
-            {categorySelected?.name || 'Uncategorized'}
-          </h3>
+          <h3 className="text-sm text-center">{categorySelected?.name || 'Uncategorized'}</h3>
           {tasksByCategory.length > 0 && (
             <>
               {tasksByCategoryTodo.map(task => {
@@ -140,14 +142,9 @@ const Tasks = () => {
                 <h3 className="mt-4 text-sm">Completed to day</h3>
               )}
               {tasksByCategoryCompleted.length > 0 &&
-                tasksByCategoryCompleted.map(task =>
-                  functionalityTasktoUser(task)
-                )}
+                tasksByCategoryCompleted.map(task => functionalityTasktoUser(task))}
               {taskSelected && (
-                <ModalTask
-                  showModalTask={showModalTask}
-                  setshowModalTask={setshowModalTask}
-                />
+                <ModalTask showModalTask={showModalTask} setshowModalTask={setshowModalTask} />
               )}
             </>
           )}

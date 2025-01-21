@@ -17,16 +17,21 @@ const DashboardPage = () => {
   const { data: session } = useSession()
   const [showModalNewCategory, setshowModalNewCategory] = useState(false)
 
-  const { setNewCategory } = useBoundStore(useShallow(state => state))
+  const { setNewCategory, categorySelected } = useBoundStore(useShallow(state => state))
   useEffect(() => {
     // @ts-ignore
     localStorage.setItem('token', session?.user?.token)
   }, [session])
 
   const { handleChangeTitle, titleTask, handleClickAddTask } = useTask()
+  console.log({ categorySelected });
 
   return (
-    <div className="flex items-center justify-center dashboard-main-cotainer ">
+    <div className="flex items-center justify-center dashboard-main-cotainer "
+      style={{
+        background:
+          `linear-gradient(0deg, #ffffff, ${categorySelected && categorySelected.color ? categorySelected.color : '#512da8'})`
+      }} >
       <div
         className={`tasks-main-container1 flex justify-center  p-[2rem] w-[800px] h-[80%] bg-gray-030 rounded-2xl gap-[2rem] `}
       >
@@ -68,7 +73,7 @@ const DashboardPage = () => {
           </Dialog>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

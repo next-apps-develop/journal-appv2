@@ -1,18 +1,18 @@
-import { Task } from '../interfaces/types'
+import { ITaskFront } from '../interfaces/IFront'
 import { journalAPI } from '../utils/axiosConfig'
 export interface StateTasks {
-  tasksByCategory: Task[]
-  taskSelected: Task
-  tasksByCategoryCompleted: Task[]
-  tasksByCategoryTodo: Task[]
+  tasksByCategory: ITaskFront[]
+  taskSelected: ITaskFront
+  tasksByCategoryCompleted: ITaskFront[]
+  tasksByCategoryTodo: ITaskFront[]
   tasksTodo: number
 
-  chooseTask: (task: Task) => void
+  chooseTask: (task: ITaskFront) => void
   fetchAllTasks: (session: any) => Promise<void>
-  createTask: (task: Task, session: any) => Promise<void>
+  createTask: (task: ITaskFront, session: any) => Promise<void>
   deleteTask: (taskId: string, session: any) => Promise<void>
   updateTask: (
-    task: Task,
+    task: ITaskFront,
     session: any,
     isChangeCheck: boolean
   ) => Promise<void>
@@ -39,13 +39,13 @@ export const useTasksStore = (set: any, get: any) => {
       if (res.data && res.data.tasks) {
         set({
           tasksTodo: res.data.tasks.filter(
-            (task: Task) => task.status === false
+            (task: ITaskFront) => task.status === false
           ).length,
         })
       }
     },
 
-    createTask: async (task: Task, session: any) => {
+    createTask: async (task: ITaskFront, session: any) => {
       try {
         const { tasksByCategory, tasksByCategoryTodo } = get()
 
@@ -84,11 +84,13 @@ export const useTasksStore = (set: any, get: any) => {
         if (res && res.data.msg === 'ok') {
           set({
             tasksByCategoryCompleted: tasksByCategoryCompleted.filter(
-              (task: Task) => task._id !== taskId
+              (task: ITaskFront) => task._id !== taskId
             ),
           })
           set({
-            tasksByCategoryTodo: tasksByCategoryTodo.filter((task: Task) => task._id !== taskId),
+            tasksByCategoryTodo: tasksByCategoryTodo.filter(
+              (task: ITaskFront) => task._id !== taskId
+            ),
           })
         }
       } catch (error) {
@@ -96,7 +98,7 @@ export const useTasksStore = (set: any, get: any) => {
       }
     },
     updateTask: async (
-      taskCurrent: Task,
+      taskCurrent: ITaskFront,
       session: any,
       isChangeCheck: boolean
     ) => {
@@ -104,7 +106,6 @@ export const useTasksStore = (set: any, get: any) => {
         tasksByCategory,
         tasksByCategoryCompleted,
         tasksByCategoryTodo,
-        tasksTodo
       } = get()
       try {
         const res = await journalAPI.put(
@@ -125,7 +126,7 @@ export const useTasksStore = (set: any, get: any) => {
 
         if (res && res.data.msg === 'ok' && res.data.task) {
           set({
-            tasks: tasksByCategory.map((task: Task) => {
+            tasks: tasksByCategory.map((task: ITaskFront) => {
               if (task._id === taskCurrent._id) {
                 return {
                   ...task,
@@ -141,33 +142,37 @@ export const useTasksStore = (set: any, get: any) => {
           // if task is on todo tasks
           if (res.data.task.status) {
             set({
-              tasksByCategoryCompleted: tasksByCategoryCompleted.map((task: Task) => {
-                if (task._id === taskCurrent._id) {
-                  return {
-                    ...task,
-                    title: res.data.task.title,
-                    description: res.data.task.description,
-                    status: res.data.task.status,
+              tasksByCategoryCompleted: tasksByCategoryCompleted.map(
+                (task: ITaskFront) => {
+                  if (task._id === taskCurrent._id) {
+                    return {
+                      ...task,
+                      title: res.data.task.title,
+                      description: res.data.task.description,
+                      status: res.data.task.status,
+                    }
+                  } else {
+                    return { ...task }
                   }
-                } else {
-                  return { ...task }
                 }
-              }),
+              ),
             })
           } else {
             set({
-              tasksByCategoryTodo: tasksByCategoryTodo.map((task: Task) => {
-                if (task._id === taskCurrent._id) {
-                  return {
-                    ...task,
-                    title: res.data.task.title,
-                    description: res.data.task.description,
-                    status: res.data.task.status,
+              tasksByCategoryTodo: tasksByCategoryTodo.map(
+                (task: ITaskFront) => {
+                  if (task._id === taskCurrent._id) {
+                    return {
+                      ...task,
+                      title: res.data.task.title,
+                      description: res.data.task.description,
+                      status: res.data.task.status,
+                    }
+                  } else {
+                    return { ...task }
                   }
-                } else {
-                  return { ...task }
                 }
-              }),
+              ),
             })
           }
 
@@ -176,15 +181,18 @@ export const useTasksStore = (set: any, get: any) => {
             if (taskCurrent.status) {
               set({
                 tasksByCategoryTodo: tasksByCategoryTodo.filter(
-                  (task: Task) => task._id !== taskCurrent._id
+                  (task: ITaskFront) => task._id !== taskCurrent._id
                 ),
-                tasksByCategoryCompleted: [res.data.task, ...tasksByCategoryCompleted],
+                tasksByCategoryCompleted: [
+                  res.data.task,
+                  ...tasksByCategoryCompleted,
+                ],
                 // tasksTodo: tasksTodo - 1
               })
             } else {
               set({
                 tasksByCategoryCompleted: tasksByCategoryCompleted.filter(
-                  (task: Task) => task._id !== taskCurrent._id
+                  (task: ITaskFront) => task._id !== taskCurrent._id
                 ),
                 tasksByCategoryTodo: [...tasksByCategoryTodo, res.data.task],
                 // tasksTodo: tasksTodo + 1
@@ -196,7 +204,7 @@ export const useTasksStore = (set: any, get: any) => {
         console.log(error)
       }
     },
-    chooseTask: (task: Task) => {
+    chooseTask: (task: ITaskFront) => {
       set({ taskSelected: task })
     },
     fetchTasksByCategory: async (id: string, session: any) => {
@@ -214,10 +222,10 @@ export const useTasksStore = (set: any, get: any) => {
         set({
           tasksByCategory: res.data.tasks,
           tasksByCategoryCompleted: res.data.tasks.filter(
-            (task: Task) => task.status === true
+            (task: ITaskFront) => task.status === true
           ),
           tasksByCategoryTodo: res.data.tasks.filter(
-            (task: Task) => task.status === false
+            (task: ITaskFront) => task.status === false
           ),
         })
         // settasks(res.data.tasks)

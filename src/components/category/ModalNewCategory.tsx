@@ -7,11 +7,11 @@ import StepColorCategory from './StepColorCategory'
 import StepIconCategory from './StepIconCategory'
 import StepTasks from './StepTasks'
 import { useSession } from 'next-auth/react'
-import { Category, Task } from '@/app/interfaces/types'
 import { useShallow } from 'zustand/react/shallow'
 import StepNameCategory from './StepNameCategory'
 import { Button } from 'primereact/button'
 import { useBoundStore } from '@/app/store/useBoundStore'
+import { ICategoryFront, ITaskFront } from '@/app/interfaces/IFront'
 
 type ModalNewCategoryProps = {
   setshowModalNewCategory: any
@@ -51,9 +51,9 @@ const ModalNewCategory = ({
   }
 
   const handleSaveNewCategory = async () => {
-    let listTasks: Array<Task> = []
+    let listTasks: Array<ITaskFront> = []
     // @ts-ignore
-    let payload: Category = { ...newCategoryState, userId: session?.user?._id }
+    let payload: ICategoryFront = { ...newCategoryState, userId: session?.user?._id }
     if (newCategoryState.tasks && newCategoryState.tasks.length > 0) {
       listTasks = newCategoryState.tasks
       payload = {
@@ -64,6 +64,8 @@ const ModalNewCategory = ({
       }
     }
     await createCategory(payload, session)
+
+    setNewCategory({ name: '', color: '', icon: '' })
     setshowModalNewCategory(false)
   }
 

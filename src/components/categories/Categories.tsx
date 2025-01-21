@@ -1,4 +1,3 @@
-import { Category } from '@/app/interfaces/types'
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
@@ -9,8 +8,9 @@ import { Dialog } from 'primereact/dialog'
 import StepNameCategory from '../category/StepNameCategory'
 import { useBoundStore } from '@/app/store/useBoundStore'
 import CategoryItem from './CategoryItem'
+import { ICategoryFront } from '@/app/interfaces/IFront'
 
-type ChangeCategory = {
+export type ChangeCategory = {
   show: boolean
   headerTitle: string
   content: any
@@ -27,16 +27,15 @@ const Categories = () => {
     })
 
   // categories without uncategorized category
-  const [categoriesAux, setcategoriesAux] = useState<Category[]>([])
+  const [categoriesAux, setcategoriesAux] = useState<ICategoryFront[]>([])
 
   const { data: session } = useSession()
   const {
     fetchCategories,
-    fetchTasksByCategory,
     deleteCategory,
-    chooseCategory,
     categorySelected,
     categories,
+    setNewCategory
   } = useBoundStore(useShallow(state => state))
 
   useEffect(() => {
@@ -85,7 +84,7 @@ const Categories = () => {
         setshowModalChangeCategory({
           show: true,
           headerTitle: 'Change name category',
-          content: () => <StepNameCategory />,
+          content: () => <StepNameCategory isFormSubmit={true} setshowModalChangeCategory={setshowModalChangeCategory} />,
         })
         break
       case 'changeColor':
@@ -101,7 +100,7 @@ const Categories = () => {
     <>
       {categoriesAux && categoriesAux.length > 0 && (
         <div className="categories-main-container p-[1rem] flex flex-col items-center w-full gap-4">
-          {categoriesAux.map((category: Category) => (
+          {categoriesAux.map((category: ICategoryFront) => (
             <div key={category._id} className="flex items-center w-full">
               <CategoryItem category={category} op={op} />
               <OverlayPanel ref={op}>
@@ -129,12 +128,15 @@ const Categories = () => {
         header={showModalChangeCategory.headerTitle}
         visible={showModalChangeCategory.show}
         style={{ width: '50vw' }}
-        onHide={() =>
+        onHide={() => {
           setshowModalChangeCategory({
             show: false,
             content: () => <></>,
             headerTitle: '',
           })
+          setNewCategory({ name: '', color: '', icon: '' })
+        }
+
         }
         draggable={false}
         resizable={false}

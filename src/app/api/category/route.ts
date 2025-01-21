@@ -7,10 +7,9 @@ import { validateJWT } from '@/middlewares/validateJWT'
 import { validateDataCategory } from '@/middlewares/categorymiddleware'
 import CategoryNextAuthF from '@/models/CategoryAuthF'
 import TaskNextAuthF from '@/models/TaskNextAuthF'
-import {
-  createCategoryUncategorized,
-  existCategoryUncategorized,
-} from '../task/route'
+import { createCategoryUncategorized, existCategoryUncategorized } from '../task/route'
+import { ICategoryBack } from '@/app/interfaces/IBack'
+import { getTasksLeftCategory } from '../utils/'
 
 export const createCategoryDataBase = async (req: any) => {
   const { name, userId, color, icon } = req._body
@@ -56,6 +55,7 @@ export const createCategoryDataBase = async (req: any) => {
 export async function createCategory(req: any, { params }: any, next: any) {
   await connectDB()
   const { tasks } = req._body
+
   const categorySaved = await createCategoryDataBase(req)
   if (tasks) {
     tasks.map(async (task: any) => {
@@ -85,13 +85,16 @@ export async function createCategory(req: any, { params }: any, next: any) {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getCategories(req: any, { params }: any, next: any) {
   await connectDB()
+  const categories: ICategoryBack[] = await CategoryNextAuthF.find({
+    userId: req.uid,
+  })
 
-  const categories = await CategoryNextAuthF.find({ userId: req.uid })
+  const categoriesAux = await getTasksLeftCategory(categories)
 
   return NextResponse.json(
     {
       msg: 'ok',
-      categories,
+      categories: categoriesAux,
     },
     { status: 200 }
   )

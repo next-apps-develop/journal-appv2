@@ -1,28 +1,22 @@
 import { useBoundStore } from '@/app/store/useBoundStore'
 import React from 'react'
 import { useShallow } from 'zustand/react/shallow'
-import { Category } from '@/app/interfaces/types'
 import { areObjectsEqual } from '@/helpers'
 import { FiBook, FiFolder, FiHome, FiMail, FiPhone } from 'react-icons/fi'
 import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { useSession } from 'next-auth/react'
+import { ICategoryFront } from '@/app/interfaces/IFront'
 
-const CategoryItem = ({ category , op}: { category: Category, op: any }) => {
-  const {
-    categorySelected,
-    categories,
-    fetchTasksByCategory,
-    chooseCategory,
-    tasksByCategoryTodo,
-  } = useBoundStore(useShallow(state => state))
+const CategoryItem = ({ category, op }: { category: ICategoryFront; op: any }) => {
+  const { categorySelected, categories, fetchTasksByCategory, chooseCategory } = useBoundStore(
+    useShallow(state => state)
+  )
   const { data: session } = useSession()
 
-  const handleClickCategory = (category?: Category) => {
+  const handleClickCategory = (category?: ICategoryFront) => {
     if (category) {
       if (areObjectsEqual(category, categorySelected)) {
-        const categoryUncategorized = categories.find(
-          category => category.name === 'Uncategorized'
-        )
+        const categoryUncategorized = categories.find(category => category.name === 'Uncategorized')
         if (categoryUncategorized) {
           fetchTasksByCategory(categoryUncategorized._id || '', session)
           chooseCategory(categoryUncategorized)
@@ -52,11 +46,12 @@ const CategoryItem = ({ category , op}: { category: Category, op: any }) => {
         break
     }
   }
+
   return (
     <div
       className={`category-item-container flex w-full justify-start items-center
             bg-white rounded-lg h-full shadow-md ${
-              categorySelected._id === category._id ? 'active' : ''
+              categorySelected?._id === category._id ? 'active' : ''
             }`}
     >
       <div
@@ -67,29 +62,27 @@ const CategoryItem = ({ category , op}: { category: Category, op: any }) => {
       >
         <div className="flex flex-col w-full">
           <div className="flex w-full icon-name-category">
-            <div className="icon-category">
-              {IconCategory(category.icon || '', category.color)}
-            </div>
+            <div className="icon-category">{IconCategory(category.icon || '', category.color)}</div>
             <p className="ml-4">{category.name}</p>
           </div>
           <div className="p-4">
-            <p>{tasksByCategoryTodo.length} Tasks left</p>
+            <p>{category.tasksLeft} Tasks left</p>
           </div>
         </div>
-      {categorySelected._id === category._id && (
-        <div
-          className="flex items-center justify-center h-full "
-          onClick={e => {
-            e.stopPropagation()
-            //@ts-ignore
-            op.current.toggle(e)
-          }}
-        >
-          <div className="p-2 bg-gray-200 border border-gray-300 rounded-full cursor-pointer">
-            <HiOutlineDotsVertical />
+        {categorySelected?._id === category._id && (
+          <div
+            className="flex items-center justify-center h-full "
+            onClick={e => {
+              e.stopPropagation()
+              //@ts-ignore
+              op.current.toggle(e)
+            }}
+          >
+            <div className="p-2 bg-gray-200 border border-gray-300 rounded-full cursor-pointer">
+              <HiOutlineDotsVertical />
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   )
