@@ -1,5 +1,17 @@
 .dashboard-main-cotainer {
   height: calc(100vh);
+  /**/
+  /*background: -webkit-linear-gradient(*/
+  /*  0deg,*/
+  /*  #ffffff,*/
+  /*  #512da8*/
+  /*);*/
+  /*background: linear-gradient(*/
+  /*  0deg,*/
+  /*  #ffffff,*/
+  /*  #512da8*/
+  /*); */
+
 }
 
 .content-dashboard {

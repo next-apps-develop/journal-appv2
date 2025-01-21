@@ -15,7 +15,7 @@ export const createCategoryUncategorized = async (req: any) => {
     _body: {
       ...req._body,
       name: 'Uncategorized',
-      color: '#000000',
+      color: '#512da8',
       icon: '',
     },
   }
@@ -38,7 +38,6 @@ export const existCategoryUncategorized = async (req: any) => {
 export async function createTask(req: any, { params }: any, next: any) {
   await connectDB()
 
-  console.log('TASK :: CREATE', req._body)
   const { title, description, userId, categoryId } = req._body
 
   if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -70,11 +69,7 @@ export async function createTask(req: any, { params }: any, next: any) {
     title,
     description: description || '',
     userId: new mongoose.Types.ObjectId(userId),
-    categoryId: categoryId
-      ? categoryId
-      : categoryCreated
-        ? categoryCreated?._id
-        : null,
+    categoryId: categoryId ? categoryId : categoryCreated ? categoryCreated?._id : null,
   })
 
   const taskSaved = await task.save()

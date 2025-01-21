@@ -12,16 +12,14 @@ const SteIconCategory = () => {
   }
 
   const [icons, seticons] = useState<Icon[]>([
-    { icon: <FiFolder className='text-white'/>, selected: false, code: 'folder' },
-    { icon: <FiMail className='text-white'/>, selected: false, code: 'mail' },
-    { icon: <FiPhone className='text-white'/>, selected: false, code: 'phone' },
-    { icon: <FiBook className='text-white'/>, selected: false, code: 'book' },
-    { icon: <FiHome className='text-white'/>, selected: false, code: 'home' },
+    { icon: <FiFolder className="text-white" />, selected: false, code: 'folder' },
+    { icon: <FiMail className="text-white" />, selected: false, code: 'mail' },
+    { icon: <FiPhone className="text-white" />, selected: false, code: 'phone' },
+    { icon: <FiBook className="text-white" />, selected: false, code: 'book' },
+    { icon: <FiHome className="text-white" />, selected: false, code: 'home' },
   ])
 
-  const { setNewCategory, newCategoryState } = useBoundStore(
-    useShallow(state => state)
-  )
+  const { setNewCategory, newCategoryState } = useBoundStore(useShallow(state => state))
 
   return (
     <div className="mt-4">
