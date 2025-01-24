@@ -11,8 +11,9 @@ const Navbar = () => {
   const { data: session } = useSession()
   const router = useRouter()
 
-  const { tasksTodo, fetchAllTasks, tasksByCategory, tasksByCategoryTodo } =
-    useBoundStore(useShallow(state => state))
+  const { tasksTodo, fetchAllTasks, tasksByCategory, tasksByCategoryTodo } = useBoundStore(
+    useShallow(state => state)
+  )
 
   useEffect(() => {
     const getTasks = async () => {
@@ -33,15 +34,10 @@ const Navbar = () => {
             <div className="flex items-center justify-between w-full h-full">
               <Link href={'/'}>
                 <div className="flex flex-col items-start">
-                  <h1
-                    className="text-3xl font-semibold"
-                    style={{ fontWeight: '10px' }}
-                  >
+                  <h1 className="text-3xl font-semibold" style={{ fontWeight: '10px' }}>
                     Hello
                   </h1>
-                  <p className="text-sm">
-                    You have {tasksTodo} tasks to complete
-                  </p>
+                  <p className="text-sm">You have {tasksTodo} tasks to complete</p>
                 </div>
               </Link>
 

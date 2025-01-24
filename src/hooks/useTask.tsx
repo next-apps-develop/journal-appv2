@@ -21,6 +21,7 @@ export const useTask = () => {
   }
 
   const handleChangeTitle = (e: any) => {
+    console.log('call')
     settitleTask(e.target.value)
   }
 
