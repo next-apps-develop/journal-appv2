@@ -5,7 +5,7 @@ import { InputText } from 'primereact/inputtext'
 import { useSession } from 'next-auth/react'
 import { useShallow } from 'zustand/react/shallow'
 import { Button } from 'primereact/button'
-import { useBoundStore } from '@/app/store/useBoundStore'
+import { useBoundStore } from '../..//app/store/useBoundStore'
 
 type ModalTaskProps = {
   showModalTask: boolean
@@ -30,7 +30,7 @@ const ModalTask = ({ showModalTask, setshowModalTask }: ModalTaskProps) => {
       false
     )
   }
-
+console.log({taskSelected})
   return (
     <>
       {Object.keys(taskSelected).length > 0 && (
@@ -51,6 +51,7 @@ const ModalTask = ({ showModalTask, setshowModalTask }: ModalTaskProps) => {
               value={taskTitle}
               onChange={e => settaskTitle(e.target.value)}
               className="modal-task-input "
+              data-testid='input-title-task'
             />
           </div>
           <div className="flex flex-col mt-4 description-container">
@@ -64,6 +65,7 @@ const ModalTask = ({ showModalTask, setshowModalTask }: ModalTaskProps) => {
               rows={5}
               placeholder="Enter a description"
               className="modal-task-description"
+              data-testid='input-description-task'
               // cols={30}
             />
           </div>

@@ -6,7 +6,7 @@ import { ListBox } from 'primereact/listbox'
 import { OverlayPanel } from 'primereact/overlaypanel'
 import { Dialog } from 'primereact/dialog'
 import StepNameCategory from '../category/StepNameCategory'
-import { useBoundStore } from '@/app/store/useBoundStore'
+import { useBoundStore } from '../../app/store/useBoundStore'
 import CategoryItem from './CategoryItem'
 import { ICategoryFront } from '@/app/interfaces/IFront'
 
@@ -19,24 +19,18 @@ const Categories = () => {
   const ref = useRef(null)
   const op = useRef(null)
 
-  const [showModalChangeCategory, setshowModalChangeCategory] =
-    useState<ChangeCategory>({
-      show: false,
-      headerTitle: '',
-      content: () => <></>,
-    })
+  const [showModalChangeCategory, setshowModalChangeCategory] = useState<ChangeCategory>({
+    show: false,
+    headerTitle: '',
+    content: () => <></>,
+  })
 
   // categories without uncategorized category
   const [categoriesAux, setcategoriesAux] = useState<ICategoryFront[]>([])
 
   const { data: session } = useSession()
-  const {
-    fetchCategories,
-    deleteCategory,
-    categorySelected,
-    categories,
-    setNewCategory
-  } = useBoundStore(useShallow(state => state))
+  const { fetchCategories, deleteCategory, categorySelected, categories, setNewCategory } =
+    useBoundStore(useShallow(state => state))
 
   useEffect(() => {
     const getCategories = async () => {
@@ -50,9 +44,7 @@ const Categories = () => {
   }, [session])
 
   useEffect(() => {
-    setcategoriesAux(
-      categories.filter(category => category.name !== 'Uncategorized')
-    )
+    setcategoriesAux(categories.filter(category => category.name !== 'Uncategorized'))
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categories])
@@ -84,7 +76,12 @@ const Categories = () => {
         setshowModalChangeCategory({
           show: true,
           headerTitle: 'Change name category',
-          content: () => <StepNameCategory isFormSubmit={true} setshowModalChangeCategory={setshowModalChangeCategory} />,
+          content: () => (
+            <StepNameCategory
+              isFormSubmit={true}
+              setshowModalChangeCategory={setshowModalChangeCategory}
+            />
+          ),
         })
         break
       case 'changeColor':
@@ -96,6 +93,7 @@ const Categories = () => {
         break
     }
   }
+
   return (
     <>
       {categoriesAux && categoriesAux.length > 0 && (
@@ -113,7 +111,7 @@ const Categories = () => {
                       className="w-full text-sm md:w-14rem"
                       listStyle={{ maxHeight: '250px' }}
                       onChange={e =>
-                        handleChangeOptions(e, categorySelected._id)
+                        categorySelected && handleChangeOptions(e, categorySelected._id)
                       }
                     />
                   </div>
@@ -135,9 +133,7 @@ const Categories = () => {
             headerTitle: '',
           })
           setNewCategory({ name: '', color: '', icon: '' })
-        }
-
-        }
+        }}
         draggable={false}
         resizable={false}
         className="modal-category !w-[80%] sm:max-w-[450px]"

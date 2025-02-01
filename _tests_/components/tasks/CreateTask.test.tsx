@@ -11,10 +11,6 @@ describe('Create Task test', () => {
   })
 
   afterEach(() => {
-    vi.resetAllMocks()
-    vi.clearAllMocks()
-    vi.resetConfig()
-    vi.resetModules()
     cleanup()
   })
 

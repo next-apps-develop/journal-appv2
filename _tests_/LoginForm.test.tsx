@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { SessionProvider } from 'next-auth/react'
 import FormLogin from '../src/components/login/FormLoging'
-import { JSDOM } from 'jsdom'
 import userEvent from '@testing-library/user-event'
 
 vi.mock('next-auth/react', async importOriginal => {
