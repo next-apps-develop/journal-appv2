@@ -1,4 +1,4 @@
-import { useBoundStore } from '@/app/store/useBoundStore'
+import { useBoundStore } from '../../app/store/useBoundStore'
 import { InputText } from 'primereact/inputtext'
 import React, { useEffect, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
@@ -8,7 +8,7 @@ import { ChangeCategory } from '../categories/Categories'
 
 type StepNameCategoryProps = {
   isFormSubmit?: boolean
-  setshowModalChangeCategory: any
+  setshowModalChangeCategory?: any
 }
 
 const StepNameCategory = ({ isFormSubmit, setshowModalChangeCategory }: StepNameCategoryProps) => {
@@ -18,15 +18,17 @@ const StepNameCategory = ({ isFormSubmit, setshowModalChangeCategory }: StepName
 
   const { data: session } = useSession()
   const handleUpdateName = () => {
-    updateCategory(session, categorySelected._id as string, {
-      ...categorySelected,
-      name: newCategoryState.name,
-    })
-    setshowModalChangeCategory((prev: ChangeCategory) => ({ ...prev, show: false }))
+    if (categorySelected) {
+      updateCategory(session, categorySelected._id as string, {
+        ...categorySelected,
+        name: newCategoryState.name,
+      })
+      setshowModalChangeCategory((prev: ChangeCategory) => ({ ...prev, show: false }))
+    }
   }
 
   useEffect(() => {
-    if (isFormSubmit) {
+    if (isFormSubmit && categorySelected) {
       setNewCategory({ name: categorySelected.name })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

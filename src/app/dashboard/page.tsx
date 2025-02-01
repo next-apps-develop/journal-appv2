@@ -24,14 +24,14 @@ const DashboardPage = () => {
   }, [session])
 
   const { handleChangeTitle, titleTask, handleClickAddTask } = useTask()
-  console.log({ categorySelected });
 
   return (
-    <div className="flex items-center justify-center dashboard-main-cotainer "
+    <div
+      className="flex items-center justify-center dashboard-main-cotainer "
       style={{
-        background:
-          `linear-gradient(0deg, #ffffff, ${categorySelected && categorySelected.color ? categorySelected.color : '#512da8'})`
-      }} >
+        background: `linear-gradient(0deg, #ffffff, ${categorySelected && categorySelected.color ? categorySelected.color : '#512da8'})`,
+      }}
+    >
       <div
         className={`tasks-main-container1 flex justify-center  p-[2rem] w-[800px] h-[80%] bg-gray-030 rounded-2xl gap-[2rem] `}
       >
@@ -67,13 +67,11 @@ const DashboardPage = () => {
             resizable={false}
             className="modal-category  !w-[80%] sm:max-w-[450px]"
           >
-            <ModalNewCategory
-              setshowModalNewCategory={setshowModalNewCategory}
-            />
+            <ModalNewCategory setshowModalNewCategory={setshowModalNewCategory} />
           </Dialog>
         </div>
       </div>
-    </div >
+    </div>
   )
 }
 

@@ -5,10 +5,8 @@ export const getTasksLeftCategory = async (categories: ICategoryBack[]) => {
   let categoriesAux: ICategoryBack[] = await Promise.all(
     categories.map(async (category: ICategoryBack) => {
       const tasks = await TaskNextAuthF.find({ categoryId: category._id })
-      console.log({ tasks })
 
       const tasksLeft = tasks.filter(task => task.status === false).length
-      console.log({ category, tasksLeft })
 
       return { ...category, tasksLeft }
     })

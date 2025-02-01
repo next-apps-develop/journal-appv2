@@ -42,7 +42,7 @@ describe('Login Tests', () => {
     // cleanup()
   })
 
-  test('FormLogin should be have all elements', () => {
+  test('Register should be have all elements', () => {
     const inputName = screen.getByPlaceholderText('Name')
     const inputEmail = screen.getByPlaceholderText('Email')
     const inputPassword = screen.getByPlaceholderText('Password')

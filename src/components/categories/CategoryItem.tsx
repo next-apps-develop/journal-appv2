@@ -1,7 +1,7 @@
-import { useBoundStore } from '@/app/store/useBoundStore'
+import { useBoundStore } from '../../app/store/useBoundStore'
 import React from 'react'
 import { useShallow } from 'zustand/react/shallow'
-import { areObjectsEqual } from '@/helpers'
+import { areObjectsEqual } from '../../helpers'
 import { FiBook, FiFolder, FiHome, FiMail, FiPhone } from 'react-icons/fi'
 import { HiOutlineDotsVertical } from 'react-icons/hi'
 import { useSession } from 'next-auth/react'
@@ -59,14 +59,15 @@ const CategoryItem = ({ category, op }: { category: ICategoryFront; op: any }) =
         onClick={() => {
           handleClickCategory(category)
         }}
+        data-testid='category-item '
       >
         <div className="flex flex-col w-full">
           <div className="flex w-full icon-name-category">
             <div className="icon-category">{IconCategory(category.icon || '', category.color)}</div>
-            <p className="ml-4">{category.name}</p>
+            <p className="ml-4" data-testid= 'category-name'>{category.name}</p>
           </div>
           <div className="p-4">
-            <p>{category.tasksLeft} Tasks left</p>
+            <p data-testid='category-tasks-left'>{category.tasksLeft} Tasks left</p>
           </div>
         </div>
         {categorySelected?._id === category._id && (
@@ -77,6 +78,7 @@ const CategoryItem = ({ category, op }: { category: ICategoryFront; op: any }) =
               //@ts-ignore
               op.current.toggle(e)
             }}
+            data-testid= 'dots-option'
           >
             <div className="p-2 bg-gray-200 border border-gray-300 rounded-full cursor-pointer">
               <HiOutlineDotsVertical />

@@ -11,11 +11,7 @@ export interface StateTasks {
   fetchAllTasks: (session: any) => Promise<void>
   createTask: (task: ITaskFront, session: any) => Promise<void>
   deleteTask: (taskId: string, session: any) => Promise<void>
-  updateTask: (
-    task: ITaskFront,
-    session: any,
-    isChangeCheck: boolean
-  ) => Promise<void>
+  updateTask: (task: ITaskFront, session: any, isChangeCheck: boolean) => Promise<void>
   fetchTasksByCategory: (id: string, session: any) => Promise<void>
 }
 
@@ -38,9 +34,7 @@ export const useTasksStore = (set: any, get: any) => {
       )
       if (res.data && res.data.tasks) {
         set({
-          tasksTodo: res.data.tasks.filter(
-            (task: ITaskFront) => task.status === false
-          ).length,
+          tasksTodo: res.data.tasks.filter((task: ITaskFront) => task.status === false).length,
         })
       }
     },
@@ -97,16 +91,8 @@ export const useTasksStore = (set: any, get: any) => {
         console.log(error)
       }
     },
-    updateTask: async (
-      taskCurrent: ITaskFront,
-      session: any,
-      isChangeCheck: boolean
-    ) => {
-      const {
-        tasksByCategory,
-        tasksByCategoryCompleted,
-        tasksByCategoryTodo,
-      } = get()
+    updateTask: async (taskCurrent: ITaskFront, session: any, isChangeCheck: boolean) => {
+      const { tasksByCategory, tasksByCategoryCompleted, tasksByCategoryTodo } = get()
       try {
         const res = await journalAPI.put(
           `/task/${taskCurrent._id}`,
@@ -142,37 +128,33 @@ export const useTasksStore = (set: any, get: any) => {
           // if task is on todo tasks
           if (res.data.task.status) {
             set({
-              tasksByCategoryCompleted: tasksByCategoryCompleted.map(
-                (task: ITaskFront) => {
-                  if (task._id === taskCurrent._id) {
-                    return {
-                      ...task,
-                      title: res.data.task.title,
-                      description: res.data.task.description,
-                      status: res.data.task.status,
-                    }
-                  } else {
-                    return { ...task }
+              tasksByCategoryCompleted: tasksByCategoryCompleted.map((task: ITaskFront) => {
+                if (task._id === taskCurrent._id) {
+                  return {
+                    ...task,
+                    title: res.data.task.title,
+                    description: res.data.task.description,
+                    status: res.data.task.status,
                   }
+                } else {
+                  return { ...task }
                 }
-              ),
+              }),
             })
           } else {
             set({
-              tasksByCategoryTodo: tasksByCategoryTodo.map(
-                (task: ITaskFront) => {
-                  if (task._id === taskCurrent._id) {
-                    return {
-                      ...task,
-                      title: res.data.task.title,
-                      description: res.data.task.description,
-                      status: res.data.task.status,
-                    }
-                  } else {
-                    return { ...task }
+              tasksByCategoryTodo: tasksByCategoryTodo.map((task: ITaskFront) => {
+                if (task._id === taskCurrent._id) {
+                  return {
+                    ...task,
+                    title: res.data.task.title,
+                    description: res.data.task.description,
+                    status: res.data.task.status,
                   }
+                } else {
+                  return { ...task }
                 }
-              ),
+              }),
             })
           }
 
@@ -183,10 +165,7 @@ export const useTasksStore = (set: any, get: any) => {
                 tasksByCategoryTodo: tasksByCategoryTodo.filter(
                   (task: ITaskFront) => task._id !== taskCurrent._id
                 ),
-                tasksByCategoryCompleted: [
-                  res.data.task,
-                  ...tasksByCategoryCompleted,
-                ],
+                tasksByCategoryCompleted: [res.data.task, ...tasksByCategoryCompleted],
                 // tasksTodo: tasksTodo - 1
               })
             } else {
@@ -224,9 +203,7 @@ export const useTasksStore = (set: any, get: any) => {
           tasksByCategoryCompleted: res.data.tasks.filter(
             (task: ITaskFront) => task.status === true
           ),
-          tasksByCategoryTodo: res.data.tasks.filter(
-            (task: ITaskFront) => task.status === false
-          ),
+          tasksByCategoryTodo: res.data.tasks.filter((task: ITaskFront) => task.status === false),
         })
         // settasks(res.data.tasks)
       }
