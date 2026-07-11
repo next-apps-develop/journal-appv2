@@ -1,7 +1,7 @@
 import React from 'react'
 import CreateTaskInput from '../tasks/CreateTaskInput'
 import { useTask } from '@/hooks/useTask'
-import { Task } from '@/app/interfaces/types'
+import { ITaskFront } from '@/app/interfaces/IFront'
 
 const StepTasks = () => {
   const {
@@ -22,7 +22,7 @@ const StepTasks = () => {
       </div>
       <div className="flex flex-col items-center justify-center w-full">
         <h3 className="mt-8 text-base font-bold ">Tareas agregadas</h3>
-        {tasksFromCategory.map((task: Task) => (
+        {tasksFromCategory.map((task: ITaskFront) => (
           <div
             key={task._id}
             className="w-3/4 px-2 py-2 mt-4 bg-gray-200 rounded-md"

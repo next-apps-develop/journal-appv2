@@ -21,14 +21,19 @@ const CreateTaskInput = ({
         name="title"
         maxLength={50}
         value={titleTask}
+        data-testid="input-title-task"
       ></input>
       <div className="icon-plus">
         {titleTask === '' ? (
-          <FiPlus className="mr-4 text-xl bg-gray-500 rounded-full cursor-pointer" />
+          <FiPlus
+            className="mr-4 text-xl bg-gray-500 rounded-full cursor-pointer"
+            data-testid="icon-plus-disable"
+          />
         ) : (
           <FiPlus
             className="mr-4 text-xl bg-blue-500 rounded-full cursor-pointer"
             onClick={handleClickAdd}
+            data-testid="icon-plus-enable"
           />
         )}
       </div>

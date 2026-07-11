@@ -9,6 +9,7 @@ interface ButtonGeneral {
   severity?: Severity
   icon?: any
   disabled?: boolean
+  className?: string
 }
 const ButtonGeneral = ({
   text,
@@ -17,8 +18,8 @@ const ButtonGeneral = ({
   severity,
   icon,
   disabled = false,
+  className = '',
 }: ButtonGeneral) => {
-
   const [colorbtn, setcolorbtn] = useState('')
 
   useEffect(() => {
@@ -50,9 +51,10 @@ const ButtonGeneral = ({
       <button
         className={`px-4 py-2 border-solid  border-white
     rounded-md  uppercase text-base font-medium  m-auto 
-    flex justify-between items-center
-    ${colorbtn}
-    ${disabled ? 'bg-gray-400' : ''}
+    flex justify-between items-center 
+   
+    ${disabled ? 'bg-gray-400' : colorbtn} 
+    ${className}
     `}
         onClick={() => (handleClick ? handleClick() : null)}
         type={type as any}

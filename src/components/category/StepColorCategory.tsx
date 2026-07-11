@@ -1,5 +1,5 @@
-import { useCategoryStore } from '@/app/store/useCategory'
-import React, { useEffect, useState } from 'react'
+import { useBoundStore } from '@/app/store/useBoundStore'
+import React, { useState } from 'react'
 import { FiCheck } from 'react-icons/fi'
 import { useShallow } from 'zustand/react/shallow'
 interface Color {
@@ -7,11 +7,8 @@ interface Color {
   selected: boolean
 }
 const StepColorCategory = () => {
-  const setNewCategory = useCategoryStore(
-    useShallow(state => state.setNewCategory)
-  )
-  const newCategoryState = useCategoryStore(
-    useShallow(state => state.newCategoryState)
+  const { setNewCategory, newCategoryState } = useBoundStore(
+    useShallow(state => state)
   )
 
   const [colors, setcolors] = useState<Color[]>([
@@ -23,17 +20,18 @@ const StepColorCategory = () => {
     { code: '#34623F', selected: false },
   ])
 
-  
-  
   return (
     <div className="mt-4">
-      <label htmlFor="name" className="text-white ">
-        Color
+      <label htmlFor="name" className="text-sm">
+        Color Category
       </label>
 
       <div className="flex flex-wrap justify-between w-full colors-container ">
         {colors.map((color, index) => (
-          <div className="flex items-center justify-center w-1/2 mt-4 sm:w-1/3" key={index}>
+          <div
+            className="flex items-center justify-center w-1/2 mt-4 sm:w-1/3"
+            key={index}
+          >
             <div
               className={`h-24 rounded-lg w-16 cursor-pointer`}
               style={{ backgroundColor: color.code }}
@@ -47,14 +45,11 @@ const StepColorCategory = () => {
                   })
                 )
                 setNewCategory({ ...newCategoryState, color: color.code })
-                // setNewCategory()
-                // setcolorSelected(color)
               }}
             >
               {color.selected && (
                 <div
-                  className="top-0 left-0 flex items-center justify-center w-full h-full m-auto color-selected-icon  
-"
+                  className="top-0 left-0 flex items-center justify-center w-full h-full m-auto color-selected-icon "
                 >
                   <div className="icon">
                     <FiCheck className="text-3xl text-white" />

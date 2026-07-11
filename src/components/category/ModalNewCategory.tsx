@@ -5,12 +5,13 @@ import 'swiper/css'
 import ButtonGeneral from '../ButtonGeneral'
 import StepColorCategory from './StepColorCategory'
 import StepIconCategory from './StepIconCategory'
-import { useCategoryStore } from '@/app/store/useCategory'
 import StepTasks from './StepTasks'
 import { useSession } from 'next-auth/react'
-import { Category, Task } from '@/app/interfaces/types'
 import { useShallow } from 'zustand/react/shallow'
 import StepNameCategory from './StepNameCategory'
+import { Button } from 'primereact/button'
+import { useBoundStore } from '@/app/store/useBoundStore'
+import { ICategoryFront, ITaskFront } from '@/app/interfaces/IFront'
 
 type ModalNewCategoryProps = {
   setshowModalNewCategory: any
@@ -22,12 +23,8 @@ const ModalNewCategory = ({
   const { data: session } = useSession()
   const [heightStep, setheightStep] = useState(0)
 
-  const newCategoryState = useCategoryStore(
-    useShallow(state => state.newCategoryState)
-  )
-
-  const createCategory = useCategoryStore(
-    useShallow(state => state.createCategory)
+  const { newCategoryState, createCategory, setNewCategory } = useBoundStore(
+    useShallow(state => state)
   )
 
   const SwiperButtonNext = ({ children }: any) => {
@@ -54,9 +51,9 @@ const ModalNewCategory = ({
   }
 
   const handleSaveNewCategory = async () => {
-    let listTasks: Array<Task> = []
+    let listTasks: Array<ITaskFront> = []
     // @ts-ignore
-    let payload: Category = { ...newCategoryState, userId: session?.user?._id }
+    let payload: ICategoryFront = { ...newCategoryState, userId: session?.user?._id }
     if (newCategoryState.tasks && newCategoryState.tasks.length > 0) {
       listTasks = newCategoryState.tasks
       payload = {
@@ -67,6 +64,8 @@ const ModalNewCategory = ({
       }
     }
     await createCategory(payload, session)
+
+    setNewCategory({ name: '', color: '', icon: '' })
     setshowModalNewCategory(false)
   }
 
@@ -83,50 +82,46 @@ const ModalNewCategory = ({
     <>
       <div
         className={`steps-new-category-container h-[${heightStep}px] overflow-hidden`}
-        // style={{ height: `${heightStep}px` }}
       >
         <Swiper
           spaceBetween={100}
           slidesPerView={1}
-          // style={{ height: `${heightStep}px` }}
           onSlideChange={e => {
             console.log({ e })
             setTimeout(() => {
               const element: any = document.querySelector(
                 '.swiper-slide-active'
               )
-              console.log(element.offsetHeight)
 
               setheightStep(element.offsetHeight)
             }, 500)
-
-            // setactiveIndex(e.activeIndex)
           }}
           onSwiper={swiper1 => {
             console.log({ swiper1 })
           }}
+          allowTouchMove={false}
         >
           <SwiperSlide key={'1'}>
-            {/* {stepNameCategory()} */}
             <StepNameCategory />
-            <div className="flex justify-end buttons-section">
+            <div className="flex justify-between items-center buttons-section mt-[180px]">
+              <Button
+                link
+                onClick={() => {
+                  setshowModalNewCategory(false)
+                  setNewCategory({ name: '', color: '', icon: '' })
+                }}
+                className="px-4 py-2 mt-4"
+              >
+                Cancel
+              </Button>
               <SwiperButtonNext>
-                {/* <ButtonGeneral
-                  text="Next"
-                  icon={<FaChevronRight />}
-                  severity="info"
-                  disabled={newCategoryState.name === ''}
-                /> */}
-
                 <button
                   className={`px-4 py-2 border-solid  border-white
                     rounded-md  uppercase text-base font-medium  m-auto 
-                    flex justify-between items-center bg-blue-500
+                    flex justify-between items-center bg-blue-500 text-white
                   
                     ${newCategoryState.name === '' ? 'bg-gray-400' : ''}
                     `}
-                  // onClick={() => (handleClick ? handleClick() : null)}
-                  // type={type as any}
                   disabled={newCategoryState.name === ''}
                 >
                   <FaChevronRight />
@@ -137,13 +132,12 @@ const ModalNewCategory = ({
           </SwiperSlide>
           <SwiperSlide key={'2'}>
             <StepColorCategory />
-            <div className="flex justify-between buttons-section">
+            <div className="flex justify-between mt-8 buttons-section">
               <SwiperButtonPrev>
-                <ButtonGeneral
-                  text="Back"
-                  icon={<FaChevronLeft />}
-                  severity="warning"
-                />
+                <Button link className="px-4 py-2 mr-4">
+                  <FaChevronLeft className="mr-2" />
+                  Back
+                </Button>
               </SwiperButtonPrev>
               <SwiperButtonNext>
                 <ButtonGeneral
@@ -155,6 +149,7 @@ const ModalNewCategory = ({
                       ? false
                       : true
                   }
+                  className="text-white"
                 />
               </SwiperButtonNext>
             </div>
@@ -162,13 +157,12 @@ const ModalNewCategory = ({
 
           <SwiperSlide key={'3'}>
             <StepIconCategory />
-            <div className="flex justify-between buttons-section">
+            <div className="flex justify-between mt-8 buttons-section">
               <SwiperButtonPrev>
-                <ButtonGeneral
-                  text="Back"
-                  icon={<FaChevronLeft />}
-                  severity="warning"
-                />
+                <Button link className="px-4 py-2 mr-4">
+                  <FaChevronLeft className="mr-2" />
+                  Back
+                </Button>
               </SwiperButtonPrev>
               <SwiperButtonNext>
                 <ButtonGeneral
@@ -180,6 +174,7 @@ const ModalNewCategory = ({
                       ? false
                       : true
                   }
+                  className="text-white"
                 />
               </SwiperButtonNext>
             </div>
@@ -188,7 +183,13 @@ const ModalNewCategory = ({
           <SwiperSlide key={'4'}>
             <h2 className="mt-4 text-white">Agregue una tarea</h2>
             <StepTasks />
-            <div className="mt-4">
+            <div className="mt-[100px] flex justify-between items-center">
+              <SwiperButtonPrev>
+                <Button link className="px-4 py-2 mr-4">
+                  <FaChevronLeft className="mr-2" />
+                  Back
+                </Button>
+              </SwiperButtonPrev>
               <ButtonGeneral
                 text="Finish"
                 handleClick={handleSaveNewCategory}
@@ -196,6 +197,8 @@ const ModalNewCategory = ({
                   newCategoryState?.tasks?.length === 0 ||
                   newCategoryState?.tasks === undefined
                 }
+                className="text-white"
+                severity='info'
               />
             </div>
           </SwiperSlide>
