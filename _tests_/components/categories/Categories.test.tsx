@@ -1,9 +1,8 @@
-import CategoryItem from '../../../src/components/categories/CategoryItem'
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, render, screen } from '@testing-library/react'
 import { SessionProvider } from 'next-auth/react'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import Categories from '../../../src/components/categories/Categories'
 import { useBoundStore } from '../../../src/app/store/useBoundStore'
+import Categories from '../../../src/components/categories/Categories'
 
 vi.mock('next-auth/react', async importOriginal => {
   const actual: any = await importOriginal()

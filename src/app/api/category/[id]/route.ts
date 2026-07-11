@@ -1,4 +1,3 @@
-// import UserNextAuthF from "../../../models/UserNextAuthF";
 import { NextResponse } from 'next/server'
 import { connectDB } from '@/libs/mongodb'
 import { handler } from '@/middlewares/handler'
@@ -53,7 +52,7 @@ export async function deleteCategory(req: any, { params }: any, next: any) {
     { status: 200 }
   )
 }
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function updateCategory(req: any, { params }: any, next: any) {
   await connectDB()
   try {

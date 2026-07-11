@@ -1,12 +1,12 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import 'react-toastify/dist/ReactToastify.css'
-import { signIn, useSession } from 'next-auth/react'
-import './index.css'
-import ButtonGeneral from '../ButtonGeneral'
-import FormLogin from './FormLoging'
-import RegisterComponent from '../register/Register'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import 'react-toastify/dist/ReactToastify.css'
+import ButtonGeneral from '../ButtonGeneral'
+import RegisterComponent from '../register/Register'
+import FormLogin from './FormLoging'
+import './index.css'
 const LoginComponent = () => {
   const [containerActive, setContainerActive] = useState(false)
 

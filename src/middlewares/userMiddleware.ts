@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 
 export const validateBodyUser = async (
   req: any,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   { params }: any,
   next: any
 ) => {

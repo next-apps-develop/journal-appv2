@@ -2,6 +2,7 @@ import { categorySchema } from '@/schemas/category.schema'
 import mongoose from 'mongoose'
 import { NextResponse } from 'next/server'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const validateDataCategory = async (req: any, { params }: any, next: any) => {
   try {
     const body = await req.json()

@@ -1,9 +1,9 @@
-import { useBoundStore } from '../../app/store/useBoundStore'
-import { InputText } from 'primereact/inputtext'
-import React, { useEffect, useState } from 'react'
-import { useShallow } from 'zustand/react/shallow'
-import ButtonGeneral from '../ButtonGeneral'
 import { useSession } from 'next-auth/react'
+import { InputText } from 'primereact/inputtext'
+import { useEffect } from 'react'
+import { useShallow } from 'zustand/react/shallow'
+import { useBoundStore } from '../../app/store/useBoundStore'
+import ButtonGeneral from '../ButtonGeneral'
 import { ChangeCategory } from '../categories/Categories'
 
 type StepNameCategoryProps = {

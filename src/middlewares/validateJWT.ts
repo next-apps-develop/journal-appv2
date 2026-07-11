@@ -1,6 +1,8 @@
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const validateJWT = async (req: any, { params }: any, next: any) => {
   // if (req && req.json()) {
   //   const body = await req.json()

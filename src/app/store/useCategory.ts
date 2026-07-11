@@ -2,7 +2,7 @@ import { ICategoryFront } from '../interfaces/IFront'
 import { journalAPI } from '../utils/axiosConfig'
 export interface StateCategory {
   categories: ICategoryFront[]
-  categorySelected: ICategoryFront
+  categorySelected: ICategoryFront | null
   newCategoryState: ICategoryFront
   setNewCategory: (category: ICategoryFront) => void
   isNextStepEnable: boolean
