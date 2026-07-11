@@ -6,7 +6,7 @@ import { handler } from '@/middlewares/handler'
 import { validateBodyUser } from '@/middlewares/userMiddleware'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function createUser(req: any, { params }: any, next: any) {
+async function createUser(req: any, { params }: any, next: any) {
   const { fullName, email, password } = req._body
 
   try {

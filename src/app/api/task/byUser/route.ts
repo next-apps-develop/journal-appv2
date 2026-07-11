@@ -10,17 +10,17 @@ import { NextResponse } from 'next/server'
  * @param param1
  * @returns array tasks
  */
-export async function findTaskByUserId(req: any) {
+async function findTaskByUserId(req: any) {
   await connectDB()
 
   const tasks: any = await TaskNextAuthF.find({
-    userId: new mongoose.Types.ObjectId(req.uid)
+    userId: new mongoose.Types.ObjectId(req.uid),
   })
 
   if (!tasks) {
     return NextResponse.json(
       {
-        msg: 'No task found'
+        msg: 'No task found',
       },
       { status: 400 }
     )
@@ -29,7 +29,7 @@ export async function findTaskByUserId(req: any) {
   return NextResponse.json(
     {
       msg: 'ok',
-      tasks
+      tasks,
     },
     { status: 200 }
   )

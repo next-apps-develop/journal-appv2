@@ -12,16 +12,14 @@ import { NextResponse } from 'next/server'
  * @param param1
  * @returns
  */
-export async function findTaskById(request: any, { params }: any) {
+async function findTaskById(request: any, { params }: any) {
   await connectDB()
-  const tasks: any = await TaskNextAuthF.findById(
-    new mongoose.Types.ObjectId(params.id)
-  )
+  const tasks: any = await TaskNextAuthF.findById(new mongoose.Types.ObjectId(params.id))
 
   if (!tasks) {
     return NextResponse.json(
       {
-        msg: 'No task found'
+        msg: 'No task found',
       },
       { status: 400 }
     )
@@ -30,31 +28,31 @@ export async function findTaskById(request: any, { params }: any) {
   return NextResponse.json(
     {
       msg: 'ok',
-      tasks
+      tasks,
     },
     { status: 200 }
   )
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function deleteTask(req: any, { params }: any, next: any) {
+async function deleteTask(req: any, { params }: any, next: any) {
   await connectDB()
   const { id } = params
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json(
       {
-        msg: 'id invalid'
+        msg: 'id invalid',
       },
       { status: 400 }
     )
   }
   const taskFound = await TaskNextAuthF.findById({
-    _id: new mongoose.Types.ObjectId(id)
+    _id: new mongoose.Types.ObjectId(id),
   })
 
   if (!taskFound) {
     return NextResponse.json(
       {
-        msg: 'No task found !!'
+        msg: 'No task found !!',
       },
       { status: 400 }
     )
@@ -64,32 +62,32 @@ export async function deleteTask(req: any, { params }: any, next: any) {
   return NextResponse.json(
     {
       msg: 'ok',
-      task: errasedTask
+      task: errasedTask,
     },
     { status: 200 }
   )
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function updateTask(req: any, { params }: any, next: any) {
+async function updateTask(req: any, { params }: any, next: any) {
   await connectDB()
-  const { title, description , status} = req._body
+  const { title, description, status } = req._body
   const { id } = params
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return NextResponse.json(
       {
-        msg: 'id invalid'
+        msg: 'id invalid',
       },
       { status: 400 }
     )
   }
   const taskFound = await TaskNextAuthF.findById({
-    _id: new mongoose.Types.ObjectId(id)
+    _id: new mongoose.Types.ObjectId(id),
   })
 
   if (!taskFound) {
     return NextResponse.json(
       {
-        msg: 'No task found !!'
+        msg: 'No task found !!',
       },
       { status: 400 }
     )
@@ -97,19 +95,15 @@ export async function updateTask(req: any, { params }: any, next: any) {
 
   const update = {
     title,
-    description, 
-    status
+    description,
+    status,
   }
 
-  const updateTask = await TaskNextAuthF.findOneAndUpdate(
-    { _id: id },
-    update,
-    { new: true }
-  )
+  const updateTask = await TaskNextAuthF.findOneAndUpdate({ _id: id }, update, { new: true })
   return NextResponse.json(
     {
       msg: 'ok',
-      task: updateTask
+      task: updateTask,
     },
     { status: 200 }
   )
