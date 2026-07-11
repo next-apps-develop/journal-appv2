@@ -10,7 +10,7 @@ import { NextResponse } from 'next/server'
  * @param param1
  * @returns array tasks
  */
-export async function findTaskQuery(req: any) {
+async function findTaskQuery(req: any) {
   await connectDB()
 
   const body = await req.json()
@@ -21,9 +21,7 @@ export async function findTaskQuery(req: any) {
 
   if (body.categoryId) {
     query.categoryId =
-      body.categoryId === '' || body.categoryId === 'uncategorized'
-        ? null
-        : body.categoryId
+      body.categoryId === '' || body.categoryId === 'uncategorized' ? null : body.categoryId
   }
 
   const tasks: any = await TaskNextAuthF.find({

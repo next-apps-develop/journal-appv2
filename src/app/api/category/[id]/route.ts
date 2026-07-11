@@ -15,7 +15,7 @@ import { getTasksLeftCategory } from '../../utils'
  */
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function getCategoryById(req: any, { params }: any, next: any) {
+async function getCategoryById(req: any, { params }: any, next: any) {
   await connectDB()
 
   const category = await CategoryNextAuthF.findOne({ _id: params.id })
@@ -36,7 +36,7 @@ export async function getCategoryById(req: any, { params }: any, next: any) {
  *
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function deleteCategory(req: any, { params }: any, next: any) {
+async function deleteCategory(req: any, { params }: any, next: any) {
   await connectDB()
   const { id } = params
 
@@ -53,7 +53,7 @@ export async function deleteCategory(req: any, { params }: any, next: any) {
   )
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function updateCategory(req: any, { params }: any, next: any) {
+async function updateCategory(req: any, { params }: any, next: any) {
   await connectDB()
   try {
     const { id } = params
